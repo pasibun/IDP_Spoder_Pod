@@ -1,9 +1,9 @@
 package org.nhl.spoderpod.hexapod.interfaces;
 
-public interface IMessage<T> {
+import java.io.Serializable;
+
+public interface IMessage extends Serializable {
 	public String getSender();
 
 	public String getRecipient();
-
-	public T getData();
 }

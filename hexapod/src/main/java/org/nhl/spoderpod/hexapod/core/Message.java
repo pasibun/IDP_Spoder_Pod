@@ -1,6 +1,8 @@
 package org.nhl.spoderpod.hexapod.core;
 
-public final class Message {
+import org.nhl.spoderpod.hexapod.interfaces.IMessage;
+
+public final class Message implements IMessage {
 	private final String sender;
 	private final String recipient;
 	private final String[] data;

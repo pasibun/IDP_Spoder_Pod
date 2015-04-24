@@ -5,18 +5,20 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.nhl.spoderpod.hexapod.interfaces.IMessage;
+
 public final class MessageBus {
-	private final Map<String, Queue<Message>> messages;
+	private final Map<String, Queue<IMessage>> messages;
 
 	public MessageBus() {
-		this.messages = new HashMap<String, Queue<Message>>();
+		this.messages = new HashMap<String, Queue<IMessage>>();
 	}
 
 	public void addComponent(String recipient) {
-		this.messages.put(recipient, new ConcurrentLinkedQueue<Message>());
+		this.messages.put(recipient, new ConcurrentLinkedQueue<IMessage>());
 	}
 
-	public boolean send(Message message) {
+	public boolean send(IMessage message) {
 		if (this.messages.containsKey(message.getRecipient())) {
 			this.messages.get(message.getRecipient()).add(message);
 			return true;
@@ -24,7 +26,7 @@ public final class MessageBus {
 		return false;
 	}
 
-	public Message getMessage(String recipient) {
+	public IMessage getMessage(String recipient) {
 		return this.messages.get(recipient).poll();
 	}
 

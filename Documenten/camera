@@ -2,4 +2,4 @@
 mkdir camera
 DATE=$(date +"%Y-%m-%d_%H%M")
 
-raspistill -vf -hf -o /camera/$DATE.png
+raspistill -vf -hf -e png -o /camera/$DATE.png

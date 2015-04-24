@@ -8,7 +8,7 @@ public final class ComponentRef {
 	}
 	
 	public boolean tell(MessageBus messageBus, ComponentRef sender, String text) {
-		return messageBus.send(new Message(sender, this, new String[]{text}));
+		return messageBus.send(new Message(sender, this, text));
 	}
 	
 	public String getLocation() {

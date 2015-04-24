@@ -18,6 +18,6 @@ public final class CRandomTalker extends BaseComponent {
 	}
 
 	@Override
-	protected void update(IMessage message) {
+	protected void update(MessageBus messageBus, IMessage message) {
 	}
 }

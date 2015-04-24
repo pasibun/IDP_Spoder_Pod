@@ -5,9 +5,9 @@ import org.nhl.spoderpod.hexapod.interfaces.IMessage;
 public final class Message implements IMessage {
 	private final ComponentRef sender;
 	private final ComponentRef recipient;
-	private final String[] data;
+	private final String data;
 
-	public Message(ComponentRef sender, ComponentRef recipient, String[] data) {
+	public Message(ComponentRef sender, ComponentRef recipient, String data) {
 		this.sender = sender;
 		this.recipient = recipient;
 		this.data = data;
@@ -21,13 +21,13 @@ public final class Message implements IMessage {
 		return this.recipient;
 	}
 
-	public String[] getData() {
+	public String getData() {
 		return this.data;
 	}
 
 	@Override
 	public String toString() {
 		return String.format("Sender: %s, Recipient: %s, DataCount: %d",
-				this.sender, this.recipient, this.data.length);
+				this.sender, this.recipient, this.data);
 	}
 }

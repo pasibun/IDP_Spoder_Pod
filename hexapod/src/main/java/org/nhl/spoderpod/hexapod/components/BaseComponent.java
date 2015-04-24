@@ -14,11 +14,11 @@ public abstract class BaseComponent implements IComponent {
 
 	public final void update(MessageBus messageBus) {
 		while (messageBus.hasMessage(this.getSelf())) {
-			update(messageBus.getMessage(this.getSelf()));
+			update(messageBus, messageBus.getMessage(this.getSelf()));
 		}
 	}
 
-	protected abstract void update(IMessage message);
+	protected abstract void update(MessageBus messageBus, IMessage message);
 	
 	public ComponentRef getSelf() {
 		return this.self;

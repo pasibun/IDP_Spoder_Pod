@@ -35,7 +35,7 @@ public final class Service implements IThreaded {
 
 	private void init() {
 		for (IComponent component : this.components) {
-			this.messageBus.addComponent(component.getName());
+			this.messageBus.addComponent(component.getSelf());
 			component.init(this.messageBus);
 		}
 	}

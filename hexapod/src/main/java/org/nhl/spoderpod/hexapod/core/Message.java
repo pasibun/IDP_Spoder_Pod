@@ -3,21 +3,21 @@ package org.nhl.spoderpod.hexapod.core;
 import org.nhl.spoderpod.hexapod.interfaces.IMessage;
 
 public final class Message implements IMessage {
-	private final String sender;
-	private final String recipient;
+	private final ComponentRef sender;
+	private final ComponentRef recipient;
 	private final String[] data;
 
-	public Message(String sender, String recipient, String[] data) {
+	public Message(ComponentRef sender, ComponentRef recipient, String[] data) {
 		this.sender = sender;
 		this.recipient = recipient;
 		this.data = data;
 	}
 
-	public String getSender() {
+	public ComponentRef getSender() {
 		return this.sender;
 	}
 
-	public String getRecipient() {
+	public ComponentRef getRecipient() {
 		return this.recipient;
 	}
 

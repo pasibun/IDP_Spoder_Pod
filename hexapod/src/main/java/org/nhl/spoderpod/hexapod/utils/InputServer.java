@@ -34,7 +34,11 @@ public final class InputServer implements IThreaded {
 	}
 
 	public void send(String msg) {
-		String data = String.format("HTTP/1.1 200 OK\r\nContent-Length: %d\r\n\r\n%s\r\n", msg.length() + 2, msg);
+		String data = String.format("HTTP/1.1 200 OK\r\n"
+				+ "Content-Type: text/json\r\n"
+				+ "Access-Control-Allow-Origin: *\r\n"
+				+ "Content-Length: %d\r\n\r\n" 
+				+ "%s\r\n", msg.length() + 2, msg);
 		while (hasConnectedClients()) {
 			try {
 				Socket client = this.connectedClients.poll();

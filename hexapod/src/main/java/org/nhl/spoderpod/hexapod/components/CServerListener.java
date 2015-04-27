@@ -20,7 +20,7 @@ public final class CServerListener implements IComponent {
 
 	public void update(MessageBus messageBus) {
 		if (this.server.hasConnectedClients()) {
-			this.server.send(String.format("{Time: %d}", System.currentTimeMillis()));
+			this.server.send(String.format("[{\"type\": \"time\", \"value\": %d}]", System.currentTimeMillis()));
 		}
 	}
 

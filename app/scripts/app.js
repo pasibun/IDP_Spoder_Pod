@@ -1,3 +1,7 @@
+Config = {
+		ServerUpdateFreq: 1000
+}
+
 Updater = (function(_host, _freq) {
 	var updateFreq = _freq, data = [], running = false, doingRequest = false;
 
@@ -90,7 +94,7 @@ RenderPrimitives = {
 }
 
 EntityModels = {
-	time : function(_render, _data) {
+	log : function(_render, _data) {
 		return _render(RenderPrimitives.Translate(10, 10))
 						(RenderPrimitives.SetAttr("textBaseLine", "top"))
 						(RenderPrimitives.Text("Server Time: " + _data.value));
@@ -144,7 +148,7 @@ Renderer = (function(_width, _height) {
 
 App = (function(_host) {
 	var domElement = document.createElement("div"), updater = new Updater(
-			_host, 1000), renderer = new Renderer(500, 500), running = false;
+			_host, Config.ServerUpdateFreq), renderer = new Renderer(500, 500), running = false;
 
 	(function() {
 		domElement.appendChild(renderer.getCanvas());

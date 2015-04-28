@@ -6,7 +6,7 @@ import org.nhl.spoderpod.hexapod.interfaces.IMessage;
 
 public final class CLogger extends BaseComponent {
 	private final StringBuilder log;
-	
+
 	public CLogger(String name) {
 		super(name);
 		this.log = new StringBuilder();
@@ -15,10 +15,20 @@ public final class CLogger extends BaseComponent {
 	public void init(MessageBus messageBus) {
 	}
 
-	public void update(MessageBus messageBus, IMessage message) {
+	@Override
+	protected boolean preReceive(MessageBus messageBus) {
+		return true;
+	}
+
+	public void receive(MessageBus messageBus, IMessage message) {
 		if (message instanceof Message) {
-			Message m = (Message)message;
-			this.log.append(String.format("%s, From: %s, Data: %s", getSelf(), m.getSender(), m.getData()));
+			Message m = (Message) message;
+			if ("Get".equals(m.getData())) {
+				m.getSender().tell(messageBus, getSelf(), this.log.toString());
+			} else {
+				this.log.append(String.format("From: %s, Data: %s\n",
+						m.getSender(), m.getData()));
+			}
 		}
 	}
 

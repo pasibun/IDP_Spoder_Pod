@@ -11,13 +11,20 @@ public final class CRandomTalker extends BaseComponent {
 	}
 
 	public void init(MessageBus messageBus) {
-		new ComponentRef("Logger").tell(messageBus, getSelf(), "test");
 	}
 
 	public void close(MessageBus messageBus) {
 	}
 
 	@Override
-	protected void update(MessageBus messageBus, IMessage message) {
+	protected boolean preReceive(MessageBus messageBus) {
+		if (Math.random() < 0.000001) {
+			new ComponentRef("Logger").tell(messageBus, getSelf(), "test -> " + Math.random());
+		}
+		return false;
+	}
+	
+	@Override
+	protected void receive(MessageBus messageBus, IMessage message) {
 	}
 }

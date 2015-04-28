@@ -7,14 +7,14 @@ import org.nhl.spoderpod.hexapod.interfaces.IComponent;
 import org.nhl.spoderpod.hexapod.interfaces.IThreaded;
 
 public final class Service implements IThreaded {
-	private final String name;
+	private final ComponentRef self;
 	private final Thread thread;
 	private final MessageBus messageBus;
 	private final List<IComponent> components;
 	private volatile boolean running;
 
 	public Service(String name, IComponent[] components) {
-		this.name = name;
+		this.self = new ComponentRef(name);
 		this.thread = new Thread(this);
 		this.messageBus = new MessageBus();
 		this.components = Arrays.asList(components);
@@ -28,15 +28,18 @@ public final class Service implements IThreaded {
 
 	public void stop() {
 		this.running = false;
-		for (IComponent component : this.components) {
-			component.close(this.messageBus);
-		}
 	}
 
 	private void init() {
 		for (IComponent component : this.components) {
 			this.messageBus.addComponent(component.getSelf());
 			component.init(this.messageBus);
+		}
+	}
+
+	private void close() {
+		for (IComponent component : this.components) {
+			component.close(this.messageBus);
 		}
 	}
 
@@ -55,6 +58,6 @@ public final class Service implements IThreaded {
 		while (this.running) {
 			tick();
 		}
-		stop();
+		close();
 	}
 }

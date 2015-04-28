@@ -13,12 +13,17 @@ public abstract class BaseComponent implements IComponent {
 	}
 
 	public final void update(MessageBus messageBus) {
+		if (!preReceive(messageBus)) {
+			return;
+		}
 		while (messageBus.hasMessage(this.getSelf())) {
-			update(messageBus, messageBus.getMessage(this.getSelf()));
+			receive(messageBus, messageBus.getMessage(this.getSelf()));
 		}
 	}
+	
+	protected abstract boolean preReceive(MessageBus messageBus);
 
-	protected abstract void update(MessageBus messageBus, IMessage message);
+	protected abstract void receive(MessageBus messageBus, IMessage message);
 	
 	public ComponentRef getSelf() {
 		return this.self;

@@ -10,15 +10,13 @@
 <script type="text/javascript">
 	window.onload = (function() {
 		var ip = window.location.search;
-		if (ip.length > 1) {
-			// var app = new App(ip.substr(1));
-			var app = new App("http://localhost:8080");
-			document.getElementById("content").appendChild(app.getDomElement());
-			app.run();
-			window.setTimeout(function() {
-				app.stop();
-			}, 30000);
-		}
+		// var app = new App(ip.substr(1));
+		var app = new App("http://localhost:8080");
+		document.getElementById("content").appendChild(app.getDomElement());
+		app.run();
+		window.setTimeout(function() {
+			app.stop();
+		}, 30000);
 	});
 </script>
 </head>

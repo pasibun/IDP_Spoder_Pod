@@ -17,7 +17,7 @@ public class test2 {
 	public static void main(String[] args) throws InterruptedException {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		List<Mat> hsv_planes = new ArrayList<Mat>();
-		Mat image = Highgui.imread("balloon.png");
+		Mat image = Highgui.imread("camera/balloon.png");
 		Mat huered = new Mat();
 		Mat scalehuered = new Mat();
 		Mat scalesat = new Mat();
@@ -61,7 +61,7 @@ public class test2 {
 		// Size(3,3));
 		// Imgproc.morphologyEx(thresh, thresh, Imgproc.MORPH_OPEN, kernel);
 		System.out.println("Done");
-		Highgui.imwrite("ballooncircle.png", output);
+		Highgui.imwrite("camera/output/ballooncircle.png", output);
 
 	}
 

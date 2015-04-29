@@ -30,7 +30,7 @@ public class test {
 		int max_tresh = 255;	
 		
 		
-		src = Highgui.imread("balloon.png");
+		src = Highgui.imread("camera/balloon.png");
 		if(src == null)
 			return;
 		src_gray = new Mat();

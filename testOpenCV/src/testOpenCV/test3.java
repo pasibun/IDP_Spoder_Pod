@@ -28,7 +28,9 @@ public class test3 {
 		Scanner input = new Scanner(System.in);
 		String color = input.nextLine();
 			
+
 		Mat image = Highgui.imread("images/balloon.png");
+
 		Mat sat = new Mat();
 		Mat imgThresholded = new Mat();
 		

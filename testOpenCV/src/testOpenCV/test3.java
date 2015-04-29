@@ -17,13 +17,20 @@ public class test3 {
 		
 		//int hsvLow;
 		//int hsvHigh;
+		try{
+			Process process = Runtime.getRuntime().exec("camera.sh");
+			}catch(Exception e){
+				
+			}
 		
 		System.out.println("What color do you want to search?");
 		//Color color = Color.valueOf(new Scanner(System.in));
 		Scanner input = new Scanner(System.in);
 		String color = input.nextLine();
 			
-		Mat image = Highgui.imread("balloon.png");
+
+		Mat image = Highgui.imread("images/balloon.png");
+
 		Mat sat = new Mat();
 		Mat imgThresholded = new Mat();
 		

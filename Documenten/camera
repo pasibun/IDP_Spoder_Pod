@@ -1,5 +1,12 @@
 #!/bin/bash
+<<<<<<< HEAD
+mkdir images
+
+raspistill -vf -hf -e png -o /images/balloon.png
+=======
 mkdir camera
+mkdir camera/output
 DATE=$(date +"%Y-%m-%d_%H%M")
 
-raspistill -vf -hf -e png -o /camera/$DATE.png
+raspistill -vf -hf -e png -o /camera/balloon.png
+>>>>>>> df7a04cc327209a0bf9d9778e3528a9ec77faf2a

@@ -17,11 +17,6 @@ public class test3 {
 		
 		//int hsvLow;
 		//int hsvHigh;
-		try{
-			Process process = Runtime.getRuntime().exec("camera.sh");
-			}catch(Exception e){
-				
-			}
 		
 		System.out.println("What color do you want to search?");
 		//Color color = Color.valueOf(new Scanner(System.in));
@@ -41,14 +36,14 @@ public class test3 {
 		//blue: 10 - 20  
 		//red: 114 - 124
 		if("red".equals(color))
-			Core.inRange(sat, new Scalar(114, 200, 0), new Scalar(124, 255, 255), imgThresholded);
+			Core.inRange(sat, new Scalar(114, 170, 0), new Scalar(124, 255, 255), imgThresholded);
 		else if("blue".equals(color))
 			Core.inRange(sat, new Scalar(10, 200, 0), new Scalar(20, 255, 255), imgThresholded);
 		Imgproc.morphologyEx(sat, sat, Imgproc.MORPH_OPEN, kernel);
 		Imgproc.morphologyEx(sat, sat, Imgproc.MORPH_CLOSE, kernel);		
 		
 		System.out.println("Done!");
-		Highgui.imwrite("ballooncircle" /*+  i  +*/ + ".png", imgThresholded);
+		Highgui.imwrite("images/ballooncircle" /*+  i  +*/ + ".png", imgThresholded);
 		
 	}
 		

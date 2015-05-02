@@ -27,9 +27,11 @@ public final class CServerListener extends BaseComponent {
 	}
 
 	protected void receive(MessageBus messageBus, IMessage message) {
-		this.server.send(String.format(
-				"[{\"type\": \"log\", \"value\": \"%s\"}]",
-				((Message) message).getData().replace("\n", "\\n")));
+		this.server
+				.send(String
+						.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"log\", \"value\": \"%s\"}]}",
+								((Message) message).getData().replace("\n",
+										"\\n")));
 	}
 
 	public void close(MessageBus messageBus) {

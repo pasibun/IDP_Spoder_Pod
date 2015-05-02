@@ -26,7 +26,7 @@ public final class CLogger extends BaseComponent {
 			if ("Get".equals(m.getData())) {
 				m.getSender().tell(messageBus, getSelf(), this.log.toString());
 			} else {
-				this.log.append(String.format("From: %s, Data: %s\n",
+				this.log.append(String.format("From: %s, Data: [%s]\n",
 						m.getSender(), m.getData()));
 			}
 		}

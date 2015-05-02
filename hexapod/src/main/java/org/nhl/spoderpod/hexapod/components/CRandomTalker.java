@@ -19,7 +19,7 @@ public final class CRandomTalker extends BaseComponent {
 	@Override
 	protected boolean preReceive(MessageBus messageBus) {
 		if (Math.random() < 0.000001) {
-			new ComponentRef("Logger").tell(messageBus, getSelf(), "test -> " + Math.random());
+			new ComponentRef("Logger").tell(messageBus, getSelf(), "Time is: " + System.currentTimeMillis());
 		}
 		return false;
 	}

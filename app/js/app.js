@@ -1,6 +1,6 @@
 Config = {
-		ServerUpdateFreq: 1000
-}
+	ServerUpdateFreq : 1000
+};
 
 Updater = (function(_host, _freq) {
 	var updateFreq = _freq, data = [], running = false, doingRequest = false;
@@ -8,7 +8,7 @@ Updater = (function(_host, _freq) {
 	function doRequest() {
 		if (!doingRequest) {
 			doingRequest = true;
-			var request = new XMLHttpRequest()
+			var request = new XMLHttpRequest();
 			request.open("GET", _host + "?" + (new Date()).getTime(), true);
 			request.addEventListener("readystatechange", onReadyStateChange,
 					false);
@@ -23,7 +23,7 @@ Updater = (function(_host, _freq) {
 			} else {
 				data = [ {
 					type : "server_error",
-					value : "Disconnected"
+					value : "Offline"
 				} ];
 			}
 			doingRequest = false;
@@ -55,12 +55,12 @@ RenderPrimitives = {
 	Box : function(_dx, _dy) {
 		return function(_ctx, _width, _height) {
 			_ctx.fillRect(0, 0, _dx, _dy);
-		}
+		};
 	},
 	Text : function(_text) {
 		return function(_ctx, _width, _height) {
 			_ctx.fillText(_text, 0, 0);
-		}
+		};
 	},
 	TextBox : function(_text, _padX, _padY, _textColor, _boxColor) {
 		return function(_ctx, _width, _height) {
@@ -69,35 +69,35 @@ RenderPrimitives = {
 			_ctx.fillRect(0, 0, textLen + _padX * 2, 10 + _padY * 2);
 			_ctx.fillStyle = _textColor;
 			_ctx.fillText(_text, _padX, _padY);
-		}
+		};
 	},
 	Translate : function(_x, _y) {
 		return function(_ctx, _width, _height) {
 			_ctx.setTransform(1, 0, 0, 1, _x, _y);
-		}
+		};
 	},
 	TranslateRel : function(_x, _y) {
 		return function(_ctx, _width, _height) {
 			_ctx.setTransform(1, 0, 0, 1, _x * _width, _y * _height);
-		}
+		};
 	},
 	FillColor : function(_color) {
 		return function(_ctx, _width, _height) {
 			_ctx.fillStyle = _color;
-		}
+		};
 	},
 	SetAttr : function(_key, _val) {
 		return function(_ctx, _width, _height) {
 			_ctx[_key] = _val;
-		}
+		};
 	}
-}
+};
 
 EntityModels = {
 	log : function(_render, _data) {
-		return _render(RenderPrimitives.Translate(10, 10))
-						(RenderPrimitives.SetAttr("textBaseLine", "top"))
-						(RenderPrimitives.Text("Server Time: " + _data.value));
+		return _render(RenderPrimitives.Translate(10, 10))(
+				RenderPrimitives.SetAttr("textBaseLine", "top"))(
+				RenderPrimitives.Text("Server Time: " + _data.value));
 	},
 	server_error : function(_render, _data) {
 		return _render(RenderPrimitives.TranslateRel(0.5, 0.5))(
@@ -105,14 +105,14 @@ EntityModels = {
 				RenderPrimitives.TextBox("Server Error: " + _data.value, 10,
 						10, "#000"));
 	}
-}
+};
 
 RenderObject = (function(_ctx, _width, _height) {
 	var ctx = _ctx, width = _width, height = _height;
 	return function(_f) {
 		_f(ctx, width, height);
 		return arguments.callee;
-	}
+	};
 });
 
 Renderer = (function(_width, _height) {
@@ -120,13 +120,17 @@ Renderer = (function(_width, _height) {
 			.createElement("canvas"), ctx = canvas.getContext("2d");
 
 	(function(_width, _height) {
-		canvas.className = "screen";
-		canvas.width = _width;
-		canvas.height = _height;
+		canvas.className = "app-screen";
 		ctx.font = "14px serif";
 		ctx.textBaseline = "top";
 		ctx.save();
+		window.addEventListener("resize", onResize);
 	})(width, height);
+
+	function onResize() {
+		canvas.width = width = canvas.clientWidth;
+		canvas.height = height = canvas.clientHeight;
+	}
 
 	return {
 		render : function(_data) {
@@ -142,15 +146,16 @@ Renderer = (function(_width, _height) {
 		},
 		getCanvas : function() {
 			return canvas;
-		}
+		},
+		updateSize: onResize
 	};
 });
-
 App = (function(_host) {
 	var domElement = document.createElement("div"), updater = new Updater(
-			_host, Config.ServerUpdateFreq), renderer = new Renderer(500, 500), running = false;
+			_host, Config.ServerUpdateFreq), renderer = new Renderer(100, 100), running = false;
 
 	(function() {
+		domElement.className = "app-screen-container";
 		domElement.appendChild(renderer.getCanvas());
 	}());
 
@@ -175,7 +180,10 @@ App = (function(_host) {
 		run : function() {
 			running = true;
 			updater.run();
-			run();
+			if (domElement.parentElement !== undefined) {
+				renderer.updateSize();
+				run();
+			}
 		},
 		stop : function() {
 			updater.stop();

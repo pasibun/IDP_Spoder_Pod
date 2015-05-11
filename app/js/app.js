@@ -3,13 +3,7 @@ Config = {
 };
 
 Updater = (function(_host, _freq) {
-	var updateFreq = _freq, request = {
-		"server_status" : {
-			"code" : 1,
-			"message" : "No Data"
-		},
-		"data" : []
-	}, running = false, doingRequest = false;
+	var updateFreq = _freq, data = [], running = false, doingRequest = false;
 
 	function doRequest() {
 		if (!doingRequest) {
@@ -25,12 +19,12 @@ Updater = (function(_host, _freq) {
 	function onReadyStateChange() {
 		if (this.readyState === 4) {
 			if (this.status === 200) {
-				request = JSON.parse(this.responseText);
+				data = JSON.parse(this.responseText);
 			} else {
-				request.server_status = {
-					"code" : 2,
-					"message" : "Offline"
-				};
+				data = [ {
+					type : "server_error",
+					value : "Offline"
+				} ];
 			}
 			doingRequest = false;
 		}
@@ -45,10 +39,7 @@ Updater = (function(_host, _freq) {
 
 	return {
 		getData : function() {
-			return request.data;
-		},
-		getServerStatus : function() {
-			return request.server_status;
+			return data;
 		},
 		run : function() {
 			running = true;
@@ -75,7 +66,7 @@ RenderPrimitives = {
 		return function(_ctx, _width, _height) {
 			var textLen = _ctx.measureText(_text).width;
 			_ctx.fillStyle = _boxColor;
-			_ctx.fillRect(0, 0, textLen + _padX * 2, 15 + _padY * 2);
+			_ctx.fillRect(0, 0, textLen + _padX * 2, 10 + _padY * 2);
 			_ctx.fillStyle = _textColor;
 			_ctx.fillText(_text, _padX, _padY);
 		};
@@ -104,21 +95,12 @@ RenderPrimitives = {
 
 EntityModels = {
 	log : function(_render, _data) {
-		var logMessages = _data.value.split("\n").reverse(), 
-			retVal = _render(RenderPrimitives.Translate(0, 40))
-				(RenderPrimitives.SetAttr("textBaseLine", "top"))
-				(RenderPrimitives.FillColor("rgba(0, 0, 200, 0.3)"))
-				(RenderPrimitives.Box(500, 30 * 10 + 10))
-				(RenderPrimitives.FillColor("#000"));
-
-		for (var n = 0; n < 10 && n < logMessages.length; n++) {
-			retVal(RenderPrimitives.Translate(10, 10 * 30 - n * 30 + 30))(
-					RenderPrimitives.Text(logMessages[n]));
-		}
-		return retVal;
+		return _render(RenderPrimitives.Translate(10, 10))(
+				RenderPrimitives.SetAttr("textBaseLine", "top"))(
+				RenderPrimitives.Text("Server Time: " + _data.value));
 	},
-	server_status : function(_render, _data) {
-		return _render(RenderPrimitives.Translate(0, 0))(
+	server_error : function(_render, _data) {
+		return _render(RenderPrimitives.TranslateRel(0.5, 0.5))(
 				RenderPrimitives.FillColor("rgba(255, 0, 0, 0.3)"))(
 				RenderPrimitives.TextBox("Server Error: " + _data.value, 10,
 						10, "#000"));
@@ -139,42 +121,20 @@ Renderer = (function(_width, _height) {
 
 	(function(_width, _height) {
 		canvas.className = "app-screen";
-		setContext2dConfig();
+		ctx.font = "14px serif";
+		ctx.textBaseline = "top";
+		ctx.save();
 		window.addEventListener("resize", onResize);
 	})(width, height);
 
 	function onResize() {
 		canvas.width = width = canvas.clientWidth;
 		canvas.height = height = canvas.clientHeight;
-		setContext2dConfig();
-	}
-
-	function setContext2dConfig() {
-		ctx.font = "20px Calibri";
-		ctx.textBaseline = "top";
-		ctx.save();
-	}
-
-	function renderServerStatus() {
-
-	}
-
-	function renderEntities(_data) {
-		for (var n = 0; n < _data.length; n++) {
-			if (EntityModels[_data[n].type] !== undefined) {
-				ctx.save();
-				EntityModels[_data[n].type](RenderObject(ctx, width, height),
-						_data[n]);
-				ctx.restore();
-			}
-		}
 	}
 
 	return {
-		clear : function() {
+		render : function(_data) {
 			ctx.clearRect(0, 0, width, height);
-		},
-		renderEntities : function(_data) {
 			for (var n = 0; n < _data.length; n++) {
 				if (EntityModels[_data[n].type] !== undefined) {
 					ctx.save();
@@ -184,25 +144,12 @@ Renderer = (function(_width, _height) {
 				}
 			}
 		},
-		renderServerStatus : function(_status) {
-			ctx.save();
-			if (_status.code > 0) {
-				ctx.fillStyle = "rgba(255, 0, 0, 0.3)";
-			} else {
-				ctx.fillStyle = "rgba(0, 255, 0, 0.3)";
-			}
-			ctx.fillRect(0, 0, width, 40);
-			ctx.fillStyle = "#000";
-			ctx.fillText("Server: " + _status.message, 10, 10);
-			ctx.restore();
-		},
 		getCanvas : function() {
 			return canvas;
 		},
-		updateSize : onResize
+		updateSize: onResize
 	};
 });
-
 App = (function(_host) {
 	var domElement = document.createElement("div"), updater = new Updater(
 			_host, Config.ServerUpdateFreq), renderer = new Renderer(100, 100), running = false;
@@ -213,9 +160,7 @@ App = (function(_host) {
 	}());
 
 	function tick() {
-		renderer.clear();
-		renderer.renderEntities(updater.getData());
-		renderer.renderServerStatus(updater.getServerStatus());
+		renderer.render(updater.getData());
 	}
 
 	function run() {

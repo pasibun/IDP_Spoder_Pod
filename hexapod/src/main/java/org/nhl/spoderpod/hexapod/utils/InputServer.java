@@ -23,23 +23,9 @@ public final class InputServer implements IThreaded {
 	 */
 	public InputServer(int port) {
 		this.thread = new Thread(this);
-		this.server = CreateServerSocket(port);
+		this.server = Utils.CreateServerSocket(port);
 		this.connectedClients = new ConcurrentLinkedQueue<Socket>();
 		this.running = false;
-	}
-
-	/**
-	 * Create a ServerSocket object.
-	 * @param port
-	 * @return
-	 */
-	private ServerSocket CreateServerSocket(int port) {
-		try {
-			return new ServerSocket(port);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	/**

@@ -7,12 +7,20 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.nhl.spoderpod.hexapod.interfaces.IThreaded;
 
+/**
+ * Simple httpserver which sends the same data to all connected clients.
+ * @author achmed
+ *
+ */
 public final class InputServer implements IThreaded {
 	private final Thread thread;
 	private final ServerSocket server;
 	private final Queue<Socket> connectedClients;
 	private volatile boolean running;
 
+	/**
+	 * @param port Port to listen on.
+	 */
 	public InputServer(int port) {
 		this.thread = new Thread(this);
 		this.server = CreateServerSocket(port);
@@ -20,6 +28,11 @@ public final class InputServer implements IThreaded {
 		this.running = false;
 	}
 
+	/**
+	 * Create a ServerSocket object.
+	 * @param port
+	 * @return
+	 */
 	private ServerSocket CreateServerSocket(int port) {
 		try {
 			return new ServerSocket(port);
@@ -29,10 +42,18 @@ public final class InputServer implements IThreaded {
 		return null;
 	}
 
+	/**
+	 * Check if there are connected clients.
+	 * @return
+	 */
 	public boolean hasConnectedClients() {
 		return this.connectedClients.size() > 0;
 	}
 
+	/**
+	 * Send data to all connected clients. the data get's appended with an http-header.
+	 * @param msg
+	 */
 	public void send(String msg) {
 		String data = String.format("HTTP/1.1 200 OK\r\n"
 				+ "Content-Type: text/json\r\n"
@@ -61,6 +82,9 @@ public final class InputServer implements IThreaded {
 		close();
 	}
 
+	/**
+	 * Closes connection with all connected clients and then closes the server.
+	 */
 	private void close() {
 		while (this.connectedClients.size() > 0) {
 			try {

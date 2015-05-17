@@ -155,8 +155,17 @@ Renderer = (function(_width, _height) {
 		ctx.save();
 	}
 
-	function renderServerStatus() {
-
+	function renderServerStatus(_status) {
+		ctx.save();
+		if (_status.code > 0) {
+			ctx.fillStyle = "rgba(255, 0, 0, 0.3)";
+		} else {
+			ctx.fillStyle = "rgba(0, 255, 0, 0.3)";
+		}
+		ctx.fillRect(0, 0, width, 40);
+		ctx.fillStyle = "#000";
+		ctx.fillText("Server: " + _status.message, 10, 10);
+		ctx.restore();
 	}
 
 	function renderEntities(_data) {
@@ -171,34 +180,14 @@ Renderer = (function(_width, _height) {
 	}
 
 	return {
-		clear : function() {
-			ctx.clearRect(0, 0, width, height);
-		},
-		renderEntities : function(_data) {
-			for (var n = 0; n < _data.length; n++) {
-				if (EntityModels[_data[n].type] !== undefined) {
-					ctx.save();
-					EntityModels[_data[n].type](
-							RenderObject(ctx, width, height), _data[n]);
-					ctx.restore();
-				}
-			}
-		},
-		renderServerStatus : function(_status) {
-			ctx.save();
-			if (_status.code > 0) {
-				ctx.fillStyle = "rgba(255, 0, 0, 0.3)";
-			} else {
-				ctx.fillStyle = "rgba(0, 255, 0, 0.3)";
-			}
-			ctx.fillRect(0, 0, width, 40);
-			ctx.fillStyle = "#000";
-			ctx.fillText("Server: " + _status.message, 10, 10);
-			ctx.restore();
-		},
 		getCanvas : function() {
 			return canvas;
 		},
+		clear : function() {
+			ctx.clearRect(0, 0, width, height);
+		},
+		renderEntities : renderEntities,
+		renderServerStatus : renderServerStatus,
 		updateSize : onResize
 	};
 });

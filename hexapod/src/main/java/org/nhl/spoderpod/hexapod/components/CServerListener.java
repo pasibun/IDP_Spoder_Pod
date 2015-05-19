@@ -11,7 +11,7 @@ public final class CServerListener extends BaseComponent {
 
 	public CServerListener(String name) {
 		super(name);
-		this.server = new InputServer(8080);
+		this.server = new InputServer(4444);
 	}
 
 	public void init(MessageBus messageBus) {

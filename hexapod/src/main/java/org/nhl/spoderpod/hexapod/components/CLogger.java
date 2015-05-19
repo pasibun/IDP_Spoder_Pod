@@ -4,9 +4,16 @@ import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.interfaces.IMessage;
 
+/**
+ * Simple logger that logs data to memory. It send data to a component that does a get request.
+ * @author achmed
+ */
 public final class CLogger extends BaseComponent {
 	private final StringBuilder log;
 
+	/**
+	 * @param name Name of the component.
+	 */
 	public CLogger(String name) {
 		super(name);
 		this.log = new StringBuilder();
@@ -26,7 +33,7 @@ public final class CLogger extends BaseComponent {
 			if ("Get".equals(m.getData())) {
 				m.getSender().tell(messageBus, getSelf(), this.log.toString());
 			} else {
-				this.log.append(String.format("From: %s, Data: %s\n",
+				this.log.append(String.format("From: %s, Data: [%s]\n",
 						m.getSender(), m.getData()));
 			}
 		}

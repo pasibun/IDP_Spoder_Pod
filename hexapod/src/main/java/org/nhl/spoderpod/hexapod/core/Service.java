@@ -6,6 +6,11 @@ import java.util.List;
 import org.nhl.spoderpod.hexapod.interfaces.IComponent;
 import org.nhl.spoderpod.hexapod.interfaces.IThreaded;
 
+/**
+ * The service class is an aggregate of components. It also has the mailbox for the components and updates all the components.
+ * @author achmed
+ *
+ */
 public final class Service implements IThreaded {
 	private final ComponentRef self;
 	private final Thread thread;
@@ -13,6 +18,10 @@ public final class Service implements IThreaded {
 	private final List<IComponent> components;
 	private volatile boolean running;
 
+	/**
+	 * @param name The name of the service
+	 * @param components The components that this service should consist of.
+	 */
 	public Service(String name, IComponent[] components) {
 		this.self = new ComponentRef(name);
 		this.thread = new Thread(this);
@@ -30,6 +39,9 @@ public final class Service implements IThreaded {
 		this.running = false;
 	}
 
+	/**
+	 * Initialize the service and all of its components.
+	 */
 	private void init() {
 		for (IComponent component : this.components) {
 			this.messageBus.addComponent(component.getSelf());
@@ -37,12 +49,18 @@ public final class Service implements IThreaded {
 		}
 	}
 
+	/**
+	 * Close the service and all its components.
+	 */
 	private void close() {
 		for (IComponent component : this.components) {
 			component.close(this.messageBus);
 		}
 	}
 
+	/**
+	 * Update all components.
+	 */
 	private void tick() {
 		for (IComponent component : this.components) {
 			component.update(this.messageBus);

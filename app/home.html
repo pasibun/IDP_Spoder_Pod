@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Home - Spoder Pod Data</title>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0" /> 
+	<link rel="stylesheet" media="all" href="css/style.css" type="text/css">
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo"><a href="home.html"><img src="images/logo2.png"/></a></div>
+      <div class="options">
+      	<ul>
+      		<li>Search</li>
+      		<li>Menu</li>
+      	</ul>
+      </div>
+      <div class="clear"></div>
+	    <div class="search-box">
+	    	<form action="#">
+	    		<input type="text" placeholder="Search gallery" />
+	    		<input type="submit" value="Go" />
+	    	</form>
+	    	<div class="clear"></div>
+	    </div>
+	    <nav class="vertical menu">
+	    	<ul>
+				<li><a href="home.html">Home</a></li>
+				<li><a href="poddataview.html">Pod Data View</a></li>
+				<li><a href="about.html">About</a></li>
+        	</ul>
+	    </nav>
+    </header>
+    
+        
+    <div class="content">
+    	<article class="underline">
+		<div class="post-preview">
+			<a href="http://s3files.core77.com/blog/images/2012/11/phantom-hexapod.jpg"><img src="http://s3files.core77.com/blog/images/2012/11/phantom-hexapod.jpg" alt="Hexapod"/></a>
+		</div>
+		<div class="post-content">
+			<h2><a href="home.html">SpoderPod Homepage</a></h2>
+			<p>This WebApp is used to display the health conditions of the Hexapod</p>
+			<div class="date"><span>29-04-2015</span></div>
+		</div>
+		<div class="clear"></div>
+		</article>
+  </div>
+    <footer>
+    	<p>&copy;<a href="http://spoderpod.nl" target="_blank">Spoder Pod</a></p>
+    </footer>
+  </div>
+ 
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript">
+   window.addEventListener("load",function() {
+	  // Set a timeout...
+	  setTimeout(function(){
+	    // Hide the address bar!
+	    window.scrollTo(0, 1);
+	  }, 0);
+	});
+   $('.search-box,.menu' ).hide();   
+   $('.options li:first-child').click(function(){	
+   		$(this).toggleClass('active'); 	
+   		$('.search-box').toggle();        			
+   		$('.menu').hide();  		
+   		$('.options li:last-child').removeClass('active'); 
+   });
+   $('.options li:last-child').click(function(){
+   		$(this).toggleClass('active');      			
+   		$('.menu').toggle();  		
+   		$('.search-box').hide(); 
+   		$('.options li:first-child').removeClass('active'); 		
+   });
+   $('.content').click(function(){
+   		$('.search-box,.menu' ).hide();   
+   		$('.options li:last-child, .options li:first-child').removeClass('active');
+   });
+</script>
+</body>
+</html>

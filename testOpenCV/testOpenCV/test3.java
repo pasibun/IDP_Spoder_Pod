@@ -23,7 +23,9 @@ public class test3 {
 		Scanner input = new Scanner(System.in);
 		String color = input.nextLine();
 			
-		Mat image = Highgui.imread("camera/balloon.png");
+
+		Mat image = Highgui.imread("images/balloon.png");
+
 		Mat sat = new Mat();
 		Mat imgThresholded = new Mat();
 		
@@ -34,14 +36,14 @@ public class test3 {
 		//blue: 10 - 20  
 		//red: 114 - 124
 		if("red".equals(color))
-			Core.inRange(sat, new Scalar(114, 200, 0), new Scalar(124, 255, 255), imgThresholded);
+			Core.inRange(sat, new Scalar(114, 170, 0), new Scalar(124, 255, 255), imgThresholded);
 		else if("blue".equals(color))
 			Core.inRange(sat, new Scalar(10, 200, 0), new Scalar(20, 255, 255), imgThresholded);
 		Imgproc.morphologyEx(sat, sat, Imgproc.MORPH_OPEN, kernel);
 		Imgproc.morphologyEx(sat, sat, Imgproc.MORPH_CLOSE, kernel);		
 		
 		System.out.println("Done!");
-		Highgui.imwrite("ballooncircle" /*+  i  +*/ + ".png", imgThresholded);
+		Highgui.imwrite("images/ballooncircle" /*+  i  +*/ + ".png", imgThresholded);
 		
 	}
 		

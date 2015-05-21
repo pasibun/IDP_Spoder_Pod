@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.interfaces.IThreaded;
 
 public class CFormat implements IThreaded {
@@ -17,9 +18,19 @@ public class CFormat implements IThreaded {
 	}
 
 	public void format(String data) {
-
+		//incomming data from Logger Service
+		//example: { health[11,12,13....61,62,63], control[0],    }
+		
+		//outward message:
+		// {\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"health\"l, \"value\": \"[%s,%d]\"}]}
+		
+		String reply = String.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"health\", \"value\": \"[%s,%d]\"}]}", 
+				"hello" , 100 );
+		
+		CBuffer.queueStrListOutData(reply.replace("\n", "\\n"));
+		
 	}
-
+	
 	public void run() {
 		while (true) {
 			try {
@@ -29,7 +40,9 @@ public class CFormat implements IThreaded {
 				String x;
 
 				x = br.readLine();
-				CBuffer.queueStrListOutData(x);
+				CBuffer.queueStrListOutData(String
+						.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"log\", \"value\": \"%s\"}]}",
+								x.replace("\n", "\\n")));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

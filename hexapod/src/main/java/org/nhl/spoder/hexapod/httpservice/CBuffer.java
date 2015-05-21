@@ -25,7 +25,7 @@ public class CBuffer {
 		strListOutData.add(data);
 	}
 	
-	public static void queueOutMessage(String recipient, String data){
+	public static void queueOutMessage(Message message){
 		listOutMessages.add(null);
 	}
 	

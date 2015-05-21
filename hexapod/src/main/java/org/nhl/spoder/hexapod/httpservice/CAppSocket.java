@@ -41,8 +41,15 @@ public class CAppSocket implements IThreaded {
 		this.intPort = port;
 		this.connectedClients = new ArrayList<CAppClientThread>();
 		this.socketServer = new ServerSocket(intPort);
+		CBuffer.queueStrListOutData(String
+				.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"log\", \"value\": \"%s\"}]}",
+						"Spider online"));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.nhl.spoderpod.hexapod.interfaces.IThreaded#stop()
+	 */
 	public void stop() {
 		this.running = false;
 		for (CAppClientThread client : connectedClients) {
@@ -59,6 +66,10 @@ public class CAppSocket implements IThreaded {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	public void run() {
 		while (true) {
 			try {
@@ -73,15 +84,15 @@ public class CAppSocket implements IThreaded {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.nhl.spoderpod.hexapod.interfaces.IThreaded#start()
+	 */
 	public void start() {
 		if (!this.running) {
 			this.running = true;
 			this.thread.start();
 		}
-	}
-	
-	public void send(){
-		
 	}
 
 }

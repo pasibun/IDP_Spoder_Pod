@@ -14,9 +14,12 @@ import org.nhl.spoderpod.hexapod.interfaces.IComponent;
  */
 public class Main {
 	
+	/*
+	 * Starts the service.
+	 */
 	public static void main(String[] args) throws InterruptedException {
 		System.out.println("HTTP Service started.");
-		Refactor r = new Refactor();
-		r.run();
+		HttpService service = new HttpService();
+		service.run();
 	}
 }

@@ -51,15 +51,16 @@ public class CRouterSocket implements IThreaded{
 	//Sets up the connection to the Socket. 
 	//Does not yet call any methods that listen to incomming data. 
 	public void run() {
-		init();
+		//init();
 		while(!connected){
 			try {
+				routerSocket = new Socket(strIPAddress, intPort);
 				if(routerSocket.isConnected()){
 					System.out.println("I am connected");
 					this.connected = true;
 				}
 			} catch (Exception e) {
-				System.out.println("Nope");
+				//System.out.println("Nope");
 			} 
 		}
 		System.out.println("System up and running.");

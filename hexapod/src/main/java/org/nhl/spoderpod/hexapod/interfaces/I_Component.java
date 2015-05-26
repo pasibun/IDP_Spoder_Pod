@@ -7,7 +7,7 @@ import org.nhl.spoderpod.hexapod.core.MessageBus;
  * Interface for a component.
  * @author achmed
  */
-public interface IComponent {
+public interface I_Component {
 	
 	/**
 	 * Initializes component. Gets called on service startup.

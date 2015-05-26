@@ -1,7 +1,7 @@
 package org.nhl.spoderpod.hexapod.components;
 
 import org.nhl.spoderpod.hexapod.core.MessageBus;
-import org.nhl.spoderpod.hexapod.interfaces.IMessage;
+import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 
 public class C_SensorFormatter  extends BaseComponent {
 
@@ -27,7 +27,7 @@ public class C_SensorFormatter  extends BaseComponent {
 	}
 
 	@Override
-	protected void receiveMessage(MessageBus messageBus, IMessage message) {
+	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		// TODO Auto-generated method stub
 		
 	}

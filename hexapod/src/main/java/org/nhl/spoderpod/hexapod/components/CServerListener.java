@@ -28,14 +28,14 @@ public final class CServerListener extends BaseComponent {
 	}
 
 	@Override
-	protected boolean preReceive(MessageBus messageBus) {
+	protected boolean composeMessage(MessageBus messageBus) {
 		if (this.server.hasConnectedClients()) {
 			new ComponentRef("Logger").tell(messageBus, getSelf(), "Get");
 		}
 		return this.server.hasConnectedClients();
 	}
 
-	protected void receive(MessageBus messageBus, IMessage message) {
+	protected void receiveMessage(MessageBus messageBus, IMessage message) {
 		this.server
 				.send(String
 						.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"log\", \"value\": \"%s\"}]}",

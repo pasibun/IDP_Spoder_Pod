@@ -52,7 +52,7 @@ public class C_HTTPFormat extends BaseComponent {
 	 * This method sends the data to the C_HTTPAppSocket class. 
 	 */
 	@Override
-	protected boolean preReceive(MessageBus messageBus) {
+	protected boolean composeMessage(MessageBus messageBus) {
 		try {
 			System.out.println("Yes:");
 			String x = br.readLine();
@@ -64,7 +64,7 @@ public class C_HTTPFormat extends BaseComponent {
 	}
 
 	@Override
-	protected void receive(MessageBus messageBus, IMessage message) {
+	protected void receiveMessage(MessageBus messageBus, IMessage message) {
 		//CALL FORMAT HERE. 
 	}
 

@@ -21,13 +21,13 @@ public final class CRouterServer extends BaseComponent {
 	}
 
 	@Override
-	protected boolean preReceive(MessageBus messageBus) {
+	protected boolean composeMessage(MessageBus messageBus) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	protected void receive(MessageBus messageBus, IMessage message) {
+	protected void receiveMessage(MessageBus messageBus, IMessage message) {
 		// TODO Auto-generated method stub
 		
 	}

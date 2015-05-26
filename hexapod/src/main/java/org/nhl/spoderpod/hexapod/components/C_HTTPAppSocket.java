@@ -55,22 +55,18 @@ public class C_HTTPAppSocket extends BaseComponent {
 	 */
 	public void close(MessageBus messageBus) {
 		this.utilAppServer.stop();
-		
 	}
 	
 	/***
 	 * 
 	 */
 	@Override
-	protected boolean preReceive(MessageBus messageBus) {
-		if (this.utilAppServer.hasClients()) {
-			new ComponentRef("Logger").tell(messageBus, getSelf(), "Get");
-		}
+	protected boolean composeMessage(MessageBus messageBus) {
 		return this.utilAppServer.hasClients();
 	}
 
 	@Override
-	protected void receive(MessageBus messageBus, IMessage message) {
+	protected void receiveMessage(MessageBus messageBus, IMessage message) {
 		this.utilAppServer
 		.send(String
 				.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"log\", \"value\": \"%s\"}]}",

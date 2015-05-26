@@ -30,12 +30,12 @@ public final class CRouterClient extends BaseComponent {
 	}
 
 	@Override
-	protected boolean preReceive(MessageBus messageBus) {
+	protected boolean composeMessage(MessageBus messageBus) {
 		return true;
 	}
 
 	@Override
-	protected void receive(MessageBus messageBus, IMessage message) {
+	protected void receiveMessage(MessageBus messageBus, IMessage message) {
 		try {
 			this.routerClient.send(message);
 		} catch (Exception e) {

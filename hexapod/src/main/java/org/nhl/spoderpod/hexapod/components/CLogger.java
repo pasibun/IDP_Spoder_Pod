@@ -23,11 +23,11 @@ public final class CLogger extends BaseComponent {
 	}
 
 	@Override
-	protected boolean preReceive(MessageBus messageBus) {
+	protected boolean composeMessage(MessageBus messageBus) {
 		return true;
 	}
 
-	public void receive(MessageBus messageBus, IMessage message) {
+	public void receiveMessage(MessageBus messageBus, IMessage message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
 			if ("Get".equals(m.getData())) {

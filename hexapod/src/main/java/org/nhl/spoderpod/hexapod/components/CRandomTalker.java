@@ -25,7 +25,7 @@ public final class CRandomTalker extends BaseComponent {
 	}
 
 	@Override
-	protected boolean preReceive(MessageBus messageBus) {
+	protected boolean composeMessage(MessageBus messageBus) {
 		if (Math.random() < 0.000001) {
 			new ComponentRef("Logger").tell(messageBus, getSelf(), "Time is: " + System.currentTimeMillis());
 		}
@@ -33,6 +33,6 @@ public final class CRandomTalker extends BaseComponent {
 	}
 	
 	@Override
-	protected void receive(MessageBus messageBus, IMessage message) {
+	protected void receiveMessage(MessageBus messageBus, IMessage message) {
 	}
 }

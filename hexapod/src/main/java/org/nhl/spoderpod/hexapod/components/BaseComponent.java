@@ -20,11 +20,11 @@ public abstract class BaseComponent implements IComponent {
 	}
 
 	public final void update(MessageBus messageBus) {
-		if (!preReceive(messageBus)) {
+		if (!composeMessage(messageBus)) {
 			return;
 		}
 		while (messageBus.hasMessage(this.getSelf())) {
-			receive(messageBus, messageBus.getMessage(this.getSelf()));
+			receiveMessage(messageBus, messageBus.getMessage(this.getSelf()));
 		}
 	}
 	
@@ -33,14 +33,14 @@ public abstract class BaseComponent implements IComponent {
 	 * @param messageBus
 	 * @return If the component should go receive messages.
 	 */
-	protected abstract boolean preReceive(MessageBus messageBus);
+	protected abstract boolean composeMessage(MessageBus messageBus);
 
 	/**
 	 * Receive a message from the message bus.
 	 * @param messageBus Messagebus of the service.
 	 * @param message The current message that get received.
 	 */
-	protected abstract void receive(MessageBus messageBus, IMessage message);
+	protected abstract void receiveMessage(MessageBus messageBus, IMessage message);
 	
 	public ComponentRef getSelf() {
 		return this.self;

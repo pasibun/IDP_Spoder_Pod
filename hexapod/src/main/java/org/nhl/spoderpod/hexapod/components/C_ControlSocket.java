@@ -7,13 +7,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class ControlSocket {
+public class C_ControlSocket {
 	
 	private String ipAdress;
 	private int port;
 	private boolean isConnected = false;
 	
-	public ControlSocket(String ipAdress, int port){
+	public C_ControlSocket(String ipAdress, int port){
 		
 		this.ipAdress = "127.0.0.1";
 		this.port = 8080;

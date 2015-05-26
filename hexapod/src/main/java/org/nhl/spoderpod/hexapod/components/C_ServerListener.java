@@ -12,13 +12,13 @@ import org.nhl.spoderpod.hexapod.utils.InputServer;
  * It sends the same log data to all connected clients that are connected when the request to the logger service are done.
  * @author achmed
  */
-public final class CServerListener extends BaseComponent {
+public final class C_ServerListener extends BaseComponent {
 	private final InputServer server;
 
 	/**
 	 * @param name The component name.
 	 */
-	public CServerListener(String name) {
+	public C_ServerListener(String name) {
 		super(name);
 		this.server = new InputServer(8080);
 	}

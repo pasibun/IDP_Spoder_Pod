@@ -15,7 +15,7 @@ import org.nhl.spoderpod.hexapod.interfaces.IMessage;
  * 
  * @author achmed
  */
-public final class CLogger extends BaseComponent {
+public final class C_Logger extends BaseComponent {
 	private final StringBuilder log;
 	private File file;
 	private FileWriter fw;
@@ -25,7 +25,7 @@ public final class CLogger extends BaseComponent {
 	 * @param name
 	 *            Name of the component.
 	 */
-	public CLogger(String name) {
+	public C_Logger(String name) {
 		super(name);
 		this.log = new StringBuilder();
 	}

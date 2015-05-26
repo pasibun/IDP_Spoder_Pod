@@ -8,7 +8,7 @@ import org.nhl.spoderpod.hexapod.utils.RouterClient;
  * Component that sends messages across the routerserver
  * @author achmed
  */
-public final class CRouterClient extends BaseComponent {
+public final class C_RouterClient extends BaseComponent {
 	private final RouterClient routerClient;
 
 	/**
@@ -16,7 +16,7 @@ public final class CRouterClient extends BaseComponent {
 	 * @param host Hostname to connect to.
 	 * @param port Port number to connect on.
 	 */
-	public CRouterClient(String name, String host, int port) {
+	public C_RouterClient(String name, String host, int port) {
 		super(name);
 		this.routerClient = new RouterClient(host, port);
 	}

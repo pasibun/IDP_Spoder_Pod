@@ -31,5 +31,7 @@ public class C_SensorReader extends BaseComponent {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 
 }

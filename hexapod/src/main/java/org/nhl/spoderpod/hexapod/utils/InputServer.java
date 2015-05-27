@@ -5,14 +5,14 @@ import java.net.Socket;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.nhl.spoderpod.hexapod.interfaces.IThreaded;
+import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
 
 /**
  * Simple httpserver which sends the same data to all connected clients.
  * @author achmed
  *
  */
-public final class InputServer implements IThreaded {
+public final class InputServer implements I_Threaded {
 	private final Thread thread;
 	private final ServerSocket server;
 	private final Queue<Socket> connectedClients;

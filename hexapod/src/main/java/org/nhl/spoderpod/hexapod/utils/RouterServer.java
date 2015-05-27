@@ -4,7 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-import org.nhl.spoderpod.hexapod.interfaces.IThreaded;
+import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
 
 
 /**
@@ -12,7 +12,7 @@ import org.nhl.spoderpod.hexapod.interfaces.IThreaded;
  * @author achmed
  *
  */
-public final class RouterServer implements IThreaded {
+public final class RouterServer implements I_Threaded {
 	private final Thread thread;
 	private final ServerSocket serverSocket;
 	private final HashMap<String, Socket> connectedClients;

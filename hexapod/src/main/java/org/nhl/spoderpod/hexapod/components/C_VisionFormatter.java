@@ -2,7 +2,7 @@ package org.nhl.spoderpod.hexapod.components;
 
 import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
-import org.nhl.spoderpod.hexapod.interfaces.IMessage;
+import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 import org.nhl.spoderpod.hexapod.utils.U_VisionDetectBalloons;
 
 public class C_VisionFormatter extends BaseComponent {	
@@ -31,7 +31,7 @@ public class C_VisionFormatter extends BaseComponent {
 	}
 
 	@Override
-	protected void receiveMessage(MessageBus messageBus, IMessage message) {
+	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 	}
 
 	private String dataFormatter(double x, double y,

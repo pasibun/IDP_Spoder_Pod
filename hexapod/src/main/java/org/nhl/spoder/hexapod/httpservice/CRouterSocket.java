@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.nhl.spoderpod.hexapod.core.Message;
-import org.nhl.spoderpod.hexapod.interfaces.IThreaded;
+import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
 
 /***
  * Handles RouterService communication. 
@@ -16,7 +16,7 @@ import org.nhl.spoderpod.hexapod.interfaces.IThreaded;
  * @author Driving Ghost
  *
  */
-public class CRouterSocket implements IThreaded{
+public class CRouterSocket implements I_Threaded{
 	
 	private final String strIPAddress;
 	private final int intPort;

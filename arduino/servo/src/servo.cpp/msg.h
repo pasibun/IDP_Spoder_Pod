@@ -29,6 +29,8 @@ typedef struct packet {
 	Message messages[];
 } Packet;
 
+void DecodeData(Buffer *buf, Packet *p);
+
 void EncodeData(Buffer *buf, byte destination, Message *messages, size_t count);
 
 #endif

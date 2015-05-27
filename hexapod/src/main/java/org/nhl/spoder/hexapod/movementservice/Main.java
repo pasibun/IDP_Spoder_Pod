@@ -24,9 +24,8 @@ public class Main {
 		int x = 101;
 		int y = 45;
 		int z = 36;
+		ServoMovement s = new ServoMovement();
 		
-		System.out.println(135 + Calculations.InsideServo(x, y, z));
-		System.out.println(180 + Calculations.MiddleServo(x, y, z));
-		System.out.println(360 - Calculations.OutsideServo(x, y, z));
+		s.updateLegs(x, y, z);
 	}
 }

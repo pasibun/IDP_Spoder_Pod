@@ -8,24 +8,10 @@ public final class Calculations {
 	public final static int TIBIA = 125;
 	public final static int RIGHT_ANGLE = 90;
 
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return
-	 */
 	public static int InsideServo(int x, int y, int z) {
 		return (int) (Math.asin(z / Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2))) * RAD_TO_DEGREE);
 	}
 
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return
-	 */
 	public static int MiddleServo(int x, int y, int z) {
 		return (int) ((Math.acos((Math.pow(FEMUR, 2) + (Math.pow(Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2)) - COXA, 2)) + Math.pow(y, 2) - Math.pow(TIBIA, 2))
 				
@@ -40,15 +26,8 @@ public final class Calculations {
 				* RAD_TO_DEGREE));
 	}
 
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return
-	 */
 	public static int OutsideServo(int x, int y, int z) {
-		return (int)(Math.acos(((Math.pow(FEMUR, 2)+ Math.pow(TIBIA, 2)) - (Math.pow(Math.sqrt(Math.pow(x, 2)+ Math.pow(z, 2)) - COXA , 2) + Math.pow(y,2)))
+		return (int) (Math.acos(((Math.pow(FEMUR, 2)+ Math.pow(TIBIA, 2)) - (Math.pow(Math.sqrt(Math.pow(x, 2)+ Math.pow(z, 2)) - COXA , 2) + Math.pow(y,2)))
 				
 				/ (2*FEMUR*TIBIA))
 				

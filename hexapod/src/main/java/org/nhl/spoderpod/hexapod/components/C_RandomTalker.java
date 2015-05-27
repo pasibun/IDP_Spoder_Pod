@@ -2,7 +2,7 @@ package org.nhl.spoderpod.hexapod.components;
 
 import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
-import org.nhl.spoderpod.hexapod.interfaces.I_Message;
+import org.nhl.spoderpod.hexapod.interfaces.IMessage;
 
 /**
  * Test component that randomly sends the current time to the logger component.
@@ -33,6 +33,6 @@ public final class C_RandomTalker extends BaseComponent {
 	}
 	
 	@Override
-	protected void receiveMessage(MessageBus messageBus, I_Message message) {
+	protected void receiveMessage(MessageBus messageBus, IMessage message) {
 	}
 }

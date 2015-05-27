@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
+import org.nhl.spoderpod.hexapod.interfaces.IThreaded;
 /***
  * This class is for testing only. It represents the WebApp Client. It's purpose is to receive data from the server
  * like a little bitch.
@@ -19,7 +19,7 @@ import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
  * @author Driving Ghost
  *
  */
-public class WebAppClient implements I_Threaded {
+public class WebAppClient implements IThreaded {
 
 	
 	private final String strIPAddress;

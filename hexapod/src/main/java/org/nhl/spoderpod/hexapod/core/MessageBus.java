@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.nhl.spoderpod.hexapod.interfaces.I_Message;
+import org.nhl.spoderpod.hexapod.interfaces.IMessage;
 
 /**
  * The MessageBus is a mailbox for all messages send to all components.
@@ -13,10 +13,10 @@ import org.nhl.spoderpod.hexapod.interfaces.I_Message;
  *
  */
 public final class MessageBus {
-	private final Map<ComponentRef, Queue<I_Message>> messages;
+	private final Map<ComponentRef, Queue<IMessage>> messages;
 
 	public MessageBus() {
-		this.messages = new HashMap<ComponentRef, Queue<I_Message>>();
+		this.messages = new HashMap<ComponentRef, Queue<IMessage>>();
 	}
 
 	/**
@@ -24,7 +24,7 @@ public final class MessageBus {
 	 * @param recipient Reference to the component.
 	 */
 	public void addComponent(ComponentRef recipient) {
-		this.messages.put(recipient, new ConcurrentLinkedQueue<I_Message>());
+		this.messages.put(recipient, new ConcurrentLinkedQueue<IMessage>());
 	}
 
 	/**
@@ -32,7 +32,7 @@ public final class MessageBus {
 	 * @param message
 	 * @return
 	 */
-	public boolean send(I_Message message) {
+	public boolean send(IMessage message) {
 		if (this.messages.containsKey(message.getRecipient())) {
 			this.messages.get(message.getRecipient()).add(message);
 			return true;
@@ -45,7 +45,7 @@ public final class MessageBus {
 	 * @param recipient Reference to the owner of the mailbox.
 	 * @return
 	 */
-	public I_Message getMessage(ComponentRef recipient) {
+	public IMessage getMessage(ComponentRef recipient) {
 		return this.messages.get(recipient).poll();
 	}
 

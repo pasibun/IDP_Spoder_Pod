@@ -5,9 +5,9 @@ import java.net.Socket;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
+import org.nhl.spoderpod.hexapod.interfaces.IThreaded;
 
-public class U_HTTPAppServer implements I_Threaded {
+public class U_HTTPAppServer implements IThreaded {
 
 	private final Thread thread;
 	private final ServerSocket socketServer;

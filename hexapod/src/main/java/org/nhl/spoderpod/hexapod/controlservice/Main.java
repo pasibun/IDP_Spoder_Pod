@@ -2,7 +2,7 @@ package org.nhl.spoderpod.hexapod.controlservice;
 
 import org.nhl.spoderpod.hexapod.components.C_ControlCheck;
 import org.nhl.spoderpod.hexapod.core.Service;
-import org.nhl.spoderpod.hexapod.interfaces.I_Component;
+import org.nhl.spoderpod.hexapod.interfaces.IComponent;
 
 /***
  * Welcome to the ControlState Service service commentarty. 
@@ -24,7 +24,7 @@ import org.nhl.spoderpod.hexapod.interfaces.I_Component;
 public class Main {
 	public static void main(String[] args) throws InterruptedException {
 		System.out.println("Started service");
-		Service s = new Service("ControlService", new I_Component[] { 
+		Service s = new Service("ControlService", new IComponent[] { 
 																	new C_ControlCheck("ControlState")
 																	});
 	

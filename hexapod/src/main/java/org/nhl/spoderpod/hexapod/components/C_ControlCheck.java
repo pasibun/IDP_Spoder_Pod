@@ -3,7 +3,7 @@ package org.nhl.spoderpod.hexapod.components;
 import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
-import org.nhl.spoderpod.hexapod.interfaces.I_Message;
+import org.nhl.spoderpod.hexapod.interfaces.IMessage;
 import org.nhl.spoderpod.hexapod.utils.U_ControlState;
 
 /***
@@ -39,7 +39,7 @@ public class C_ControlCheck extends BaseComponent{
 	 * Activates wether or not component gets a message. 
 	 */
 	@Override
-	protected boolean composeMessage(MessageBus messageBus) {
+	protected boolean preReceive(MessageBus messageBus) {
 		return true;
 	}
 
@@ -48,7 +48,7 @@ public class C_ControlCheck extends BaseComponent{
 	/***
 	 * activates when shit gets a message. 
 	 */
-	protected void receiveMessage(MessageBus messageBus, I_Message message) {
+	protected void receive(MessageBus messageBus, IMessage message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
 			

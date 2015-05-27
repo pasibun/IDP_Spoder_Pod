@@ -2,14 +2,14 @@ package org.nhl.spoderpod.hexapod.components;
 
 import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
-import org.nhl.spoderpod.hexapod.interfaces.I_Component;
-import org.nhl.spoderpod.hexapod.interfaces.I_Message;
+import org.nhl.spoderpod.hexapod.interfaces.IComponent;
+import org.nhl.spoderpod.hexapod.interfaces.IMessage;
 
 /**
  * A base class for simple components. It automatically handles receiving messages and referencing.
  * @author achmed
  */
-public abstract class BaseComponent implements I_Component {
+public abstract class BaseComponent implements IComponent {
 	private final ComponentRef self;
 	
 	/**
@@ -40,7 +40,7 @@ public abstract class BaseComponent implements I_Component {
 	 * @param messageBus Messagebus of the service.
 	 * @param message The current message that get received.
 	 */
-	protected abstract void receiveMessage(MessageBus messageBus, I_Message message);
+	protected abstract void receiveMessage(MessageBus messageBus, IMessage message);
 	
 	public ComponentRef getSelf() {
 		return this.self;

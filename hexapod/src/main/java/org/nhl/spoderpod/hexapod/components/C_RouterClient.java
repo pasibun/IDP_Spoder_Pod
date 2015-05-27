@@ -1,7 +1,7 @@
 package org.nhl.spoderpod.hexapod.components;
 
 import org.nhl.spoderpod.hexapod.core.MessageBus;
-import org.nhl.spoderpod.hexapod.interfaces.I_Message;
+import org.nhl.spoderpod.hexapod.interfaces.IMessage;
 import org.nhl.spoderpod.hexapod.utils.RouterClient;
 
 /**
@@ -35,7 +35,7 @@ public final class C_RouterClient extends BaseComponent {
 	}
 
 	@Override
-	protected void receiveMessage(MessageBus messageBus, I_Message message) {
+	protected void receiveMessage(MessageBus messageBus, IMessage message) {
 		try {
 			this.routerClient.send(message);
 		} catch (Exception e) {

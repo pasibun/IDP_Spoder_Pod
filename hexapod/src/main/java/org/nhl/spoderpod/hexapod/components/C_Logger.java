@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
-import org.nhl.spoderpod.hexapod.interfaces.I_Message;
+import org.nhl.spoderpod.hexapod.interfaces.IMessage;
 
 /**
  * Simple logger that logs data to memory. It send data to a component that does
@@ -38,7 +38,7 @@ public final class C_Logger extends BaseComponent {
 		return true;
 	}
 
-	public void receiveMessage(MessageBus messageBus, I_Message message) {
+	public void receiveMessage(MessageBus messageBus, IMessage message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
 			if ("Get".equals(m.getData())) {
@@ -52,7 +52,7 @@ public final class C_Logger extends BaseComponent {
 		}
 	}
 
-	private void toFile(I_Message message) {
+	private void toFile(IMessage message) {
 		try {
 			file = new File("C:\\test.dat");
 

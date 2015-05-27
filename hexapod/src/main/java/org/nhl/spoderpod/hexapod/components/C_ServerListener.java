@@ -3,7 +3,7 @@ package org.nhl.spoderpod.hexapod.components;
 import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
-import org.nhl.spoderpod.hexapod.interfaces.I_Message;
+import org.nhl.spoderpod.hexapod.interfaces.IMessage;
 import org.nhl.spoderpod.hexapod.utils.InputServer;
 
 /**
@@ -35,7 +35,7 @@ public final class C_ServerListener extends BaseComponent {
 		return this.server.hasConnectedClients();
 	}
 
-	protected void receiveMessage(MessageBus messageBus, I_Message message) {
+	protected void receiveMessage(MessageBus messageBus, IMessage message) {
 		this.server
 				.send(String
 						.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"log\", \"value\": \"%s\"}]}",

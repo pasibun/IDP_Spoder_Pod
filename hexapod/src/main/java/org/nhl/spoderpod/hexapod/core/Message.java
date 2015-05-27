@@ -1,13 +1,13 @@
 package org.nhl.spoderpod.hexapod.core;
 
-import org.nhl.spoderpod.hexapod.interfaces.I_Message;
+import org.nhl.spoderpod.hexapod.interfaces.IMessage;
 
 /**
  * Simple IMessage implementation. This message has a String as data.
  * @author achmed
  *
  */
-public final class Message implements I_Message {
+public final class Message implements IMessage {
 	private final ComponentRef sender;
 	private final ComponentRef recipient;
 	private final String data;

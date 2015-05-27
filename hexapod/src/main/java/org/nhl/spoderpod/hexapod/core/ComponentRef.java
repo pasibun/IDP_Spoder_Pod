@@ -2,7 +2,7 @@ package org.nhl.spoderpod.hexapod.core;
 
 /**
  * Reference abstraction for components. This is so that components don't have a direct memory reference to other components.
- * @author achmed
+ * @author achmed the dead terrorist
  *
  */
 public final class ComponentRef {

@@ -1,15 +1,17 @@
 package org.nhl.spoderpod.hexapod.components;
 
+import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 
 public class C_AICalculate extends BaseComponent {
 
+	private String lastCommand; 
+	private String target; 
+
 	public C_AICalculate(String strName) {
 		super(strName);
 	}
-
-	private String lastCommand; 
 	
 	/***
 	 * Method calculates the direction the spider has to walk to when it gets a message. 
@@ -46,8 +48,8 @@ public class C_AICalculate extends BaseComponent {
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		// TODO Auto-generated method stub
-		return false;
+		new ComponentRef("Formatter").tell(messageBus, getSelf(), lastCommand);
+		return true;
 	}
 
 	@Override

@@ -3,10 +3,10 @@ package org.nhl.spoderpod.hexapod.components;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 
-public final class C_RouterServer extends BaseComponent {
+public class C_AIFormat extends BaseComponent {
 
-	public C_RouterServer(String name) {
-		super(name);
+	public C_AIFormat(String strName) {
+		super(strName);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -31,4 +31,17 @@ public final class C_RouterServer extends BaseComponent {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	private String strDataFormat(String direction){
+		
+		String returnValue = "Error in SensorFormatter class: Sensorservice. sensorName is neither 'afstand' or 'gyro'";
+		
+		returnValue = String.format("{\"AI Service\": { \"Latest Direction\": \"%s\"}" ,
+							direction );
+		
+		return returnValue;
+			
+	}	
+
 }

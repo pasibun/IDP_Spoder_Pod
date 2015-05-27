@@ -1,38 +1,37 @@
 package org.nhl.spoderpod.hexapod.components;
 
-import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 
-/**
- * Test component that randomly sends the current time to the logger component.
- * @author achmed
- *
- */
-public final class C_RandomTalker extends BaseComponent {
+public class C_SensorReader extends BaseComponent {
 
-	/**
-	 * @param name Name of the component.
-	 */
-	public C_RandomTalker(String name) {
+	public C_SensorReader(String name) {
 		super(name);
+		// TODO Auto-generated constructor stub
 	}
 
 	public void init(MessageBus messageBus) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void close(MessageBus messageBus) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		if (Math.random() < 0.000001) {
-			new ComponentRef("Logger").tell(messageBus, getSelf(), "Time is: " + System.currentTimeMillis());
-		}
+		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	@Override
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
+		// TODO Auto-generated method stub
+		
 	}
+	
+	
+
 }

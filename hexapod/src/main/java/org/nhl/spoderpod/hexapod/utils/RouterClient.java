@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import org.nhl.spoderpod.hexapod.interfaces.IMessage;
-import org.nhl.spoderpod.hexapod.interfaces.IThreaded;
+import org.nhl.spoderpod.hexapod.interfaces.I_Message;
+import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
 
 
 /**
@@ -13,7 +13,7 @@ import org.nhl.spoderpod.hexapod.interfaces.IThreaded;
  * @author achmed
  *
  */
-public final class RouterClient implements IThreaded {
+public final class RouterClient implements I_Threaded {
 	private final Thread thread;
 	private final Socket socket;
 	private final ObjectOutputStream outputStream;
@@ -41,7 +41,7 @@ public final class RouterClient implements IThreaded {
 	 * @param message
 	 * @throws IOException
 	 */
-	public void send(IMessage message) throws IOException {
+	public void send(I_Message message) throws IOException {
 		this.outputStream.writeObject(message);
 		this.outputStream.flush();
 	}

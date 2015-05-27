@@ -15,8 +15,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
-import org.nhl.spoderpod.hexapod.interfaces.IMessage;
-import org.nhl.spoderpod.hexapod.interfaces.IThreaded;
+import org.nhl.spoderpod.hexapod.interfaces.I_Message;
+import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
 import org.nhl.spoderpod.hexapod.utils.InputServer;
 import org.nhl.spoderpod.hexapod.utils.U_HTTPAppServer;
 
@@ -66,7 +66,7 @@ public class C_HTTPAppSocket extends BaseComponent {
 	}
 
 	@Override
-	protected void receiveMessage(MessageBus messageBus, IMessage message) {
+	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		this.utilAppServer
 		.send(String
 				.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"log\", \"value\": \"%s\"}]}",

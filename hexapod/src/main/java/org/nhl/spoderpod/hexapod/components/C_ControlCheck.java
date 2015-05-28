@@ -39,7 +39,7 @@ public class C_ControlCheck extends BaseComponent{
 	 * Activates wether or not component gets a message. 
 	 */
 	@Override
-	protected boolean preReceive(MessageBus messageBus) {
+	protected boolean composeMessage(MessageBus messageBus) {
 		return true;
 	}
 
@@ -48,7 +48,7 @@ public class C_ControlCheck extends BaseComponent{
 	/***
 	 * activates when shit gets a message. 
 	 */
-	protected void receive(MessageBus messageBus, IMessage message) {
+	protected void receiveMessage(MessageBus messageBus, IMessage message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
 			

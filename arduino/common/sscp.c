@@ -1,5 +1,6 @@
 /*
  * Spoderpod Serial Communication Protocol
+ * By team Spiderpod.nl
  */
 
 #include <string.h>
@@ -7,35 +8,81 @@
 #include "sscp.h"
 
 typedef struct {
-	byte checksum;
-	unsigned short length;
-} Header;
+	size_t currentElement;
+	byte *data;
+} Buffer;
+
+typedef struct SSCP_Connection {
+	FILE *fd;
+	Buffer *inBuffer;
+	Buffer *outBuffer;
+} SSCP_Connection;
 
 typedef struct {
-	Header header;
+	byte checksum;
+	byte length;
 	byte data[];
 } Packet;
 
-/* Send a message with SSCP */
-void SSCP_Send(byte *msg, size_t size, FILE *fd) {
-	Packet *packet = malloc(size + sizeof(Header));
-	packet->header.checksum = 0;
-	packet->header.length = size;
-	SSCP_EncodeCOBS(msg, (byte *)&packet, packet->header.length + sizeof(Header));
-	fwrite(&packet, 1, packet->header.length + sizeof(Header), fd);
+typedef struct {
+	byte type;
+	byte id;
+	unsigned short data;
+} Event;
+
+void writeByte(Buffer *b, byte b) {
+	b->data[b->currentElement++] = b;
 }
 
-/* Decode a SSCP packet */
-void SSCP_Receive(const byte *msg, byte  *dst, size_t size) {
-	Packet packet;
-	SSCP_DecodeCOBS(msg, (byte *)&packet, sizeof(Packet) + size);
-	memcpy(packet.data, dst, size);
+void writeShort(Buffer *b, short s) {
+	b->data[b->currentElement++] = s << 0;
+	b->data[b->currentElement++] = s << 8;
+}
+
+byte readByte(Buffer *b) {
+	if (b->currentElement >= 0) {
+		return b->data[b->currentElement--];
+	}
+	return 0;
+}
+
+short readShort(Buffer *b) {
+	short s = 0;
+	if (b->currentElement >= 0) {
+		s = b->data[b->currentElement--] << 0 | b->data[b->currentElement--] << 8;
+		return s;
+	}
+	return 0;
+}
+
+SSCP_Write(SSCP_Connection *connection, Event *ev) {
+	writeByte(connection->outBuffer, ev.type);
+	writeByte(connection->outBuffer, ev.id);
+	writeShort(connection->outBuffer, ev.data);
+}
+
+SSCP_ReadEvent(SSCP_Connection *connection, Event *ev) {
+	ev->type = readByte(connection->inBuffer);
+	ev->id = readByte(connection->inBuffer);
+	ev->data = readShort(connection->inBuffer);
+}
+
+void SSCP_Send(SSCP_Connection * connection, byte *msg, size_t size) {
+	SSCP_EncodeCOBS(msg, connection->outBuffer->data)
+}
+
+void SSCP_Receive(SSCP_Connection *connection) {
+	byte c;
+	while ((c = fgetc(connection->fd)) != '\0') {
+		(connection->inBuffer->data + connection->inBuffer->currentElement) = c;
+	}
+
 }
 
 /* Encode a packet with Consistent Overhead Byte Stuffing  */
 void SSCP_EncodeCOBS(const byte *src, byte *dst, size_t size) {
 	size_t n, lastZeroByte = size + 1;
-	for(n = size; n <= size; --n) {
+	for (n = size; n <= size; --n) {
 		if (n == 0 || src[n - 1] == '\0') {
 			dst[n] = (byte)(lastZeroByte - n);
 			lastZeroByte = n;

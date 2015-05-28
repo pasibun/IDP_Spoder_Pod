@@ -26,11 +26,12 @@ typedef struct {
 typedef struct packet {
 	byte checksum;
 	byte destination;
+	unsigned short messageCount;
 	Message messages[];
 } Packet;
 
-void DecodeData(Buffer *buf, Packet *p);
+void DecodePacket(Buffer *buf, Packet *p);
 
-void EncodeData(Buffer *buf, byte destination, Message *messages, size_t count);
+void EncodePacket(Buffer *buf, byte destination, Message *messages, size_t count);
 
 #endif

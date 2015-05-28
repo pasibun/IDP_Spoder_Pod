@@ -9,11 +9,13 @@
 
 #include "msg.h"
 
+/* Reset buffer count and size */
 void InitBuffer(Buffer *buf) {
 	buf->size = 0;
 	buf->count = 0;
 }
 
+/* Calculate checksum */
 static byte checksum(byte *data, size_t size) {
 	byte checksum = 0;
 	while (size--) {
@@ -22,22 +24,28 @@ static byte checksum(byte *data, size_t size) {
 	return checksum;
 }
 
+/* Read one byte and increment buffer count */
 static byte readByte(Buffer *buf) {
 	return buf->data[buf->count++];
 }
 
+/* Read two byte and increment buffer count */
 static short readShort(Buffer *buf) {
-	return (short) buf->data[buf->count++] << 0 | buf->data[buf->count++] << 8;
+	short s = buf->data[buf->count++] << 8;
+	s|= buf->data[buf->count++] << 0;
+	return s;
 }
 
-static void readCommand(Buffer *buf, Message *message) {
+/* Read one message and increment buffer count */
+static void readMessage(Buffer *buf, Message *message) {
 	message->type = readByte(buf);
 	message->id = readByte(buf);
 	message->data = readShort(buf);
 }
 
+/* Revert Consistent overhead byte stuffing */
 static void DecodeCOBS(Buffer *buf) {
-	size_t n, lastZeroByte = buf->size;
+	size_t n, lastZeroByte = buf->size - 1;
 	while (lastZeroByte <= buf->size) {
 		n = lastZeroByte;
 		lastZeroByte -= buf->data[lastZeroByte];
@@ -45,36 +53,45 @@ static void DecodeCOBS(Buffer *buf) {
 	}
 }
 
-void DecodeData(Buffer *buf, Packet *p) {
+/* Read the buffer into a packet */
+void DecodePacket(Buffer *buf, Packet *p) {
+	buf->count = 0;
 	DecodeCOBS(buf);
 	p->checksum = readByte(buf);
 	p->destination = readByte(buf);
+	p->messageCount = (buf->size - buf->count) / sizeof(Message);
 
 	size_t n = 0;
-	while (buf->count < buf->size) {
-		readCommand(buf, p->messages + n++);
+	for(n = 0; n < p->messageCount; ++n) {
+		readMessage(buf, p->messages + n);
 	}
 
 	InitBuffer(buf);
 }
 
+/* Write one byte and increment counter and size */
 static void writeByte(Buffer *buf, byte b) {
 	buf->data[buf->count++] = b;
+	buf->size++;
 }
 
+/* Write two byte and increment counter and size */
 static void writeShort(Buffer *buf, short s) {
-	buf->data[buf->count++] = s << 0;
-	buf->data[buf->count++] = s << 8;
+	buf->data[buf->count++] = s >> 8;
+	buf->data[buf->count++] = s >> 0;
+	buf->size += 2;
 }
 
-static void writeCommand(Buffer *buf, Message *message) {
+/* Write one Message and increment counter and size */
+static void writeMessage(Buffer *buf, Message *message) {
 	writeByte(buf, message->type);
 	writeByte(buf, message->id);
 	writeShort(buf, message->data);
 }
 
+/* Encode buffer with Consistent overhead byte stuffing */
 static void EncodeCOBS(Buffer *buf) {
-	size_t n, lastZeroByte = 0;
+	size_t n, lastZeroByte = -1;
 	for (n = 0; n <= buf->size; ++n) {
 		if (buf->data[n] == '\0' || n == buf->size) {
 			buf->data[n] = n - lastZeroByte;
@@ -84,18 +101,17 @@ static void EncodeCOBS(Buffer *buf) {
 	buf->size++;
 }
 
-void EncodeData(Buffer *buf, byte destination, Message *messages, size_t count) {
+/* Write packet into buffer */
+void EncodePacket(Buffer *buf, byte destination, Message *messages, size_t count) {
 	size_t n;
 
 	InitBuffer(buf);
 	writeByte(buf, 0); //checksum padding
-	writeByte(buf, destination); //destination
+	writeByte(buf, destination);
 
 	for (n = 0; n < count; ++n) {
-		writeCommand(buf, messages + n);
+		writeMessage(buf, messages + n);
 	}
-
-	buf->size = buf->count;
 
 	buf->data[0] = checksum(buf->data, buf->size);
 

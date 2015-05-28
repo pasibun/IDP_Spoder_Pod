@@ -3,17 +3,34 @@
 #include "common/sscp.h"
 
 typedef struct {
-	unsigned char opCode;
-	unsigned char servoID;
+	byte opCode;
+	byte servoID;
 	short degrees;
 } Message;
 
-int main () {
-	char data[] = {0x00, 0xa2, 0, 92, 73, 2};
-	char a[sizeof(data) + 1];
-	SSCP_Send(data, sizeof(data), stdout);
-	printf("\n");
-	//Message msg = {.opCode = 0, .servoID = 13, .degrees = 350};
-	//fwrite(&msg, 1, sizeof(Message), stdout);
+/* Send a message with SSCP */
+void static send(byte *msg, size_t size, FILE *fd) {
+	byte buffer[256];
+	SSCP_EncodeCOBS(msg, buffer, size);
+	fwrite(buffer, 1, size + 1, fd);
+}
+
+/* Decode a SSCP packet */
+void static receive(FILE *fd, byte *dst, size_t size) {
+	byte buffer[256];
+	byte *character = buffer + 1;
+	while((*(character++) = fgetc(fd)) != '\0') {
+	}
+	SSCP_DecodeCOBS(buffer, dst, character - buffer);
+}
+
+int main() {
+	size_t n;
+	Message data = {.opCode = 0, .servoID = 63, .degrees = 180};
+	fwrite(&data, 1, sizeof(data), stdout);
+	printf("abaa");
+	send((byte *)&data, sizeof(data), stdout);
+	//char d[] = "abcd\n";
+	//fwrite(d, 1, sizeof(d), stdout);
 	return 0;
 }

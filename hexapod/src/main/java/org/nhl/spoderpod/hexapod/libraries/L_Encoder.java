@@ -21,16 +21,16 @@ public class L_Encoder {
 	 * @return
 	 */
 	public static void checkSum(){
-		int x =0;
+		byte x = 0;
 		for(byte b : byteMsgs){
 			x += b; 
 		}
-		byteMsgs.add(0, (byte) x);
+		byteMsgs.add(0, x);
 	}
 	
 	public static void sendMsg(){
 		checkSum();
-		recentZero();
+		COBS();
 		addZero();
 		addZero();
 	}
@@ -43,12 +43,12 @@ public class L_Encoder {
 		byteMsgs.add((byte) 0);
 	}
 	
-	public static void recentZero(){	
-		int i = 0;
+	public static void COBS(){	
+		byte i = (byte) (byteMsgs.size()+1);
 		for(byte b:byteMsgs){
 			i++;
 			if(b == 0){
-				b = (byte) i;
+				b = i;
 				i = 0;
 			}
 		}

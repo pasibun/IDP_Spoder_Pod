@@ -1,13 +1,14 @@
 package org.nhl.spoderpod.hexapod.components;
 
 import org.nhl.spoderpod.hexapod.core.ComponentRef;
+import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
+import org.nhl.spoderpod.hexapod.core.ProtMessage;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 
 public class C_AICalculate extends BaseComponent {
 
 	private String lastCommand; 
-	private String target; 
 
 	public C_AICalculate(String strName) {
 		super(strName);
@@ -23,7 +24,10 @@ public class C_AICalculate extends BaseComponent {
 	 * TODO: finish, like really do anything. 
 	 */
 	private String calcDirection(double dist0, double dist1, double gyro0){
-		if((dist0 < 60 || dist1 < 60) && lastCommand.equals("left")){
+		if(dist0 < 10 || dist1 < 10){
+			return "back";
+		}
+		if((dist0 < 60 || dist1 < 60) && !lastCommand.equals("left")){
 			lastCommand = "left";
 			return "left";
 		}
@@ -36,26 +40,40 @@ public class C_AICalculate extends BaseComponent {
 		return "forward";
 	}
 	
-	public void init(MessageBus messageBus) {
+	/**
+	 * Calls everything. 
+	 * 
+	 * @return ProtocolMessage for Movement Service. 
+	 */
+	private ProtMessage fetchCommand() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int getSensorData(){
+		return 0;
+	}
+	
+	public void init(MessageBus messageBus) {
 		
 	}
 
 	public void close(MessageBus messageBus) {
-		// TODO Auto-generated method stub
-		
+			
 	}
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		new ComponentRef("Formatter").tell(messageBus, getSelf(), lastCommand);
+		new ComponentRef("RouterClient").tell(messageBus, getSelf(), fetchCommand().toString() );
 		return true;
 	}
 
 	@Override
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
-		// TODO Auto-generated method stub
-		
+		if (message instanceof Message) {
+			Message m = (Message) message;
+			
+		}
 	}
 
 }

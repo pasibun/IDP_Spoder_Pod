@@ -1,7 +1,10 @@
 package org.nhl.spoderpod.hexapod.components;
 
+import org.nhl.spoderpod.hexapod.core.ComponentRef;
+import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
+import org.nhl.spoderpod.hexapod.utils.U_ControlState;
 
 public class C_AIFormat extends BaseComponent {
 
@@ -22,17 +25,17 @@ public class C_AIFormat extends BaseComponent {
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
-		// TODO Auto-generated method stub
-		
+		if (message instanceof Message) {
+			Message m = (Message) message;
+			new ComponentRef("RouterClient").tell(messageBus, getSelf(), strDataFormat(m.getData()) );	
+		}
+		System.out.println("C_AIFormat received an item that is not a message.");
 	}
-	
-	
 	private String strDataFormat(String direction){
 		
 		String returnValue = "Error in SensorFormatter class: Sensorservice. sensorName is neither 'afstand' or 'gyro'";

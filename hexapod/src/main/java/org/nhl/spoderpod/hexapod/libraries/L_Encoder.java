@@ -1,13 +1,11 @@
 package org.nhl.spoderpod.hexapod.libraries;
 
-import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class L_Encoder {
 
 	private static List<Byte> byteMsgs = new ArrayList<Byte>();
-	private int[] indexZeroLocations;
 	
 	public static void addData(byte type, byte id, short data){
 		byteMsgs.add((byte) (type & 0xff) ); //first of messages

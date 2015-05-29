@@ -1,18 +1,26 @@
 package org.nhl.spoderpod.hexapod.components;
 
 import org.nhl.spoderpod.hexapod.core.ComponentRef;
+import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
-import org.nhl.spoderpod.hexapod.utils.U_VisionDetectBalloons;
 
-public class C_VisionFormatter extends BaseComponent {	
+public class C_VisionFormatter extends BaseComponent {
 
 	private String returnValue;
-	
+
 	public C_VisionFormatter(String name) {
 		super(name);
-		U_VisionDetectBalloons vision = new U_VisionDetectBalloons();
-		dataFormatter(vision.getX(), vision.getY(), vision.getZ(), vision.getPosition());
+	}
+
+	public void close(MessageBus messageBus) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void init(MessageBus messageBus) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -27,26 +35,21 @@ public class C_VisionFormatter extends BaseComponent {
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
+		if (message instanceof Message) {
+			Message m = (Message) message;
+			new ComponentRef("Logger").tell(messageBus, getSelf(),
+					dataFormatter(0, 0, 0, ""));
+		}
 	}
 
-	private String dataFormatter(double x, double y,
-			double z, String position) {
-		returnValue = String
-				.format("X= "+"%s" + "Y= " + "%s" + "X= " + "%s" + "Position=" + "%s", x, y, z, position);
+	private String dataFormatter(double x, double y, double z, String position) {
+		returnValue = String.format("X= " + "%s" + "Y= " + "%s" + "X= " + "%s"
+				+ "Position=" + "%s", x, y, z, position);
 		return returnValue;
 	}
-
-	public void init(MessageBus messageBus) {
-		
-	}
-
-	public void close(MessageBus messageBus) {
-		
-	}
-
 }

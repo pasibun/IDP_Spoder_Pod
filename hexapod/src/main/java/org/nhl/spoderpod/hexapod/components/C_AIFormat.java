@@ -1,21 +1,17 @@
 package org.nhl.spoderpod.hexapod.components;
 
-import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
-import org.nhl.spoderpod.hexapod.utils.U_SensorReadWrite;
 
-public class C_SensorReader extends BaseComponent {
+public class C_AIFormat extends BaseComponent {
 
-	private U_SensorReadWrite u_SensorRW;
-	
-	public C_SensorReader(String name) {
-		super(name);
+	public C_AIFormat(String strName) {
+		super(strName);
 		// TODO Auto-generated constructor stub
 	}
 
 	public void init(MessageBus messageBus) {
-		this.u_SensorRW = new U_SensorReadWrite();
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -26,8 +22,8 @@ public class C_SensorReader extends BaseComponent {
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		new ComponentRef("DataFormat").tell(messageBus, getSelf(), "afstand");
-		return true;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
@@ -37,5 +33,15 @@ public class C_SensorReader extends BaseComponent {
 	}
 	
 	
+	private String strDataFormat(String direction){
+		
+		String returnValue = "Error in SensorFormatter class: Sensorservice. sensorName is neither 'afstand' or 'gyro'";
+		
+		returnValue = String.format("{\"AI Service\": { \"Latest Direction\": \"%s\"}" ,
+							direction );
+		
+		return returnValue;
+			
+	}	
 
 }

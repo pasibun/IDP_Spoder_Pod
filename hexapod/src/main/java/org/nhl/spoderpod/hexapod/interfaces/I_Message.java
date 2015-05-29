@@ -8,7 +8,7 @@ import org.nhl.spoderpod.hexapod.core.ComponentRef;
  * Interface for Messages.
  * @author achmed
  */
-public interface IMessage extends Serializable {
+public interface I_Message extends Serializable {
 	/**
 	 * Get the sender of the message.
 	 * @return The reference to the sender

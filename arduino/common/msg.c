@@ -31,9 +31,7 @@ static byte readByte(Buffer *buf) {
 
 /* Read two byte and increment buffer count */
 static short readShort(Buffer *buf) {
-	short s = buf->data[buf->count++] << 8;
-	s|= buf->data[buf->count++] << 0;
-	return s;
+	return (byte)buf->data[buf->count++] << 8 | (byte)buf->data[buf->count++] << 0;
 }
 
 /* Read one message and increment buffer count */
@@ -51,6 +49,7 @@ static void DecodeCOBS(Buffer *buf) {
 		lastZeroByte -= buf->data[lastZeroByte];
 		buf->data[n] = '\0';
 	}
+	buf->size--;
 }
 
 /* Read the buffer into a packet */

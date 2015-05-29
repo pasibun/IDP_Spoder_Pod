@@ -4,6 +4,7 @@
  *  Created on: May 27, 2015
  *      Author: achmed
  */
+
 #ifndef MSG_H_
 #define MSG_H_
 
@@ -23,7 +24,7 @@ typedef struct {
 	short data;
 } Message;
 
-typedef struct packet {
+typedef struct {
 	byte checksum;
 	byte destination;
 	unsigned short messageCount;

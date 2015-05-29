@@ -28,6 +28,7 @@ public class L_Encoder {
 	
 	public static void sendMsg(){
 		checkSum();
+		addDestination((byte)0);
 		COBS();
 		addZero();
 		addZero();

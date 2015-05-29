@@ -1,42 +1,62 @@
 package org.nhl.spoderpod.hexapod.libraries;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import org.nhl.spoderpod.hexapod.core.Message;
 
 public class L_Decoder {
 	private byte type;
 	private byte id;
-	private short data;
+	private short[] data;
+	private byte checkSum;
+	private byte destination;
+
+	private void recieveMsg(ArrayList<Byte> msg) {
+		DecodeCOBS(msg);
+		boolean check = getCheckSum(msg);
+		if (check == true)
+			readMessage(msg);
+	}
 
 	/***
-	 * sum all bytes, overload is checksum. 
+	 * sum all bytes, overload is checksum.
+	 * 
 	 * @return
 	 */
-	public static void checkSum(ArrayList<Byte>msg){
-		int x =0;
-		for(byte b : msg){
-			x += b; 
+	private boolean getCheckSum(ArrayList<Byte> msg) {
+		byte x = 0;
+		for (byte b : msg) {
+			x += b;
 		}
-		msg.add(0, (byte) x);
+		checkSum = x;
+		if (x != msg.get(0)) {
+			return false;
+		}
+		return true;
 	}
-	
-	private static void DecodeCOBS(ArrayList<Byte>msg)
-	{
+
+	private void findDestination(ArrayList<Byte> msg) {
+		destination = msg.get(1);
+	}
+
+	private void DecodeCOBS(ArrayList<Byte> msg) {
 		int n;
 		int lastZeroByte = msg.size();
-		while (lastZeroByte <= msg.size())
-		{
+		while (lastZeroByte <= msg.size()) {
 			n = lastZeroByte;
 			lastZeroByte -= msg.get(lastZeroByte);
-			msg.set(n, (byte)0);
+			msg.set(n, (byte) 0);
 		}
 	}
-	
-	private static void readMessage(ArrayList<Byte>msg)
-	{
-		
+
+	private void readMessage(ArrayList<Byte> msg) {
+		for (int i = 2; i < msg.size(); i += 4) {
+			if (msg.size() - 2 == i) {
+				break;
+			}
+			type = msg.get(i + 1);
+			id = msg.get(i + 2);
+			data[0] = msg.get(i + 3);
+			data[1] = msg.get(i + 4);
+		}
 	}
-	
+
 }

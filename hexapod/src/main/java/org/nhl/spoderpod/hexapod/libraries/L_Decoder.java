@@ -1,15 +1,15 @@
 package org.nhl.spoderpod.hexapod.libraries;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class L_Decoder {
-	private byte type;
-	private byte id;
-	private short[] data;
-	private byte checkSum;
-	private byte destination;
+	private static byte type;
+	private static byte id;
+	private static short[] data;
+	private static byte checkSum;
+	private static byte destination;
 
-	private void recieveMsg(ArrayList<Byte> msg) {
+	public static void recieveMsg(List<Byte> msg) {
 		DecodeCOBS(msg);
 		boolean check = getCheckSum(msg);
 		if (check == true)
@@ -21,7 +21,7 @@ public class L_Decoder {
 	 * 
 	 * @return
 	 */
-	private boolean getCheckSum(ArrayList<Byte> msg) {
+	private static boolean getCheckSum(List<Byte> msg) {
 		byte x = 0;
 		for (byte b : msg) {
 			x += b;
@@ -33,11 +33,11 @@ public class L_Decoder {
 		return true;
 	}
 
-	private void findDestination(ArrayList<Byte> msg) {
+	private void findDestination(List<Byte> msg) {
 		destination = msg.get(1);
 	}
 
-	private void DecodeCOBS(ArrayList<Byte> msg) {
+	private static void DecodeCOBS(List<Byte> msg) {
 		int n;
 		int lastZeroByte = msg.size();
 		while (lastZeroByte <= msg.size()) {
@@ -47,7 +47,7 @@ public class L_Decoder {
 		}
 	}
 
-	private void readMessage(ArrayList<Byte> msg) {
+	private static void readMessage(List<Byte> msg) {
 		for (int i = 2; i < msg.size(); i += 4) {
 			if (msg.size() - 2 == i) {
 				break;

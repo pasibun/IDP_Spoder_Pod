@@ -48,7 +48,6 @@ public class C_ControlCheck extends BaseComponent{
 	/***
 	 * activates when shit gets a message. 
 	 */
-
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;

@@ -75,11 +75,7 @@ public class U_SensorReadWrite  implements I_Threaded {
 				x = (byte) i;
 				break;
 			}
-		}
-		
+		}		
 		return x;
-	}
-	
+	}	
 }
-
-

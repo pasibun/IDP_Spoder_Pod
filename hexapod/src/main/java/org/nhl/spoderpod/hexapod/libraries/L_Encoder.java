@@ -3,17 +3,16 @@ package org.nhl.spoderpod.hexapod.libraries;
 import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.List;
-
 public class L_Encoder {
 
 	private static List<Byte> byteMsgs = new ArrayList<Byte>();
-	private int[] indexZeroLocations;
 
 	public static void addData(byte type, byte id, short data) {
 		byteMsgs.add((byte) (type & 0xff)); // first of messages
 		byteMsgs.add((byte) (id & 0xff));
-		byteMsgs.add((byte) (data & 0xff));
 		byteMsgs.add((byte) ((data >> 8) & 0xff));
+		byteMsgs.add((byte) (data & 0xff));
+		
 	}
 
 	/***
@@ -52,18 +51,16 @@ public class L_Encoder {
 	}
 
 	private static void COBS() {
-		int z = 0;
-		for(int i = 0; i < byteMsgs.size(); i++){
-			z++;
-			if (byteMsgs.get(i) == 0) {
-				byteMsgs.set(i, (byte) (z & 0xff));
-				z = 0;
+		int n, lastZeroByte = -2;
+		for(n = 0; n < byteMsgs.size(); n++){
+			if(byteMsgs.get(n) == 0){
+				byteMsgs.set(n, (byte) ((n - lastZeroByte) & 0xff) );
+				lastZeroByte = n;
 			}
 		}
-		if(z == byteMsgs.size()){
-			z = 0;
-		}
-		byteMsgs.add((byte) (z & 0xff));
+		
+		byteMsgs.add((byte) ((lastZeroByte - 1) & 0xff));
+		
 	}
 
 	public static List<Byte> getMsgs() {

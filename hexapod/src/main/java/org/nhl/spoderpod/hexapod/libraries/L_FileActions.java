@@ -40,7 +40,6 @@ public class L_FileActions {
 			awesomeSauce[i] = winList.get(i);
 		}
 		return awesomeSauce;
-		
 	}
 	
 	public static void write(List<Byte> message){

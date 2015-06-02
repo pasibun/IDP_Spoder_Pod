@@ -47,11 +47,11 @@ public class L_FileActions {
 		BufferedOutputStream bs = null;
 		try {
 			//"/dev/ttyAMA0"
-		    FileOutputStream fs = new FileOutputStream(new File("test.txt"));
+		    FileOutputStream fs = new FileOutputStream(new File("/dev/ttyAMA0"));
 		    bs = new BufferedOutputStream(fs);
 		    bs.write(turnArray(message));
 		    bs.close();
-		    bs = null;
+		    fs.close();
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}

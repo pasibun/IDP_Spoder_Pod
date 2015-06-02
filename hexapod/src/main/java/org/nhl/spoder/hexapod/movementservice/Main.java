@@ -30,9 +30,7 @@ public class Main {
 			for (int n = 0; n < 6; n++) {
 				v = reader.getLeg(n + 1)[time % 41];
 				System.out.format("Time %d, ", (time % 41) + 1);
-				if (n % 2 == 0) {
-					s.updateLeg(n, v.x, v.y, v.z);
-				}
+				s.updateLeg(n, v.x, v.y, v.z);
 			}
 			s.sendPacket();
 			Thread.sleep(1000);

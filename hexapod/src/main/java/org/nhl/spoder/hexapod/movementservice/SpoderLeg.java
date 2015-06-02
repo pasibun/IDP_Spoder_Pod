@@ -38,7 +38,7 @@ public final class SpoderLeg {
 
 	public void sendPacket() {
 		for (int n = 0; n < servoArray.length; n++) {
-			L_Encoder.addData((byte) 1, (byte) (legId + n + 1),
+			L_Encoder.addData((byte) 0, (byte) (legId + n + 1),
 					(short) servoArray[n].getPosition());
 		}
 	}

@@ -1,5 +1,8 @@
 package org.nhl.spoder.hexapod.movementservice;
 
+import org.nhl.spoderpod.hexapod.libraries.L_Encoder;
+import org.nhl.spoderpod.hexapod.libraries.L_FileActions;
+
 public final class ServoMovement {
 	private final SpoderLeg[] legArray;
 	public static final int LEFT_SIDE = 1;
@@ -21,10 +24,15 @@ public final class ServoMovement {
 		return new Servo[] { new Servo(id + 1, offset1, 180), new Servo(id + 2, offset2, 180), new Servo(id + 3, offset3, 180) };
 	}
 	
-	public void updateLegs(int x, int y, int z){
+	public void updateLeg(int id, int x, int y, int z) {
+		legArray[id].updateServos(x, y, z);
+	}
+	
+	public void sendPacket() {
 		for (SpoderLeg spoderLeg : legArray) {
-			spoderLeg.updateServos(x, y, z);
-			System.out.println(spoderLeg);
+			spoderLeg.sendPacket();
 		}
+		L_Encoder.prepMsg((byte) 0);
+		L_FileActions.write(L_Encoder.getMsgs());
 	}
 }

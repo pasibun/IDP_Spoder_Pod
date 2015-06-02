@@ -50,16 +50,26 @@ public class L_Encoder {
 	}
 
 	private static void COBS() {
-		int n, lastZeroByte = -2;
-		for(n = 0; n < byteMsgs.size(); n++){
-			if(byteMsgs.get(n) == 0){
-				byteMsgs.set(n, (byte) ((n - lastZeroByte) & 0xff) );
-				lastZeroByte = n;
+		//hele list afgaan, elke index i++.
+		//als index 0 is, i erin zetten en i op 0 zetten. 
+		int x = 1;
+		for(int i = 0; i < byteMsgs.size(); i++){
+			x++;
+			if(byteMsgs.get(i) == 0){
+				byteMsgs.set(i, (byte) (x & 0xff) );
+				x = 0;
 			}
 		}
-		
-		byteMsgs.add((byte) ((lastZeroByte - 1) & 0xff));
-		
+		byteMsgs.add((byte) ((x+1) & 0xff));
+//		
+//		int n, lastZeroByte = -2;
+//		for(n = 0; n < byteMsgs.size(); n++){
+//			if(byteMsgs.get(n) == 0){
+//				byteMsgs.set(n, (byte) ((n - lastZeroByte) & 0xff) );
+//				lastZeroByte = n;
+//			}
+//		}
+//		byteMsgs.add((byte) ((lastZeroByte - 1) & 0xff));
 	}
 
 	public static List<Byte> getMsgs() {

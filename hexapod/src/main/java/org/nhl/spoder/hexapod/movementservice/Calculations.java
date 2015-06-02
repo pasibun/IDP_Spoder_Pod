@@ -1,5 +1,10 @@
 package org.nhl.spoder.hexapod.movementservice;
 
+/***
+ * 
+ * @author Fre'git gud' meine
+ *
+ */
 public final class Calculations {
 
 	public final static double RAD_TO_DEGREE = 180 / Math.PI;

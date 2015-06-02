@@ -6,6 +6,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/***
+ * Reads the CSV
+ * @author Yannick the yellow submarine
+ *
+ */
 public class CsvReader {
 	
 	String[] angles;

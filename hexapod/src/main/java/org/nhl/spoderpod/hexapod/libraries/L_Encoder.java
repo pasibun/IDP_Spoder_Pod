@@ -63,7 +63,9 @@ public class L_Encoder {
 	}
 
 	public static List<Byte> getMsgs() {
-		return byteMsgs;
+		List<Byte> returnList = byteMsgs;
+		byteMsgs.clear();
+		return returnList;
 	}
 
 }

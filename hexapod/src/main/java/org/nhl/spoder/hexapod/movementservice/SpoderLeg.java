@@ -2,16 +2,14 @@ package org.nhl.spoder.hexapod.movementservice;
 
 import java.util.Arrays;
 
-<<<<<<< HEAD
 /***
  * damn dude
  * @author achmed
  *
  */
-=======
+
 import org.nhl.spoderpod.hexapod.libraries.L_Encoder;
 
->>>>>>> 32e77e5324526fd927d332a8192328148fbf1fb1
 public final class SpoderLeg {
 	private final int legId;
 	private final Servo[] servoArray;

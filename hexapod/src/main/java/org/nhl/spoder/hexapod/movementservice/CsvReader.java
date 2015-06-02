@@ -1,10 +1,9 @@
 package org.nhl.spoder.hexapod.movementservice;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /***
  * Reads the CSV
@@ -12,60 +11,48 @@ import java.util.ArrayList;
  *
  */
 public class CsvReader {
+
+	private final Map<Integer, Vector[]> leglist;
+
+	public CsvReader() {
+		this.leglist = new HashMap<Integer, Vector[]>();
+	}
+
+	private void add(int id, int time, Vector vector) {
+		if (!leglist.containsKey(id)) {
+			leglist.put(id, new Vector[43]);
+		}
+		leglist.get(id)[time - 1] = vector;
+	}
 	
-	String[] angles;
-	
-	public int[] read() {
-		String csvFile = "C:/Users/Yannick/Documents/spidergap.csv";		
-		BufferedReader br = null;
+	public Vector[] getLeg(int id) {
+		if (leglist.containsKey(id)) {
+			return leglist.get(id);
+		}
+		return new Vector[0];
+	}
+
+	public boolean read() {
+		String csvFile = "StraightWalk.csv";
 		String line = "";
 		String csvSplitBy = ";";
 
+		String[] splittedline;
+
 		try {
-			br = new BufferedReader(new FileReader(csvFile));
-			System.out.println("x      y      z");
-			int id = 1;
+			BufferedReader br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
-				angles = line.split(csvSplitBy);
-				int i = 0;
-				
-				System.out.println(id + ": " + angles[i] + "|" + angles[i + 1] + "|"
-								 + angles[i + 2] + "|" + angles[i + 3] + "|"
-								 + angles[i + 4] + "|" + angles[i + 5] + "|"
-								 + angles[i + 6] + "|" + angles[i + 7] + "|"
-								 + angles[i + 8] + "|" + angles[i + 9] + "|"
-								 + angles[i + 10] + "|" + angles[i + 11] + "|"
-								 + angles[i + 12] + "|" + angles[i + 13] + "|"
-								 + angles[i + 14] + "|" + angles[i + 15] + "|"
-								 + angles[i + 16] + "|" + angles[i + 17] + "|"
-								 + angles[i + 18] + "|" + angles[i + 19] + "|"
-								 + angles[i + 20] + "|" + angles[i + 21] + "|"
-								 + angles[i + 22] + "|" + angles[i + 23]);
-				
-				id++;
+				splittedline = line.split(csvSplitBy);
+
+				add(Integer.parseInt(splittedline[0]), Integer.parseInt(splittedline[1]), new Vector(
+						(int) Double.parseDouble(splittedline[2]), (int) Double.parseDouble(splittedline[3]), (int) Double.parseDouble(splittedline[4])));
+
 			}
-		} catch (FileNotFoundException e) {
+			br.close();
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+			return false;
 		}
-		
-		int[] angles2 = new int[angles.length];
-		for(int i = 0; i < angles.length; i++)
-		{ 
-		
-		    angles2[i] = (int) Double.parseDouble(angles[i]);
-		}
-		
-		System.out.println("Done");
-		return angles2 ;
+		return true;
 	}
 }

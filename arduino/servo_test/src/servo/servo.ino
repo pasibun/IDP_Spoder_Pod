@@ -50,7 +50,7 @@ Packet *packet = (Packet *)malloc(3 + sizeof(Message) * 96);
 Definitions for default arduino functions
 */
 void setup() {
-  //Dynamixel.begin(1000000, 2);
+  Dynamixel.begin(1000000, 2);
   Serial.begin(9600);
   Serial1.begin(9600);
   Serial2.begin(9600);

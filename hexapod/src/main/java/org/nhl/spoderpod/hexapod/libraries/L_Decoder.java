@@ -40,7 +40,7 @@ public class L_Decoder {
 	private static void DecodeCOBS(List<Byte> msg) {
 		int n;
 		int lastZeroByte = msg.size();
-		while (lastZeroByte <= msg.size()) {
+		while (lastZeroByte < msg.size()) {
 			n = lastZeroByte;
 			lastZeroByte -= msg.get(lastZeroByte);
 			msg.set(n, (byte) 0);

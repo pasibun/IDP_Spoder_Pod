@@ -29,7 +29,7 @@ public class U_VisionDetectBalloons {
 	private double y;
 	private double z;
 	private String position;
-	
+
 	private Mat image;
 	private Mat sat;
 	private Mat imgThresholded;
@@ -92,7 +92,6 @@ public class U_VisionDetectBalloons {
 	}
 
 	private void calcArea() {
-
 		// finds contours in the binairy image
 		Imgproc.findContours(imgThresholded, contours, hierarchy,
 				Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -178,17 +177,20 @@ public class U_VisionDetectBalloons {
 			}
 		}
 	}
-	
+
 	public double getX() {
 		return x;
 	}
+
 	public double getY() {
 		return y;
 	}
+
 	public double getZ() {
 		return z;
 	}
+
 	public String getPosition() {
 		return position;
-	}	
+	}
 }

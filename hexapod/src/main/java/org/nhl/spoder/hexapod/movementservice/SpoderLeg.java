@@ -2,6 +2,12 @@ package org.nhl.spoder.hexapod.movementservice;
 
 import java.util.Arrays;
 
+/***
+ * damn dude
+ * @author achmed
+ *
+ */
+
 import org.nhl.spoderpod.hexapod.libraries.L_Encoder;
 
 public final class SpoderLeg {

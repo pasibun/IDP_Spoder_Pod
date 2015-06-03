@@ -3,7 +3,7 @@ package org.nhl.spoder.hexapod.movementservice;
 /***
  * HTTP Service verstuurt de gegevens naar de server van de webapp.
  * 
- * @author Driving Gayboy
+ * @author Fre-Meine Fuckboys
  */
 public class Main {
 

@@ -5,6 +5,11 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
+/***
+ * Reads the CSV
+ * @author Yannick the yellow submarine
+ *
+ */
 public class CsvReader {
 
 	private final Map<Integer, Vector[]> leglist;

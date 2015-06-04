@@ -3,7 +3,7 @@ package org.nhl.spoderpod.hexapod.components;
 import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
-import org.nhl.spoderpod.hexapod.core.ProtMessage;
+import org.nhl.spoderpod.hexapod.core.DataPackage;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 
 public class C_AICalculate extends BaseComponent {
@@ -38,7 +38,7 @@ public class C_AICalculate extends BaseComponent {
 	 * 
 	 * @return ProtocolMessage for Movement Service.
 	 */
-	private ProtMessage fetchCommand() {
+	private DataPackage fetchCommand() {
 		// TODO Auto-generated method stub
 		return null;
 	}

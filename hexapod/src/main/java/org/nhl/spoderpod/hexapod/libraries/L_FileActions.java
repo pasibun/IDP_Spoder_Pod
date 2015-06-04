@@ -18,7 +18,7 @@ public class L_FileActions {
 		byte[] data = null;
 		try {
 			data = Files.readAllBytes(path);
-		} catch (IOException e) {
+		} catch (IOException e) {	
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -14,7 +14,7 @@ import java.util.List;
 public class L_FileActions {
 
 	public static List<Byte> read(){
-		Path path = Paths.get("test.txt");
+		Path path = Paths.get("/dev/ttyAMA0");
 		byte[] data = null;
 		try {
 			data = Files.readAllBytes(path);
@@ -25,7 +25,6 @@ public class L_FileActions {
 		return turnList(data);
 	}
 	
-
 	private static List<Byte> turnList(byte[] data){
 		List<Byte> awesomeSauce = new ArrayList<Byte>();
 		for(int i = 0; i < data.length; i++){

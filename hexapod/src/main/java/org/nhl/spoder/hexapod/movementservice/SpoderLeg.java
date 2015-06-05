@@ -27,7 +27,7 @@ public final class SpoderLeg {
 		servoArray[2].setServo(servoArray[2].getOffset()
 				- Calculations.OutsideServo(x, y, z) * this.forceMultiplier);
 		
-		System.out.format("LegId: %d: %s\n", legId, toString());
+		//System.out.format("LegId: %d: %s\n", legId, toString());
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public final class SpoderLeg {
 
 	public void sendPacket() {
 		for (int n = 0; n < servoArray.length; n++) {
-			L_Encoder.addData((byte) 0, (byte) (legId + n + 1),
+			L_Encoder.addData((byte) 1, (byte) (legId + n + 1),
 					(short) servoArray[n].getPosition());
 		}
 	}

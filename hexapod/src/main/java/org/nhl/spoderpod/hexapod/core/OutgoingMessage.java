@@ -4,24 +4,31 @@ import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 
 /**
  * Simple IMessage implementation. This message has a String as data.
+ * 
  * @author achmed
  *
  */
-public final class Message implements I_Message {
+public final class OutgoingMessage implements I_Message {
 	private static final long serialVersionUID = 1L;
-	
+
 	private final ComponentRef sender;
 	private final ComponentRef recipient;
+	private final ComponentRef actualrecipient;
 	private final String data;
 
 	/**
-	 * @param sender Reference to the sender.
-	 * @param recipient Reference to the recipient.
-	 * @param data The message data.
+	 * @param sender
+	 *            Reference to the sender.
+	 * @param recipient
+	 *            Reference to the recipient.
+	 * @param data
+	 *            The message data.
 	 */
-	public Message(ComponentRef sender, ComponentRef recipient, String data) {
+	public OutgoingMessage(ComponentRef sender, ComponentRef recipient,
+			ComponentRef actualrecipient, String data) {
 		this.sender = sender;
 		this.recipient = recipient;
+		this.actualrecipient = actualrecipient;
 		this.data = data;
 	}
 
@@ -32,9 +39,14 @@ public final class Message implements I_Message {
 	public ComponentRef getRecipient() {
 		return this.recipient;
 	}
+	
+	public ComponentRef getActualrecipient() {
+		return actualrecipient;
+	}
 
 	/**
 	 * Get the data of the message.
+	 * 
 	 * @return The data.
 	 */
 	public String getData() {

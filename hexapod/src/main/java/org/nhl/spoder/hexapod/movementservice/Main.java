@@ -1,5 +1,8 @@
 package org.nhl.spoder.hexapod.movementservice;
 
+import java.io.IOException;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 /***
  * HTTP Service verstuurt de gegevens naar de server van de webapp.
  * 
@@ -10,6 +13,40 @@ public class Main {
 	/*
 	 * Starts the service.
 	 */
+	static class MovingThread implements Runnable {
+		private final Thread thread;
+		private final ConcurrentLinkedQueue<Byte> input;
+
+		public MovingThread() {
+			this.thread = new Thread(this);
+			this.input = new ConcurrentLinkedQueue<Byte>();
+		}
+
+		public void start() {
+			this.thread.start();
+		}
+
+		public boolean hasData() {
+			return this.input.size() > 0;
+		}
+
+		public byte pollData() {
+			return this.input.poll();
+		}
+
+		public void run() {
+			while (true) {
+				try {
+					byte b = ((byte) System.in.read());
+					if (b != 13 && b != 10) {
+						this.input.add(b);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
 	public static void main(String[] args) throws InterruptedException {
 		// Service s = new Service("MovementService", new IComponent[] { new
@@ -19,21 +56,34 @@ public class Main {
 		// Thread.sleep(10*1000);
 		// s.run();
 
-		CsvReader reader = new CsvReader();
-		reader.read();
+		CsvReader walkstate = new CsvReader();
+		walkstate.read("StraightWalk.csv");
+
+//		CsvReader crabstate = new CsvReader();
+//		crabstate.read("StraightWalk.csv");
+//
+//		CsvReader idle = new CsvReader();
+//		idle.read("StraightWalk.csv");
 
 		ServoMovement s = new ServoMovement();
+		int delay = Integer.parseInt(args[0]);
 
-		System.out.println("time id x y z");
-		for (int time = 0; time < 42; time++) {
+		MovingThread m = new MovingThread();
+		m.start();
+
+		// System.out.println("time id x y z");
+		for (int time = 0;; time++) {
 			Vector v;
+			while (m.hasData()) {
+				System.out.println(m.pollData());
+			}
 			for (int n = 0; n < 6; n++) {
-				v = reader.getLeg(n + 1)[time % 41];
-				System.out.format("Time %d, ", (time % 41) + 1);
+				v = walkstate.getLeg(n + 1)[time % 41];
+				// System.out.format("Time %d, ", (time % 41) + 1);
 				s.updateLeg(n, v.x, v.y, v.z);
 			}
-			s.sendPacket();
-			Thread.sleep(1000);
+			 s.sendPacket();
+			Thread.sleep(delay);
 		}
 
 		// s.updateLegs(angles2[1], angles2[2], angles2[3]);

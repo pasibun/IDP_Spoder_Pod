@@ -22,9 +22,9 @@ public class L_Encoder {
 	public static void checkSum() {
 		byte x = 0;
 		for (byte b : byteMsgs) {
-			x += b;
+			x += (b & 0xff);
 		}
-		byteMsgs.add(0, x);
+		byteMsgs.add(0, (byte) (x & 0xff));
 	}
 
 	/***

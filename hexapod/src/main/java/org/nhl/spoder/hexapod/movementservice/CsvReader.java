@@ -32,8 +32,7 @@ public class CsvReader {
 		return new Vector[0];
 	}
 
-	public boolean read() {
-		String csvFile = "StraightWalk.csv";
+	public boolean read(String csvFile) {
 		String line = "";
 		String csvSplitBy = ";";
 

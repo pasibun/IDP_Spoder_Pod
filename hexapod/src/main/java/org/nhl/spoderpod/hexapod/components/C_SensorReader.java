@@ -43,7 +43,7 @@ public class C_SensorReader extends BaseComponent {
 //	6; Wordt gebruikt voor buttons
 //	7; Wordt gebruikt voor touchpad
 	protected boolean composeMessage(MessageBus messageBus) {
-		String strReceiver = "Logger";
+		String strReceiver = "S_Logger";
 		int intData = 0;
 		int intId = 0;
 		L_Decoder.recieveMsg((L_FileActions.read()));
@@ -51,16 +51,19 @@ public class C_SensorReader extends BaseComponent {
 			int intType = dp.get_byteType();
 			intData = dp.get_shortData();
 			intId = dp.get_byteId();
-			switch(intType){
+			switch(intType){ //terugkrijgende string wijst naar de service. 
 				case 2: 
 					strReceiver = "S_Logger";
+					break;
 				case 3:
 				case 4:
 					strReceiver = "S_AI";
+					break;
 				case 5:
 				case 6:
 				case 7:
 					strReceiver = "S_Human";
+					break;
 			}
 		}
 		new ComponentRef(strReceiver).tell(messageBus, getSelf(), String.format("[%s %s]", intData, intId));

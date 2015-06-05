@@ -43,12 +43,11 @@ public final class C_Logger extends BaseComponent {
 			Message m = (Message) message;
 			if ("Get".equals(m.getData())) {
 				m.getSender().tell(messageBus, getSelf(), this.log.toString());
-				toFile(message);
 			} else {
 				this.log.append(String.format("From: %s, Data: [%s]\n",
 						m.getSender(), m.getData()));
-				toFile(message);
 			}
+			toFile(m);
 		}
 	}
 

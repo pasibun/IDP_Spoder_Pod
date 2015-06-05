@@ -27,7 +27,6 @@ public class C_SensorFormatter extends BaseComponent {
 	 * 
 	 */
 	protected boolean composeMessage(MessageBus messageBus) {
-		//System.out.println("Shit niggu i'm here");
 		return true;
 	}
 

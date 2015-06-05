@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /***
  * HTTP Service verstuurt de gegevens naar de server van de webapp.
  * 
- * @author Driving Gayboy
+ * @author Fre-Meine Fuckboys
  */
 public class Main {
 

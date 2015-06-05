@@ -1,11 +1,7 @@
 package org.nhl.spoderpod.hexapod.utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
-
-import javax.swing.text.html.HTMLDocument.Iterator;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -29,7 +25,7 @@ public class U_VisionDetectBalloons {
 	private double y;
 	private double z;
 	private String position;
-	
+
 	private Mat image;
 	private Mat sat;
 	private Mat imgThresholded;
@@ -41,8 +37,10 @@ public class U_VisionDetectBalloons {
 	// list of contours
 	private List<MatOfPoint> contours;
 	private Mat hierarchy;
+	private String color;
+	private String location;
 
-	public U_VisionDetectBalloons() {
+	public U_VisionDetectBalloons(String color) {
 		image = new Mat();
 		sat = new Mat();
 		imgThresholded = new Mat();
@@ -50,15 +48,12 @@ public class U_VisionDetectBalloons {
 		kernel = new Mat();
 		hierarchy = new Mat();
 		contours = new ArrayList<MatOfPoint>();
+		this.color = color;
 		detectBalloon();
 	}
 
 	private void detectBalloon() {
-		System.out.println("What color do you want to search?");
-		Scanner input = new Scanner(System.in);
-		String color = input.nextLine();
-
-		image = Highgui.imread("balooo.png");
+		image = Highgui.imread(location);
 
 		// returns structuring element of the specified shape and size for
 		// morphological operations
@@ -79,20 +74,17 @@ public class U_VisionDetectBalloons {
 
 		else {
 			System.out.println("Wrong input! Pick valid color: red / blue");
-			detectBalloon();
 			return;
 		}
 
 		// fills small holes in the thresholded image
 		Imgproc.dilate(imgThresholded, imgThresholded, kernel);
-		System.out.println("Done!");
 		// print binairy image
 		Highgui.imwrite("ballooncircle.png", imgThresholded);
 		calcArea();
 	}
 
 	private void calcArea() {
-
 		// finds contours in the binairy image
 		Imgproc.findContours(imgThresholded, contours, hierarchy,
 				Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -178,17 +170,20 @@ public class U_VisionDetectBalloons {
 			}
 		}
 	}
-	
+
 	public double getX() {
 		return x;
 	}
+
 	public double getY() {
 		return y;
 	}
+
 	public double getZ() {
 		return z;
 	}
+
 	public String getPosition() {
 		return position;
-	}	
+	}
 }

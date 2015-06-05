@@ -30,8 +30,6 @@ public class C_AICalculate extends BaseComponent {
 				return "forward";
 		case "vision":
 			return message.getData();
-		case "":
-			break;
 		}
 		return "Error";
 	}

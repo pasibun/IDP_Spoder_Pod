@@ -4,6 +4,7 @@ import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 
 /**
  * Simple IMessage implementation. This message has a String as data.
+ * 
  * @author achmed
  *
  */
@@ -13,9 +14,12 @@ public final class Message implements I_Message {
 	private final String data;
 
 	/**
-	 * @param sender Reference to the sender.
-	 * @param recipient Reference to the recipient.
-	 * @param data The message data.
+	 * @param sender
+	 *            Reference to the sender.
+	 * @param recipient
+	 *            Reference to the recipient.
+	 * @param data
+	 *            The message data.
 	 */
 	public Message(ComponentRef sender, ComponentRef recipient, String data) {
 		this.sender = sender;
@@ -31,10 +35,6 @@ public final class Message implements I_Message {
 		return this.recipient;
 	}
 
-	/**
-	 * Get the data of the message.
-	 * @return The data.
-	 */
 	public String getData() {
 		return this.data;
 	}

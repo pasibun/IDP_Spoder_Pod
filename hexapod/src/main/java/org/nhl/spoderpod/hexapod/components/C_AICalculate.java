@@ -1,9 +1,9 @@
 package org.nhl.spoderpod.hexapod.components;
 
 import org.nhl.spoderpod.hexapod.core.ComponentRef;
+import org.nhl.spoderpod.hexapod.core.DataPackage;
 import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
-import org.nhl.spoderpod.hexapod.core.DataPackage;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 
 public class C_AICalculate extends BaseComponent {
@@ -18,19 +18,22 @@ public class C_AICalculate extends BaseComponent {
 	 * Method calculates the direction the spider has to walk to when it gets a
 	 * message.
 	 * 
-	 * @param dist
-	 * @param position
+	 * @param message
 	 * @return string based answer of the direction the spider has to walk to.
 	 */
-	private String calcDirectionSensor(double dist, String position) {
-		if (position.isEmpty()) {
-			if (dist <= 4) {
-				return "Stop";
+	private String calcDirection(Message message) {
+		switch (message.getSender().toString()) {
+		case "afstand":
+			if (3 >= Integer.parseInt(message.getData())) {
+				return "Backward";
 			} else
 				return "forward";
-
-		} else
-			return position;
+		case "vision":
+			return message.getData();
+		case "":
+			break;
+		}
+		return "Error";
 	}
 
 	/**
@@ -66,8 +69,13 @@ public class C_AICalculate extends BaseComponent {
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
-
+			calcDirection(m);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return super.toString();
 	}
 
 }

@@ -26,6 +26,10 @@ public final class ComponentRef {
 		return messageBus.send(new Message(sender, this, text));
 	}
 	
+	public boolean tell(MessageBus messageBus, ComponentRef sender, ComponentRef actualRecipient, String text) {
+		return messageBus.send(new OutgoingMessage(sender, actualRecipient, this, text));
+	}
+	
 	/**
 	 * Get the component name.
 	 * @return

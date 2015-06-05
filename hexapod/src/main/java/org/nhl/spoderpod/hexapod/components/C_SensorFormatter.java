@@ -37,7 +37,7 @@ public class C_SensorFormatter extends BaseComponent {
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
-			new ComponentRef("Logger").tell(messageBus, getSelf(), strDataFormat(m.getData(), 0, 0));	
+			new ComponentRef("Logger").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), strDataFormat(m.getData(), 0, 0));	
 			
 		}
 	}

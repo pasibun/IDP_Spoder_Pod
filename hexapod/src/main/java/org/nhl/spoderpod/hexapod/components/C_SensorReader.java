@@ -66,7 +66,7 @@ public class C_SensorReader extends BaseComponent {
 					break;
 			}
 		}
-		new ComponentRef(strReceiver).tell(messageBus, getSelf(), String.format("[%s %s]", intData, intId));
+		new ComponentRef("RouterClient").tell(messageBus, getSelf(), String.format("%s [%s %s]", strReceiver, intData, intId));
 		return true;
 	}
 

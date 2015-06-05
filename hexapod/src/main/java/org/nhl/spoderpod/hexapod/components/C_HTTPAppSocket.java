@@ -25,7 +25,7 @@ import org.nhl.spoderpod.hexapod.utils.U_HTTPAppServer;
  * CFormat class to every client connected to the server. The clients are in a
  * static list in CAppListner CAppListner also takes care of incomming clients.
  * 
- * @author Driving Ghost
+ * @author Driving Gayhoofd
  *
  */
 public class C_HTTPAppSocket extends BaseComponent {

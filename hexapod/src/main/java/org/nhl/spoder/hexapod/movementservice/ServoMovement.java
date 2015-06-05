@@ -32,11 +32,10 @@ public final class ServoMovement {
 
 	public void sendPacket() {
 		L_Encoder.reset();
-		for (int n = 0; n < legArray.length; n += 3) {
+		for (int n = 0; n < legArray.length; n++) {
 			legArray[n].sendPacket();
 		}
 		L_Encoder.prepMsg((byte) 0);
-		//L_FileActions.write(L_Encoder.getMsgs());
-		System.out.println(L_Encoder.getMsgs());
+		L_FileActions.write(L_Encoder.getMsgs());
 	}
 }

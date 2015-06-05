@@ -1,11 +1,13 @@
 package org.nhl.spoderpod.hexapod.core;
 
+import java.io.Serializable;
+
 /**
  * Reference abstraction for components. This is so that components don't have a direct memory reference to other components.
  * @author achmed
  *
  */
-public final class ComponentRef {
+public final class ComponentRef implements Serializable {
 	private final String location;
 	
 	/**

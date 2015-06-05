@@ -24,7 +24,7 @@ public class L_Encoder {
 		for (byte b : byteMsgs) {
 			x += b;
 		}
-		byteMsgs.add(0, x);
+		byteMsgs.add(0, (byte) (x & 0xff));
 	}
 
 	/***

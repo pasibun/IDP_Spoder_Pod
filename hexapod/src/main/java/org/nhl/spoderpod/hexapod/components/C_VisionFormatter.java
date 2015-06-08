@@ -14,13 +14,11 @@ public class C_VisionFormatter extends BaseComponent {
 	}
 
 	public void close(MessageBus messageBus) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	public void init(MessageBus messageBus) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -42,8 +40,9 @@ public class C_VisionFormatter extends BaseComponent {
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
-			new ComponentRef("Logger").tell(messageBus, getSelf(),
-					dataFormatter(0, 0, 0, ""));
+			String value = dataFormatter(0,0,0," ");
+			new ComponentRef("Logger").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), value);	
+			new ComponentRef("Calculate").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), value);	
 		}
 	}
 

@@ -15,24 +15,18 @@ public final class C_RouterServer extends BaseComponent {
 
 	public void init(MessageBus messageBus) {
 		this.server.start();
-		
-		
 	}
 
 	public void close(MessageBus messageBus) {
 		this.server.stop();
-		
 	}
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		
 		return false;
 	}
 
 	@Override
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
-		// TODO Auto-generated method stub
-		
 	}
 }

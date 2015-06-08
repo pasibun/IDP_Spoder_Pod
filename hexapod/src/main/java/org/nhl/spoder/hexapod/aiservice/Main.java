@@ -11,6 +11,7 @@ import org.nhl.spoderpod.hexapod.interfaces.I_Component;
  * Deze service verzorgt de beslissingen die gemaakt worden door de spin zelf tijdens autonome taken.
  * 
  * @author Driving Ghost
+ *	TODO calculate moet nog af worden gemaakt om een gezonde gebalanceerde afweging te maken. 
  *
  */
 public class Main {

@@ -10,16 +10,12 @@ import org.nhl.spoderpod.hexapod.utils.U_SensorReadWrite;
 
 public class C_SensorReader extends BaseComponent {
 
-	private U_SensorReadWrite u_SensorRW;
-
 	public C_SensorReader(String name) {
 		super(name);
 		// TODO Auto-generated constructor stub
 	}
 
 	public void init(MessageBus messageBus) {
-		this.u_SensorRW = new U_SensorReadWrite();
-
 	}
 
 	public void close(MessageBus messageBus) {

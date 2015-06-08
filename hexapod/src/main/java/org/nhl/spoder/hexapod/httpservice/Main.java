@@ -18,10 +18,8 @@ public class Main {
 	 */
 	public static void main(String[] args) throws InterruptedException {
 		Service s = new Service("HttpService", new I_Component[] { 	new C_HTTPAppSocket("AppSocket", 8080),
-																	new C_HTTPFormat("Formatter"),
 																	new C_RouterClient("RouterClient", "127.0.0.1", 1234)});
 		s.start();
-		Thread.sleep(10*1000);
-		s.run();
+		
 	}
 }

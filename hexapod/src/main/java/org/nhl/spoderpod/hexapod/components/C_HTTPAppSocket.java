@@ -25,7 +25,7 @@ import org.nhl.spoderpod.hexapod.utils.U_HTTPAppServer;
  * CFormat class to every client connected to the server. The clients are in a
  * static list in CAppListner CAppListner also takes care of incomming clients.
  * 
- * @author Driving Gayhoofd
+ * @author Driving Ghost
  *
  */
 public class C_HTTPAppSocket extends BaseComponent {
@@ -62,19 +62,18 @@ public class C_HTTPAppSocket extends BaseComponent {
 	 */
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		//ComponentRef(Extern), componentRef(Intern)
-		new ComponentRef("Formatter").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), "Hoi vanaf HTTPAppSocket!");	
-		
 		return this.utilAppServer.hasClients();
 	}
 
 	@Override
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
+		while(this.utilAppServer.hasClients()) {
 		this.utilAppServer
 		.send(String
 				.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"log\", \"value\": \"%s\"}]}",
 						((Message) message).getData().replace("\n",
 								"\\n")));
+		}
 	}
 	
 }

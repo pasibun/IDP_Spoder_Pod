@@ -17,7 +17,6 @@ public class C_AICalculate extends BaseComponent {
 	/**
 	 * Method calculates the direction the spider has to walk to when it gets a
 	 * message.
-	 * 
 	 * @param message
 	 * @return string based answer of the direction the spider has to walk to.
 	 */
@@ -58,8 +57,9 @@ public class C_AICalculate extends BaseComponent {
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		new ComponentRef("RouterClient").tell(messageBus, getSelf(),
-				fetchCommand().toString());
+		//update this to send it to Movement Service command and control. 
+		//new ComponentRef("AppSocket").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), ));	
+		new ComponentRef("Formatter").tell(messageBus, getSelf(), lastCommand);	
 		return true;
 	}
 

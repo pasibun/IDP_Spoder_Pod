@@ -12,25 +12,18 @@ public class C_AIFormat extends BaseComponent {
 
 	public C_AIFormat(String strName) {
 		super(strName);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void init(MessageBus messageBus) {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void close(MessageBus messageBus) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        
-		new ComponentRef("AppSocket").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), sdf.format(cal.getTime()));	
 		return true;
 	}
 
@@ -38,9 +31,7 @@ public class C_AIFormat extends BaseComponent {
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
-			System.out.println(m);
-			// new ComponentRef("RouterClient").tell(messageBus, getSelf(),
-			// strDataFormat(m.getData()) );
+			new ComponentRef("Logger").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), strDataFormat(m.getData()));	
 		}
 	}
 

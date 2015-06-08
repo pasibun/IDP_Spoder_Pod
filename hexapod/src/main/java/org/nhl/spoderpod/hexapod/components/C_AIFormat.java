@@ -15,12 +15,12 @@ public class C_AIFormat extends BaseComponent {
 
 	public void init(MessageBus messageBus) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void close(MessageBus messageBus) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -32,19 +32,21 @@ public class C_AIFormat extends BaseComponent {
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
-			new ComponentRef("RouterClient").tell(messageBus, getSelf(), strDataFormat(m.getData()) );	
+			System.out.println(m.getData());
+			// new ComponentRef("RouterClient").tell(messageBus, getSelf(),
+			// strDataFormat(m.getData()) );
 		}
-		System.out.println("C_AIFormat received an item that is not a message.");
 	}
-	private String strDataFormat(String direction){
-		
+
+	private String strDataFormat(String direction) {
+
 		String returnValue = "Error in SensorFormatter class: Sensorservice. sensorName is neither 'afstand' or 'gyro'";
-		
-		returnValue = String.format("{\"AI Service\": { \"Latest Direction\": \"%s\"}" ,
-							direction );
-		
+
+		returnValue = String.format(
+				"{\"AI Service\": { \"Latest Direction\": \"%s\"}", direction);
+
 		return returnValue;
-			
-	}	
+
+	}
 
 }

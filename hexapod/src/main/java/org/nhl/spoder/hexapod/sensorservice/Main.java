@@ -14,7 +14,7 @@ public class Main {
 		Service s = new Service("SensorService", new I_Component[] {
 				new C_SensorReader("Reader"),
 				new C_SensorFormatter("DataFormat"),
-				new C_RouterClient("RouterClient", "127.0.0.1", 8080) });
+				new C_RouterClient("RouterClient", "127.0.0.1", 1234) });
 		s.start();
 	}
 }

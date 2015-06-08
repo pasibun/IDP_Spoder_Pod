@@ -3,6 +3,10 @@ package org.nhl.spoder.hexapod.movementservice;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.nhl.spoderpod.hexapod.libraries.L_Vector;
+import org.nhl.spoderpod.hexapod.utils.U_MovementCsvReader;
+import org.nhl.spoderpod.hexapod.utils.U_MovementServoMovement;
+
 /***
  * HTTP Service verstuurt de gegevens naar de server van de webapp.
  * 
@@ -56,7 +60,7 @@ public class Main {
 		// Thread.sleep(10*1000);
 		// s.run();
 
-		CsvReader walkstate = new CsvReader();
+		U_MovementCsvReader walkstate = new U_MovementCsvReader();
 		walkstate.read("StraightWalk.csv");
 
 //		CsvReader crabstate = new CsvReader();
@@ -65,7 +69,7 @@ public class Main {
 //		CsvReader idle = new CsvReader();
 //		idle.read("StraightWalk.csv");
 
-		ServoMovement s = new ServoMovement();
+		U_MovementServoMovement s = new U_MovementServoMovement();
 		int delay = Integer.parseInt(args[0]);
 
 		MovingThread m = new MovingThread();
@@ -73,7 +77,7 @@ public class Main {
 
 		// System.out.println("time id x y z");
 		for (int time = 0;; time++) {
-			Vector v;
+			L_Vector v;
 			while (m.hasData()) {
 				System.out.println(m.pollData());
 			}

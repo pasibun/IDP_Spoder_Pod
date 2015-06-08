@@ -16,13 +16,13 @@ import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
  * @author achmed
  *
  */
-public final class RouterClient implements I_Threaded {
+public final class U_RouterClient implements I_Threaded {
 	private final Thread thread;
 	private final Socket socket;
 	private final ObjectOutputStream outputStream;
 	private final Queue<I_Message> receivedMessages;
 
-	public RouterClient(String host, int port) {
+	public U_RouterClient(String host, int port) {
 		this.thread = new Thread(this);
 		this.socket = Utils.CreateSocket(host, port);
 		this.outputStream = Utils.CreateObjectOutputStream(socket);

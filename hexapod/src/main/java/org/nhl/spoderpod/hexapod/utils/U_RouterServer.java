@@ -18,16 +18,16 @@ import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
  * @author achmed
  *
  */
-public final class RouterServer implements I_Threaded {
+public final class U_RouterServer implements I_Threaded {
 	private final Thread thread;
 	private final ServerSocket serverSocket;
-	private final List<MessageThread> connectedClients;
+	private final List<U_MessageThread> connectedClients;
 
-	public RouterServer(int port) {
+	public U_RouterServer(int port) {
 		this.thread = new Thread(this);
 		this.serverSocket = Utils.CreateServerSocket(port);
 		this.connectedClients = Collections
-				.synchronizedList(new ArrayList<MessageThread>());
+				.synchronizedList(new ArrayList<U_MessageThread>());
 
 	}
 
@@ -53,7 +53,7 @@ public final class RouterServer implements I_Threaded {
 	 * @param client
 	 */
 	private void handleNewConnection(Socket client) {
-		MessageThread m = new MessageThread(this, client);
+		U_MessageThread m = new U_MessageThread(this, client);
 		this.connectedClients.add(m);
 		m.start();
 	}
@@ -66,8 +66,8 @@ public final class RouterServer implements I_Threaded {
 		this.thread.interrupt();
 	}
 
-	public void sendObject(MessageThread sender, Object object) {
-		for (MessageThread m : connectedClients) {
+	public void sendObject(U_MessageThread sender, Object object) {
+		for (U_MessageThread m : connectedClients) {
 			if (m != sender) {
 				try {
 					m.sendObject(object);

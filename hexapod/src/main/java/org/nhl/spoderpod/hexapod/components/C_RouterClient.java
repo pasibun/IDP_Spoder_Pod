@@ -4,7 +4,7 @@ import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.core.OutgoingMessage;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
-import org.nhl.spoderpod.hexapod.utils.RouterClient;
+import org.nhl.spoderpod.hexapod.utils.U_RouterClient;
 
 /**
  * Component that sends messages across the routerserver
@@ -12,7 +12,7 @@ import org.nhl.spoderpod.hexapod.utils.RouterClient;
  * @author achmed
  */
 public final class C_RouterClient extends BaseComponent {
-	private final RouterClient routerClient;
+	private final U_RouterClient routerClient;
 
 	/**
 	 * @param name
@@ -24,7 +24,7 @@ public final class C_RouterClient extends BaseComponent {
 	 */
 	public C_RouterClient(String name, String host, int port) {
 		super(name);
-		this.routerClient = new RouterClient(host, port);
+		this.routerClient = new U_RouterClient(host, port);
 	}
 
 	public void init(MessageBus messageBus) {

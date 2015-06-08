@@ -11,14 +11,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
 
-public class MessageThread implements I_Threaded {
+public class U_MessageThread implements I_Threaded {
 	private final Thread thread;
 	private final Socket socket;
 	private final ObjectOutputStream out;
-	private final RouterServer server;
+	private final U_RouterServer server;
 	private volatile boolean running;
 
-	public MessageThread(RouterServer server, Socket socket) {
+	public U_MessageThread(U_RouterServer server, Socket socket) {
 		this.thread = new Thread(this);
 		this.server = server;
 		this.socket = socket;

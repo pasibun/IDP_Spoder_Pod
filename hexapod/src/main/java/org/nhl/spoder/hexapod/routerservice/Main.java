@@ -5,7 +5,7 @@ import org.nhl.spoderpod.hexapod.components.C_HTTPFormat;
 import org.nhl.spoderpod.hexapod.components.C_RouterServer;
 import org.nhl.spoderpod.hexapod.core.Service;
 import org.nhl.spoderpod.hexapod.interfaces.I_Component;
-import org.nhl.spoderpod.hexapod.utils.RouterServer;
+import org.nhl.spoderpod.hexapod.utils.U_RouterServer;
 
 public class Main {
 

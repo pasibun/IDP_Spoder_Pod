@@ -1,11 +1,11 @@
-package org.nhl.spoder.hexapod.movementservice;
+package org.nhl.spoderpod.hexapod.libraries;
 
 /***
  * 
  * @author Fre'git gud' meine
  *
  */
-public final class Calculations {
+public final class L_Calculations {
 
 	public final static double RAD_TO_DEGREE = 180 / Math.PI;
 	public final static int COXA = 36;

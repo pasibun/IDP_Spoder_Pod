@@ -4,7 +4,7 @@ import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
-import org.nhl.spoderpod.hexapod.utils.InputServer;
+import org.nhl.spoderpod.hexapod.utils.U_InputServer;
 
 /**
  * Example server which sends log data to all connected clients.
@@ -13,14 +13,14 @@ import org.nhl.spoderpod.hexapod.utils.InputServer;
  * @author achmed
  */
 public final class C_ServerListener extends BaseComponent {
-	private final InputServer server;
+	private final U_InputServer server;
 
 	/**
 	 * @param name The component name.
 	 */
 	public C_ServerListener(String name) {
 		super(name);
-		this.server = new InputServer(8080);
+		this.server = new U_InputServer(8080);
 	}
 
 	public void init(MessageBus messageBus) {

@@ -1,4 +1,4 @@
-package org.nhl.spoderpod.hexapod;
+package org.nhl.spoderpod.hexapod.vision;
 
 import org.nhl.spoderpod.hexapod.components.C_Logger;
 import org.nhl.spoderpod.hexapod.components.C_RandomTalker;

@@ -48,12 +48,14 @@ public class U_HTTPAppServer implements I_Threaded {
 	 * @param msg string message formatted into JSON. 
 	 */
 	public void send(String strMessage) {
-		
 		while (hasClients()) {
 			try {
+				System.out.println("Trying to send.");
 				Socket client = this.queueSocketClient.poll();
 				client.getOutputStream().write(addHeader(strMessage).getBytes());
+				client.getOutputStream().flush();
 				client.close();
+				System.out.println(queueSocketClient.size());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

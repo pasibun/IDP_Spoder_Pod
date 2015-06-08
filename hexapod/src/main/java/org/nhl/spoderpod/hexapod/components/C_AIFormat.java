@@ -1,10 +1,12 @@
 package org.nhl.spoderpod.hexapod.components;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
-import org.nhl.spoderpod.hexapod.utils.U_ControlState;
 
 public class C_AIFormat extends BaseComponent {
 
@@ -25,6 +27,10 @@ public class C_AIFormat extends BaseComponent {
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
+		Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        
+		new ComponentRef("AppSocket").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), sdf.format(cal.getTime()));	
 		return true;
 	}
 
@@ -32,7 +38,7 @@ public class C_AIFormat extends BaseComponent {
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
-			System.out.println(m.getData());
+			System.out.println(m);
 			// new ComponentRef("RouterClient").tell(messageBus, getSelf(),
 			// strDataFormat(m.getData()) );
 		}

@@ -1,11 +1,11 @@
-package org.nhl.spoder.hexapod.movementservice;
+package org.nhl.spoderpod.hexapod.utils;
 
-public class Servo {
+public class U_MovementServo {
 	private final int servoId;
 	private final int offset;
 	private int position;
 	
-	public Servo(int servoId, int offset, int position){
+	public U_MovementServo(int servoId, int offset, int position){
 		this.servoId = servoId;
 		this.offset = offset;
 		this.position = position;

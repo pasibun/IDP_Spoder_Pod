@@ -17,7 +17,7 @@ import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
-import org.nhl.spoderpod.hexapod.utils.InputServer;
+import org.nhl.spoderpod.hexapod.utils.U_InputServer;
 import org.nhl.spoderpod.hexapod.utils.U_HTTPAppServer;
 
 /***

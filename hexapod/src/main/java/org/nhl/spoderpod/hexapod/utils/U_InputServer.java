@@ -12,7 +12,7 @@ import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
  * @author achmed
  *
  */
-public final class InputServer implements I_Threaded {
+public final class U_InputServer implements I_Threaded {
 	private final Thread thread;
 	private final ServerSocket server;
 	private final Queue<Socket> connectedClients;
@@ -21,7 +21,7 @@ public final class InputServer implements I_Threaded {
 	/**
 	 * @param port Port to listen on.
 	 */
-	public InputServer(int port) {
+	public U_InputServer(int port) {
 		this.thread = new Thread(this);
 		this.server = Utils.CreateServerSocket(port);
 		this.connectedClients = new ConcurrentLinkedQueue<Socket>();

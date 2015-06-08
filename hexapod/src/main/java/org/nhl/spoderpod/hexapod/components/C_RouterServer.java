@@ -2,15 +2,15 @@ package org.nhl.spoderpod.hexapod.components;
 
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
-import org.nhl.spoderpod.hexapod.utils.RouterServer;
+import org.nhl.spoderpod.hexapod.utils.U_RouterServer;
 
 public final class C_RouterServer extends BaseComponent {
 
-	private final RouterServer server;
+	private final U_RouterServer server;
 	
 	public C_RouterServer(String name) {
 		super(name);
-		server = new RouterServer(1234);
+		server = new U_RouterServer(1234);
 	}
 
 	public void init(MessageBus messageBus) {

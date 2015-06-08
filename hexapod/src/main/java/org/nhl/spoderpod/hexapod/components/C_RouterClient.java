@@ -47,7 +47,9 @@ public final class C_RouterClient extends BaseComponent {
 	@Override
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof OutgoingMessage) {
-			this.routerClient.send(new Message(message.getSender(), message.getRecipient(), ((OutgoingMessage) message).getData()));
+			this.routerClient.send(new Message(message.getSender(),
+					((OutgoingMessage) message).getActualrecipient(),
+					((OutgoingMessage) message).getData()));
 		}
 	}
 }

@@ -39,7 +39,6 @@ public class C_AICalculate extends BaseComponent {
 	 * @return ProtocolMessage for Movement Service.
 	 */
 	private DataPackage fetchCommand() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

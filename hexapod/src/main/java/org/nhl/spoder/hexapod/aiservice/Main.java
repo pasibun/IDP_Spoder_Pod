@@ -23,8 +23,6 @@ public class Main {
 																	new C_AIFormat("Formatter"),
 																	new C_RouterClient("RouterClient", "127.0.0.1",1234)});
 		s.start();
-		Thread.sleep(10*1000);
-		s.run();
 	}
 	
 }

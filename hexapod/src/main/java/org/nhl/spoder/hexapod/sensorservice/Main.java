@@ -1,5 +1,6 @@
 package org.nhl.spoder.hexapod.sensorservice;
 
+import org.nhl.spoderpod.hexapod.components.C_RouterClient;
 import org.nhl.spoderpod.hexapod.components.C_SensorFormatter;
 import org.nhl.spoderpod.hexapod.components.C_SensorReader;
 import org.nhl.spoderpod.hexapod.core.Service;
@@ -11,10 +12,9 @@ public class Main {
 	 */
 	public static void main(String[] args) throws InterruptedException {
 		Service s = new Service("SensorService", new I_Component[] {
-																	new C_SensorReader("Reader"),
-																	new C_SensorFormatter("DataFormat") });
+				new C_SensorReader("Reader"),
+				new C_SensorFormatter("DataFormat"),
+				new C_RouterClient("RouterClient", "127.0.0.1", 8080) });
 		s.start();
-		Thread.sleep(10 * 1000);
-		s.run();
 	}
 }

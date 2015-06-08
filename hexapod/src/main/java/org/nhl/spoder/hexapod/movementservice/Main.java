@@ -24,11 +24,11 @@ public class Main {
 	// U_MovementCsvReader walkstate = new U_MovementCsvReader();
 	// walkstate.read("StraightWalk.csv");
 	//
-	// // CsvReader crabstate = new CsvReader();
-	// // crabstate.read("StraightWalk.csv");
-	// //
-	// // CsvReader idle = new CsvReader();
-	// // idle.read("StraightWalk.csv");
+	// CsvReader crabstate = new CsvReader();
+	// crabstate.read("StraightWalk.csv");
+	//
+	// CsvReader idle = new CsvReader();
+	// idle.read("StraightWalk.csv");
 	//
 	// U_MovementServoMovement s = new U_MovementServoMovement();
 	// int delay = Integer.parseInt(args[0]);

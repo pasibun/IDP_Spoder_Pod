@@ -17,7 +17,7 @@ public class Main {
 		Service s = new Service("MovementService", new I_Component[] {
 				new C_HTTPAppSocket("AppSocket", 8080),
 				new C_HTTPFormat("Formatter"),
-				new C_RouterClient("RouterClient","127.0.0.1",8080)});
+				new C_RouterClient("RouterClient","127.0.0.1",1234)});
 		s.start();
 
 	}

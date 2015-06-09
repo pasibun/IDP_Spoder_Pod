@@ -1,7 +1,9 @@
 package org.nhl.spoderpod.hexapod.utils;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -24,6 +26,16 @@ public final class Utils {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static InputStream CreateFileinput(String filename) {
+		try {
+			return new FileInputStream(filename);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+		
 	}
 
 	/**

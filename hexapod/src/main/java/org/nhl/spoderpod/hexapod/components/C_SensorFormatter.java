@@ -10,16 +10,12 @@ public class C_SensorFormatter extends BaseComponent {
 
 	public C_SensorFormatter(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void init(MessageBus messageBus) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void close(MessageBus messageBus) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override

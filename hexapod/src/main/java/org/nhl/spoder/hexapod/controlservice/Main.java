@@ -12,6 +12,5 @@ public class Main {
 				new C_ControlCheck("ControlCheck"),
 				new C_RouterClient("RouterClient","127.0.0.1",1234)});
 		s.start();
-
 	}
 }

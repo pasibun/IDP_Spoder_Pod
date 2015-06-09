@@ -1,4 +1,4 @@
-package org.nhl.spoder.hexapod.vision;
+package org.nhl.spoder.hexapod.visionservice;
 
 import org.nhl.spoderpod.hexapod.components.C_RouterClient;
 import org.nhl.spoderpod.hexapod.components.C_VisionFormatter;

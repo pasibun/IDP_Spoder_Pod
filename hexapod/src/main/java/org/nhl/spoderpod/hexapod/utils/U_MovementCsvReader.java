@@ -15,9 +15,11 @@ import org.nhl.spoderpod.hexapod.libraries.L_Vector;
 public class U_MovementCsvReader {
 
 	private final Map<Integer, L_Vector[]> leglist;
+	private int legCount;
 
 	public U_MovementCsvReader() {
 		this.leglist = new HashMap<Integer, L_Vector[]>();
+		this.legCount = 0;
 	}
 
 	private void add(int id, int time, L_Vector vector) {
@@ -32,6 +34,10 @@ public class U_MovementCsvReader {
 			return leglist.get(id);
 		}
 		return new L_Vector[0];
+	}
+	
+	public int getLegCount(){
+		return legCount;
 	}
 
 	public boolean read(String csvFile) {
@@ -53,6 +59,13 @@ public class U_MovementCsvReader {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		}
+		
+		legCount = -1;
+		for (L_Vector[] leg : this.leglist.values()) {
+			if (legCount < 0 || leg.length < legCount) {
+				legCount = leg.length;
+			}
 		}
 		return true;
 	}

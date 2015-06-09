@@ -14,12 +14,10 @@ public class C_VisionFormatter extends BaseComponent {
 	}
 
 	public void close(MessageBus messageBus) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void init(MessageBus messageBus) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -47,6 +45,7 @@ public class C_VisionFormatter extends BaseComponent {
 						new ComponentRef("RouterClient"),
 						dataFormatter(m.getData()));
 			}
+
 		}
 	}
 

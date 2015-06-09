@@ -36,14 +36,13 @@ public class C_ControlCheck extends BaseComponent{
 	}
 
 	/***
-	 * Activates wether or not component gets a message. 
+	 * Activates whether or not component gets a message. 
 	 */
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
 		return true;
 	}
 
-	
 	@Override
 	/***
 	 * activates when shit gets a message. 
@@ -51,7 +50,6 @@ public class C_ControlCheck extends BaseComponent{
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
-			
 			if ("SetHumanState".equals(m.getData())) {
 				if(state.getState().getType() != U_ControlState.StateType.HumanState)
 					this.state.setState(new U_ControlState.HumanState());
@@ -60,8 +58,9 @@ public class C_ControlCheck extends BaseComponent{
 				if(state.getState().getType() != U_ControlState.StateType.AIState)
 					this.state.setState(new U_ControlState.AIState());
 			}
+			new ComponentRef("Logger").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), m.getData());	
+			new ComponentRef("Calculate").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), m.getData());	
 		}
-		new ComponentRef("Logger").tell(messageBus, getSelf(), state.getState().toString());	
 		
 	}
 }

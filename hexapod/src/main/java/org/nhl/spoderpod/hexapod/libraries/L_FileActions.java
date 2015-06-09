@@ -12,8 +12,9 @@ import java.util.List;
 import org.nhl.spoderpod.hexapod.utils.Utils;
 
 public class L_FileActions {
-	static InputStream inputstream = Utils.CreateFileinput("ttyAMA0");
-	
+	static FileInputStream inputstream = Utils.CreateFileInput("ttyAMA0"); /* "/dev/ttyAMA0" */
+	static FileOutputStream outputstream = Utils.CreateFileOutput("ttyAMA01");/* "/dev/ttyAMA1" */
+
 	public static List<Byte> read() throws IOException {
 		List<Byte> awesomeSauce = new ArrayList<Byte>();
 		int data;
@@ -21,35 +22,23 @@ public class L_FileActions {
 			awesomeSauce.add((byte) data);
 		}
 		return awesomeSauce;
-		// Path path = Paths.get("ttyAMA0");
-		// byte[] data = null;
-		// try {
-		// data = Files.readAllBytes(path);
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
 	}
-		
-	private static byte[] turnArray(List<Byte> winList){
+
+	private static byte[] turnArray(List<Byte> winList) {
 		byte[] awesomeSauce = new byte[winList.size()];
-		for(int i = 0; i < winList.size(); i++){
+		for (int i = 0; i < winList.size(); i++) {
 			awesomeSauce[i] = winList.get(i);
 		}
 		return awesomeSauce;
 	}
-	
-	public static void write(List<Byte> message){
-		BufferedOutputStream bs = null;
+
+	public static void write(List<Byte> message) {
 		try {
-			//"/dev/ttyAMA0"
-		    FileOutputStream fs = new FileOutputStream(new File("ttyAMA01"));
-		    bs = new BufferedOutputStream(fs);
-		    bs.write(turnArray(message));
-		    bs.close();
-		    fs.close();
+			outputstream.write(turnArray(message));
+			outputstream.flush();
+
 		} catch (Exception e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 }

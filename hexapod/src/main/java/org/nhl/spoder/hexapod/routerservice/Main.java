@@ -8,7 +8,7 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 		Service s = new Service("RouterService",
-				new I_Component[] { new C_RouterServer("RouterServer") });
+				new I_Component[] { new C_RouterServer("C_RouterServer"), });
 
 		s.start();
 		Thread.sleep(10 * 1000);

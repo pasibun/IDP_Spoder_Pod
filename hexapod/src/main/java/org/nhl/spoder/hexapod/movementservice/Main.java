@@ -8,7 +8,7 @@ import org.nhl.spoderpod.hexapod.interfaces.I_Component;
 /***
  * HTTP Service verstuurt de gegevens naar de server van de webapp.
  * 
- * @author Fre-Meine Fuckboys
+ * @author Fre-Meine gayass
  */
 public class Main {
 	/**

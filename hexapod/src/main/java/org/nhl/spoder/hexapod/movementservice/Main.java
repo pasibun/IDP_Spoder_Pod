@@ -15,9 +15,9 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 		Service s = new Service("MovementService", new I_Component[] {
-				new C_HTTPAppSocket("AppSocket", 8080),
-				new C_HTTPFormat("Formatter"),
-				new C_RouterClient("RouterClient","127.0.0.1",1234)});
+				new C_HTTPAppSocket("C_HTTPAppSocket", 8080),
+				new C_HTTPFormat("C_HTTPFormat"),
+				new C_RouterClient("C_RouterClient","127.0.0.1",1234)});
 		s.start();
 
 	}

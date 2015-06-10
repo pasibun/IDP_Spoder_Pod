@@ -1,109 +1,27 @@
 package org.nhl.spoder.hexapod.movementservice;
 
-import java.io.IOException;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import org.nhl.spoderpod.hexapod.libraries.L_Vector;
-import org.nhl.spoderpod.hexapod.utils.U_MovementCsvReader;
-import org.nhl.spoderpod.hexapod.utils.U_MovementServoMovement;
+import org.nhl.spoderpod.hexapod.components.C_Movement;
+import org.nhl.spoderpod.hexapod.components.C_RouterClient;
+import org.nhl.spoderpod.hexapod.core.Service;
+import org.nhl.spoderpod.hexapod.interfaces.I_Component;
 
 /***
  * HTTP Service verstuurt de gegevens naar de server van de webapp.
  * 
- * @author Fre-Meine Fuckboys
+ * @author Fre-Meine gayass
  */
 public class Main {
-
-	/*
-	 * Starts the service.
+	/**
+	 * TODO: Welke components moeten hier bij?
+	 * 
+	 * @param args
+	 * @throws InterruptedException
 	 */
-	static class MovingThread implements Runnable {
-		private final Thread thread;
-		private final ConcurrentLinkedQueue<Byte> input;
-
-		public MovingThread() {
-			this.thread = new Thread(this);
-			this.input = new ConcurrentLinkedQueue<Byte>();
-		}
-
-		public void start() {
-			this.thread.start();
-		}
-
-		public boolean hasData() {
-			return this.input.size() > 0;
-		}
-
-		public byte pollData() {
-			return this.input.poll();
-		}
-
-		public void run() {
-			while (true) {
-				try {
-					byte b = ((byte) System.in.read());
-					if (b != 13 && b != 10) {
-						this.input.add(b);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
 	public static void main(String[] args) throws InterruptedException {
-		// Service s = new Service("MovementService", new IComponent[] { new
-		// C_HTTPAppSocket("AppSocket", 8080),
-		// new C_HTTPFormat("Formatter")});
-		// s.start();
-		// Thread.sleep(10*1000);
-		// s.run();
-
-		U_MovementCsvReader walkstate = new U_MovementCsvReader();
-		walkstate.read("StraightWalk.csv");
-
-//		CsvReader crabstate = new CsvReader();
-//		crabstate.read("StraightWalk.csv");
-//
-//		CsvReader idle = new CsvReader();
-//		idle.read("StraightWalk.csv");
-
-		U_MovementServoMovement s = new U_MovementServoMovement();
-		int delay = Integer.parseInt(args[0]);
-
-		MovingThread m = new MovingThread();
-		m.start();
-
-		// System.out.println("time id x y z");
-		for (int time = 0;; time++) {
-			L_Vector v;
-			while (m.hasData()) {
-				System.out.println(m.pollData());
-			}
-			for (int n = 0; n < 6; n++) {
-				v = walkstate.getLeg(n + 1)[time % 41];
-				// System.out.format("Time %d, ", (time % 41) + 1);
-				s.updateLeg(n, v.x, v.y, v.z);
-			}
-			 s.sendPacket();
-			Thread.sleep(delay);
-		}
-
-		// s.updateLegs(angles2[1], angles2[2], angles2[3]);
-		// s.updateLegs(x,y,z);
-
-		// byte destination = (byte) 3;
-		// byte type = (byte) 0;
-		// byte id = (byte) 13;
-		// short data = 180;
-		// L_Encoder.addData(type, id, data);
-		// L_Encoder.prepMsg(destination);
-		// List<Byte> returnmsg = L_Encoder.getMsgs();
-		// L_FileActions.write(returnmsg);
-		// System.out.println(returnmsg);
-		//
-		// L_Decoder.recieveMsg(returnmsg);
+		Service s = new Service("MovementService", new I_Component[] {
+				new C_Movement("C_Movement"),
+				new C_RouterClient("C_RouterClient", "127.0.0.1", 1234) });
+		s.start();
 
 	}
 }

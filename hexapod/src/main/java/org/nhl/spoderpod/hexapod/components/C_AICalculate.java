@@ -17,21 +17,24 @@ public class C_AICalculate extends BaseComponent {
 	/**
 	 * Method calculates the direction the spider has to walk to when it gets a
 	 * message.
-	 * 
 	 * @param message
 	 * @return string based answer of the direction the spider has to walk to.
 	 */
 	private String calcDirection(Message message) {
-		switch (message.getSender().toString()) {
-		case "afstand":
-			if (3 >= Integer.parseInt(message.getData())) {
-				return "Backward";
-			} else
-				return "forward";
-		case "vision":
-			return message.getData();
-		}
-		return "Error";
+		System.out.println("doe dingen2");
+		return "nice";
+//		switch (message.getSender().toString()) {
+//		case " ":
+//			if (3 >= Integer.parseInt(message.getData())) {
+//				return "Backward";
+//			} else
+//				return "forward";
+//		case "  ":
+//			return message.getData();
+//			
+//		case"":
+//		}
+//		return "Error";
 	}
 
 	/**
@@ -40,7 +43,6 @@ public class C_AICalculate extends BaseComponent {
 	 * @return ProtocolMessage for Movement Service.
 	 */
 	private DataPackage fetchCommand() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -58,8 +60,9 @@ public class C_AICalculate extends BaseComponent {
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		new ComponentRef("RouterClient").tell(messageBus, getSelf(),
-				fetchCommand().toString());
+		//update this to send it to Movement Service command and control. 
+		//new ComponentRef("AppSocket").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), ));	
+		new ComponentRef("Formatter").tell(messageBus, getSelf(), lastCommand);	
 		return true;
 	}
 

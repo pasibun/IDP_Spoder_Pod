@@ -70,6 +70,7 @@ public class U_MessageThread implements I_Threaded {
 	public void sendObject(Object object) {
 		try {
 			this.out.writeObject(object);
+			this.out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

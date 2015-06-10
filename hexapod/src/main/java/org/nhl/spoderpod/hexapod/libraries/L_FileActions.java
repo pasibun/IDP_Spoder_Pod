@@ -2,56 +2,43 @@ package org.nhl.spoderpod.hexapod.libraries;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class L_FileActions {
+import org.nhl.spoderpod.hexapod.utils.Utils;
 
-	public static List<Byte> read(){
-		Path path = Paths.get("/dev/ttyAMA0");
-		byte[] data = null;
-		try {
-			data = Files.readAllBytes(path);
-		} catch (IOException e) {	
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return turnList(data);
-	}
-	
-	private static List<Byte> turnList(byte[] data){
+public class L_FileActions {
+	static FileInputStream inputstream = Utils.CreateFileInput("ttyAMA0"); /* "/dev/ttyAMA0" */
+	static FileOutputStream outputstream = Utils.CreateFileOutput("ttyAMA01");/* "/dev/ttyAMA1" */
+
+	public static List<Byte> read() throws IOException {
 		List<Byte> awesomeSauce = new ArrayList<Byte>();
-		for(int i = 0; i < data.length; i++){
-			awesomeSauce.add(data[i]);
+		int data;
+		while (((data = inputstream.read()) & 0xFF) != 0) {
+			awesomeSauce.add((byte) data);
 		}
 		return awesomeSauce;
 	}
-	
-	private static byte[] turnArray(List<Byte> winList){
+
+	private static byte[] turnArray(List<Byte> winList) {
 		byte[] awesomeSauce = new byte[winList.size()];
-		for(int i = 0; i < winList.size(); i++){
+		for (int i = 0; i < winList.size(); i++) {
 			awesomeSauce[i] = winList.get(i);
 		}
 		return awesomeSauce;
 	}
-	
-	public static void write(List<Byte> message){
-		BufferedOutputStream bs = null;
+
+	public static void write(List<Byte> message) {
 		try {
-			//"/dev/ttyAMA0"
-		    FileOutputStream fs = new FileOutputStream(new File("/dev/ttyAMA0"));
-		    bs = new BufferedOutputStream(fs);
-		    bs.write(turnArray(message));
-		    bs.close();
-		    fs.close();
+			outputstream.write(turnArray(message));
+			outputstream.flush();
+
 		} catch (Exception e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 }

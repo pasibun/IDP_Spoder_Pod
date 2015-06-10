@@ -1,8 +1,10 @@
-Config = {
+'use strict';
+
+var Config = {
 	ServerUpdateFreq : 1000
 };
 
-Updater = (function(_host, _freq) {
+var Updater = (function(_host, _freq) {
 	var updateFreq = _freq, request = {
 		"server_status" : {
 			"code" : 1,
@@ -39,7 +41,7 @@ Updater = (function(_host, _freq) {
 	function run() {
 		if (running) {
 			doRequest();
-			window.setTimeout(arguments.callee, updateFreq);
+			window.setTimeout(run, updateFreq);
 		}
 	}
 
@@ -60,7 +62,7 @@ Updater = (function(_host, _freq) {
 	};
 });
 
-RenderPrimitives = {
+var RenderPrimitives = {
 	Box : function(_dx, _dy) {
 		return function(_ctx, _width, _height) {
 			_ctx.fillRect(0, 0, _dx, _dy);
@@ -102,7 +104,10 @@ RenderPrimitives = {
 	}
 };
 
-EntityModels = {
+var EntityModels = {
+	servo_health: function (_render, _data) {
+	
+	},
 	log : function(_render, _data) {
 		var logMessages = _data.value.split("\n").reverse(), 
 			retVal = _render(RenderPrimitives.Translate(0, 40))
@@ -125,15 +130,15 @@ EntityModels = {
 	}
 };
 
-RenderObject = (function(_ctx, _width, _height) {
+var RenderObject = (function(_ctx, _width, _height) {
 	var ctx = _ctx, width = _width, height = _height;
-	return function(_f) {
+	return function that(_f) {
 		_f(ctx, width, height);
-		return arguments.callee;
+		return that;
 	};
 });
 
-Renderer = (function(_width, _height) {
+var Renderer = (function(_width, _height) {
 	var width = _width, height = _height, canvas = document
 			.createElement("canvas"), ctx = canvas.getContext("2d");
 
@@ -192,7 +197,7 @@ Renderer = (function(_width, _height) {
 	};
 });
 
-App = (function(_host) {
+var App = (function(_host) {
 	var domElement = document.createElement("div"), updater = new Updater(
 			_host, Config.ServerUpdateFreq), renderer = new Renderer(100, 100), running = false;
 
@@ -210,7 +215,7 @@ App = (function(_host) {
 	function run() {
 		if (running) {
 			tick();
-			window.requestAnimationFrame(arguments.callee);
+			window.requestAnimationFrame(run);
 		}
 	}
 

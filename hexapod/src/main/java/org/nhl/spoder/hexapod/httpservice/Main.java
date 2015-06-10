@@ -20,6 +20,5 @@ public class Main {
 				new C_HTTPAppSocket("C_HTTPAppSocket", 8080),
 				new C_RouterClient("C_RouterClient", "127.0.0.1", 1234) });
 		s.start();
-
 	}
 }

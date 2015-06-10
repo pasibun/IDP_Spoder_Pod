@@ -29,8 +29,8 @@ import org.nhl.spoderpod.hexapod.utils.U_HTTPAppServer;
  *
  */
 public class C_HTTPAppSocket extends BaseComponent {
-
 	private final U_HTTPAppServer utilAppServer;
+	private final Queue<I_Message> messages;
 	
 	/***
 	 * Constructor for the HTTPAppSocket component. 
@@ -41,6 +41,7 @@ public class C_HTTPAppSocket extends BaseComponent {
 	public C_HTTPAppSocket(String strName, int intPort) {
 		super(strName);
 		this.utilAppServer = new U_HTTPAppServer(intPort);
+		this.messages = new ConcurrentLinkedQueue<I_Message>();
 	}
 
 	/***
@@ -62,18 +63,23 @@ public class C_HTTPAppSocket extends BaseComponent {
 	 */
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		return this.utilAppServer.hasClients();
+		if (this.utilAppServer.hasClients()) {
+			I_Message m = null;
+			while(this.messages.size() > 0) {
+				m = this.messages.poll();
+			}
+			this.utilAppServer
+			.send(String
+					.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"log\", \"value\": \"%s\"}]}",
+							m != null ? ((Message) m).getData().replace("\n",
+									"\\n") : "No log"));
+		}
+		return true;
 	}
 
 	@Override
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
-		while(this.utilAppServer.hasClients()) {
-		this.utilAppServer
-		.send(String
-				.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"log\", \"value\": \"%s\"}]}",
-						((Message) message).getData().replace("\n",
-								"\\n")));
-		}
+		this.messages.add(message);
 	}
 	
 }

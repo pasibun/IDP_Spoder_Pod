@@ -112,13 +112,13 @@ var EntityModels = {
 		var logMessages = _data.value.split("\n").reverse(), 
 			retVal = _render(RenderPrimitives.Translate(0, 40))
 				(RenderPrimitives.SetAttr("textBaseLine", "top"))
-				(RenderPrimitives.FillColor("rgba(0, 0, 200, 0.3)"))
-				(RenderPrimitives.Box(500, 30 * 10 + 10))
+				(RenderPrimitives.FillColor("rgba(0, 200, 200, 0.3)"))
+				(RenderPrimitives.Box(600, 30 * 10 + 20))
 				(RenderPrimitives.FillColor("#000"));
 
 		for (var n = 0; n < 10 && n < logMessages.length; n++) {
 			retVal(RenderPrimitives.Translate(10, 10 * 30 - n * 30 + 30))(
-					RenderPrimitives.Text(logMessages[n]));
+					RenderPrimitives.Text("Got: "+ logMessages[n]));
 		}
 		return retVal;
 	},

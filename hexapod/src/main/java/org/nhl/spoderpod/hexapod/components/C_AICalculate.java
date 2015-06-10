@@ -21,16 +21,20 @@ public class C_AICalculate extends BaseComponent {
 	 * @return string based answer of the direction the spider has to walk to.
 	 */
 	private String calcDirection(Message message) {
-		switch (message.getSender().toString()) {
-		case "afstand":
-			if (3 >= Integer.parseInt(message.getData())) {
-				return "Backward";
-			} else
-				return "forward";
-		case "vision":
-			return message.getData();
-		}
-		return "Error";
+		System.out.println("doe dingen2");
+		return "nice";
+//		switch (message.getSender().toString()) {
+//		case " ":
+//			if (3 >= Integer.parseInt(message.getData())) {
+//				return "Backward";
+//			} else
+//				return "forward";
+//		case "  ":
+//			return message.getData();
+//			
+//		case"":
+//		}
+//		return "Error";
 	}
 
 	/**

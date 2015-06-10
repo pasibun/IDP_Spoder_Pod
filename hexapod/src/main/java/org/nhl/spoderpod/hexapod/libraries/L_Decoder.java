@@ -15,18 +15,15 @@ public class L_Decoder {
 	private static List<DataPackage> contents = new ArrayList<DataPackage>();
 
 	public static void recieveMsg(List<Byte> msg) {
+		contents.clear();
 		dataMsg = msg;
-		killZero();
+		decodeCOBS(dataMsg);
 		if (getCheckSum(dataMsg)) {
-			decodeCOBS(dataMsg);
 			System.out.println(dataMsg);
 			readMessage(dataMsg);
 		}
+		System.out.println(contents.size());
 
-	}
-
-	private static void killZero() {
-		dataMsg.remove(dataMsg.size() - 1);
 	}
 
 	/***
@@ -59,7 +56,7 @@ public class L_Decoder {
 			lastZeroByte -= msg.get(lastZeroByte);
 			msg.set(n, (byte) 0);
 		}
-		dataMsg = msg;
+		System.out.println(msg);
 	}
 
 	private static void readMessage(List<Byte> msg) {

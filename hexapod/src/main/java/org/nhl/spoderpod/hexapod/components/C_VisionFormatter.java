@@ -14,11 +14,11 @@ public class C_VisionFormatter extends BaseComponent {
 	}
 
 	public void close(MessageBus messageBus) {
-		
+
 	}
 
 	public void init(MessageBus messageBus) {
-		
+
 	}
 
 	@Override
@@ -40,15 +40,18 @@ public class C_VisionFormatter extends BaseComponent {
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
-			String value = dataFormatter(0,0,0," ");
-			new ComponentRef("Logger").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), value);	
-			new ComponentRef("Calculate").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), value);	
+			if (m.getData().equals("red") || m.getData().equals("blue")) {
+				new ComponentRef("C_AICalculate").tell(messageBus, getSelf(),
+						new ComponentRef("RouterClient"),
+						dataFormatter(m.getData()));
+			}
+
 		}
 	}
 
-	private String dataFormatter(double x, double y, double z, String position) {
-		returnValue = String.format("X= " + "%s" + "Y= " + "%s" + "X= " + "%s"
-				+ "Position=" + "%s", x, y, z, position);
+	private String dataFormatter(String position) {
+		returnValue = String.format(
+				"{\"Vision Service\": { \"Position\": \"%s\"}", position);
 		return returnValue;
 	}
 }

@@ -1,14 +1,13 @@
 package org.nhl.spoderpod.hexapod.components;
 
-import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.DataPackage;
 import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
+import org.nhl.spoderpod.hexapod.core.MessageInt;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 
 public class C_AICalculate extends BaseComponent {
-
-	private String[] shit;
+	private int[] shit;
 	private String lastCommand;
 
 	public C_AICalculate(String strName) {
@@ -22,20 +21,26 @@ public class C_AICalculate extends BaseComponent {
 	 * @param message
 	 * @return string based answer of the direction the spider has to walk to.
 	 */
-	private String calcDirection(Message message) {
-		if (message instanceof Message) {
-			Message m = (Message) message;
-			switch (m.getData().substring(0, 1)) {
-			case "3":
-				return m.getData();
-			case "5":
+	private int calcDirection(MessageInt message) {
+		if (message instanceof MessageInt) {
+			MessageInt m = (MessageInt) message;
+			switch (shit[0]) {
+			case 3:
+				return shit[2];
+			case 5:
+				
 				break;
-			case "6":
+			case 6:
+				if (shit[1] == 0) {
+					// doe dingen met id 0
+				} else {
+					// doe dingen met id 1
+				}
 				break;
 			}
 		}
 
-		return "Error";
+		return 2;
 	}
 
 	/**
@@ -62,7 +67,6 @@ public class C_AICalculate extends BaseComponent {
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
 		// update this to send it to Movement Service command and control.
-		// System.out.println("Hidde is Gayyy compose");
 		// new ComponentRef("AppSocket").tell(messageBus, getSelf(), new
 		// ComponentRef("RouterClient"), ));
 		// new ComponentRef("C_AIFormat").tell(messageBus, getSelf(),
@@ -70,12 +74,14 @@ public class C_AICalculate extends BaseComponent {
 
 		return true;
 	}
-//intType, intId, intData
+
+	// intType, intId, intData
 	@Override
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
-		if (message instanceof Message) {
-			Message m = (Message) message;
-			shit = m.getData().split("/s");
+		if (message instanceof MessageInt) {
+			MessageInt m = (MessageInt) message;
+			shit = m.getData();
+			System.out.println(m.getData());
 			//calcDirection(m);
 		}
 	}

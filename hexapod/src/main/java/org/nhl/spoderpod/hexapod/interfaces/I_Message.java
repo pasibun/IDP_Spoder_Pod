@@ -19,5 +19,6 @@ public interface I_Message extends Serializable {
 	 * Get the recipient of the message
 	 * @return The reference to the recipient
 	 */
-	public ComponentRef getRecipient();
+	public ComponentRef getRecipient();	
+	
 }

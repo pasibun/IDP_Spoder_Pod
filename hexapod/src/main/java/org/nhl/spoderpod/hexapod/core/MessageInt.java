@@ -8,12 +8,12 @@ import org.nhl.spoderpod.hexapod.interfaces.I_Message;
  * @author achmed
  *
  */
-public final class Message implements I_Message {
+public final class MessageInt implements I_Message {
 	private static final long serialVersionUID = 1L;
 
 	private final ComponentRef sender;
 	private final ComponentRef recipient;
-	private final String data;
+	private final int[] data;
 
 	/**
 	 * @param sender
@@ -23,7 +23,7 @@ public final class Message implements I_Message {
 	 * @param data
 	 *            The message data.
 	 */
-	public Message(ComponentRef sender, ComponentRef recipient, String data) {
+	public MessageInt(ComponentRef sender, ComponentRef recipient, int[] data) {
 		this.sender = sender;
 		this.recipient = recipient;
 		this.data = data;
@@ -37,7 +37,7 @@ public final class Message implements I_Message {
 		return this.recipient;
 	}
 
-	public String getData() {
+	public int[] getData() {
 		return this.data;
 	}
 

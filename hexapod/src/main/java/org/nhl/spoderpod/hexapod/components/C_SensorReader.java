@@ -62,7 +62,9 @@ public class C_SensorReader extends BaseComponent {
 		}
 
 		for (DataPackage dp : L_Decoder.getData()) {
+			
 			intType = dp.get_byteType();
+
 			intData = dp.get_shortData();
 			intId = dp.get_byteId();
 			switch (intType) { // terugkrijgende string wijst naar de service.
@@ -88,15 +90,15 @@ public class C_SensorReader extends BaseComponent {
 		}		
 		L_FileActions.write(i);
 		new ComponentRef(strReceiver).tell(messageBus, getSelf(),
-				new ComponentRef("RouterClient"),
-				String.format("%s [%s %s]", intType, intData, intId));
+				new ComponentRef("C_RouterClient"),
+				String.format("%s [%s %s]", intType, intId, intData));
 
 		return true;
 	}
 
 	@Override
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
-		// TODO Auto-generated method stubw
+		// TODO Auto-generated method stub
 
 	}
 }

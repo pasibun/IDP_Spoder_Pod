@@ -11,8 +11,6 @@ public class Main {
 				new I_Component[] { new C_RouterServer("C_RouterServer"), });
 
 		s.start();
-		Thread.sleep(10 * 1000);
-		s.run();
 	}
 
 }

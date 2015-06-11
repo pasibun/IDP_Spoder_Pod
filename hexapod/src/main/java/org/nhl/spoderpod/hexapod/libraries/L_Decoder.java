@@ -37,7 +37,7 @@ public class L_Decoder {
 			x += msg.get(i);
 
 		}
-		checkSum = x;
+		checkSum = (byte) (x - 75);
 		if (x != msg.get(0)) {
 			return false;
 		}

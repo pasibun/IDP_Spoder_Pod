@@ -62,7 +62,8 @@ public class C_AICalculate extends BaseComponent {
 	protected boolean composeMessage(MessageBus messageBus) {
 		//update this to send it to Movement Service command and control. 
 		//new ComponentRef("AppSocket").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), ));	
-		new ComponentRef("Formatter").tell(messageBus, getSelf(), lastCommand);	
+		//new ComponentRef("C_AIFormatter").tell(messageBus, getSelf(), lastCommand);	
+		
 		return true;
 	}
 

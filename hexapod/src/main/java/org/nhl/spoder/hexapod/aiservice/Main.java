@@ -19,8 +19,6 @@ public class Main {
 	 * Starts the service.
 	 */
 	public static void main(String[] args) throws InterruptedException {
-		//MOET DE C_RouterClient component nog toevoegen! 
-
 		Service s = new Service("AiService", new I_Component[] { 	
 					new C_AICalculate("C_AICalculate"),
 					new C_AIFormat("C_AIFormat"),

@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
@@ -52,25 +53,13 @@ public final class C_Logger extends BaseComponent {
 	}
 
 	private void toFile(I_Message message) {
-		try {
-			file = new File("C:\\test.dat");
-
-			// if file doesnt exists, then create it
-			if (!file.exists()) {
-				file.createNewFile();
+		if (message instanceof Message) {
+			Message m = (Message) message;
+			try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("test.txt", true)))) {
+			    out.println(m.getData());
+			}catch (IOException e) {
+			    //exception handling left as an exercise for the reader
 			}
-
-			if (message instanceof Message) {
-				Message m = (Message) message;
-
-				bw = new BufferedWriter(new FileWriter(file, true));
-				bw.write(m.getData());
-				bw.newLine();
-				bw.flush();
-				bw.close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 

@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 
-Button::Button(int x, int y, int width, int height, int buttonnumber) {
+Button::Button(int x, int y, int width, int height, int buttonnumber, String buttonMode) {
   this->x1 = x;
   this->x2 = x + height;
   this->y1 = y;
@@ -11,6 +11,7 @@ Button::Button(int x, int y, int width, int height, int buttonnumber) {
   this->width = width;
   this->height = height;
   this->buttonnumber = buttonnumber;
+  this->buttonMode = buttonMode;
 }
 
 void Button::PrintBlue() {

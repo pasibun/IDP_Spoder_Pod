@@ -70,7 +70,7 @@ public class C_HTTPAppSocket extends BaseComponent {
 			}
 			this.utilAppServer
 			.send(String
-					.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"log\", \"value\": \"%s\"}]}",
+					.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"servo_health\", \"value\": \"%s\"}]}",
 							m != null ? ((Message) m).getData().replace("\n",
 									"\\n") : "No log"));
 		}

@@ -29,14 +29,14 @@ boolean joystickchanged = true;
 TouchScreen ts = TouchScreen(XP, YP, XM, YM);
 
 // Init Buttons
-Button BT1 = Button(103, 6, 91, 73, 1);
-Button BT2 = Button(103, 85, 91, 73, 2);
-Button BT3 = Button(103, 164, 91, 72, 3);
-Button BT4 = Button(103, 242, 91, 72, 4);
-Button BT5 = Button(6, 6, 91, 73, 5);
-Button BT6 = Button(6, 85, 91, 73, 6);
-Button BT7 = Button(6, 164, 91, 72, 7);
-Button BT8 = Button(6, 242, 91, 72, 8);
+Button BT1 = Button(103, 6, 91, 73, 1, "Walking");
+Button BT2 = Button(103, 85, 91, 73, 2, "Crab Walk");
+Button BT3 = Button(103, 164, 91, 72, 3, "Balloon Red");
+Button BT4 = Button(103, 242, 91, 72, 4, "Balloon Blue");
+Button BT5 = Button(6, 6, 91, 73, 5, "Spider Gap");
+Button BT6 = Button(6, 85, 91, 73, 6, "Pir");
+Button BT7 = Button(6, 164, 91, 72, 7, "");
+Button BT8 = Button(6, 242, 91, 72, 8, "");
 
 void setup(void) {
   Serial.begin(9600);
@@ -119,7 +119,7 @@ void loop(void) {
     }
   }
 
-  // if-statement die naloopt of de knoppen losgelaten zijn en dit verwerkt
+  // Check if buttons are released
   if (errorboolean == true) {
     if (buttonchanged == true) {
       if (p.z < 10) {
@@ -165,17 +165,21 @@ void loop(void) {
   // Joystick
   m[0].type = 5;
   m[0].id = 0;
-  m[0].data = ((byte)analogRead(A4) / 4) << 8 + ((1024 - analogRead(A5) / 4));
+  m[0].data = ((byte)analogRead(A4) / 4) << 8 | ((1024 - analogRead(A5) / 4));
   // Buttons
   m[1].type = 6;
   m[1].id = 0;
-  m[1].data = ((byte)digitalRead(7) << 8 + digitalRead(8));
+  m[1].data = ((byte)digitalRead(7) << 8 | digitalRead(8));
   // Mode
   m[2].type = 7;
   m[2].id = 0;
   m[2].data = buttonnumber;
+  // Light Sensor
+  m[3].type = 3;
+  m[3].id = 0;
+  m[3].data = digitalRead(2) * 256;
 
-  EncodePacket(&buff, 1, m, 3);
+  EncodePacket(&buff, 1, m, 4);
   Serial.write('\0');
   Serial.write(buff.data, buff.size);
   Serial.write('\0');

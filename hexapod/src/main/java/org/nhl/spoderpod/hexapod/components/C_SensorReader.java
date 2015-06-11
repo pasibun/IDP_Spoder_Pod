@@ -16,24 +16,17 @@ public class C_SensorReader extends BaseComponent {
 
 	public C_SensorReader(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void init(MessageBus messageBus) {
 	}
 
 	public void close(MessageBus messageBus) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/***
 	 * ComposeMessage for the this object makes sure that incoming datapackages
-	 * are dissected based on the type. And are send to the correct service. The
-	 * actual communication towards the correct service are a TODO!!
-	 * 
-	 * Data formatting towards the component making sure of the inter-service
-	 * communication are also still being developed.
+	 * are dissected based on the type. And are send to the correct service.
 	 */
 	@Override
 	// 0; Wordt gebruikt voor Debugging
@@ -45,7 +38,7 @@ public class C_SensorReader extends BaseComponent {
 	// 6; Wordt gebruikt voor buttons
 	// 7; Wordt gebruikt voor touchpad
 	protected boolean composeMessage(MessageBus messageBus) {
-		String strReceiver = "S_Logger";
+		String strReceiver = "C_Logger";
 		int intData = 0;
 		int intId = 0;
 		int intType = 0;
@@ -53,16 +46,13 @@ public class C_SensorReader extends BaseComponent {
 		try {
 			i = L_FileActions.read();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
 		if (i.size() > 0) {
 			L_Decoder.recieveMsg(i);
 		}
-
 		for (DataPackage dp : L_Decoder.getData()) {
-			
+
 			intType = dp.get_byteType();
 
 			intData = dp.get_shortData();
@@ -87,7 +77,7 @@ public class C_SensorReader extends BaseComponent {
 			default:
 				break;
 			}
-		}		
+		}
 		L_FileActions.write(i);
 		new ComponentRef(strReceiver).tell(messageBus, getSelf(),
 				new ComponentRef("C_RouterClient"),

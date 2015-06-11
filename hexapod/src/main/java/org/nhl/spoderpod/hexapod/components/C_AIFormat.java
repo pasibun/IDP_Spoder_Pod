@@ -24,6 +24,7 @@ public class C_AIFormat extends BaseComponent {
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
+		new ComponentRef("C_Logger").tell(messageBus, getSelf(), new ComponentRef("C_RouterClient"), "hi");	
 		return true;
 	}
 
@@ -31,14 +32,16 @@ public class C_AIFormat extends BaseComponent {
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
-			new ComponentRef("Logger").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), strDataFormat(m.getData()));	
+			new ComponentRef("C_Logger").tell(messageBus, getSelf(), new ComponentRef("C_RouterClient"), strDataFormat(m.getData()));	
 		}
 	}
 
 	private String strDataFormat(String direction) {
 
-		String returnValue = "Error in SensorFormatter class: Sensorservice. sensorName is neither 'afstand' or 'gyro'";
-
+		String returnValue = "Error";
+		if (direction.equals(null)){
+			return returnValue;
+		}
 		returnValue = String.format(
 				"{\"AI Service\": { \"Latest Direction\": \"%s\"}", direction);
 

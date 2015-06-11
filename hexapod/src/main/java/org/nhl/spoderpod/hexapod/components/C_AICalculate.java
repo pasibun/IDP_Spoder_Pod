@@ -67,6 +67,7 @@ public class C_AICalculate extends BaseComponent {
 		// ComponentRef("RouterClient"), ));
 		// new ComponentRef("C_AIFormat").tell(messageBus, getSelf(),
 		// lastCommand);
+
 		return true;
 	}
 //intType, intId, intData

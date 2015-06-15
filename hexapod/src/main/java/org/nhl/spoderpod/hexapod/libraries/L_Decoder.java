@@ -19,11 +19,8 @@ public class L_Decoder {
 		dataMsg = msg;
 		decodeCOBS(dataMsg);
 		if (getCheckSum(dataMsg)) {
-			System.out.println(dataMsg);
 			readMessage(dataMsg);
 		}
-		System.out.println(contents.size());
-
 	}
 
 	/***
@@ -53,14 +50,20 @@ public class L_Decoder {
 		int lastZeroByte = msg.size() - 1;
 		while (lastZeroByte > -1) {
 			n = lastZeroByte;
-			lastZeroByte -= msg.get(lastZeroByte);
-			msg.set(n, (byte) 0);
+			if (lastZeroByte < msg.size()){
+				lastZeroByte -= msg.get(lastZeroByte);
+				msg.set(n, (byte) 0);
+			}
+			else{
+				System.out.println("Error, breaking");
+				break;
+			}
 		}
-		System.out.println(msg);
+		//System.out.println(msg);
 	}
 
 	private static void readMessage(List<Byte> msg) {
-		System.out.println(msg);
+		//System.out.println(msg);
 		for (int i = 2; i < msg.size(); i += 4) {
 			if (msg.size() - 1 == i) {
 				break;

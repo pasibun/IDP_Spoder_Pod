@@ -52,11 +52,10 @@ public class C_SensorReader extends BaseComponent {
 			L_Decoder.recieveMsg(i);
 		}
 		for (DataPackage dp : L_Decoder.getData()) {
-
 			intType = dp.get_byteType();
-
 			intData = dp.get_shortData();
 			intId = dp.get_byteId();
+			
 			switch (intType) { // terugkrijgende string wijst naar de service.
 			case 2:
 				strReceiver = "C_Logger";
@@ -67,8 +66,46 @@ public class C_SensorReader extends BaseComponent {
 			case 4:
 				strReceiver = "C_Logger";
 				break;
-			case 5:
-				strReceiver = "C_AICalculate";
+			case 5: //joystick
+				//<50 = achteren
+				//>200 = voorwaarts
+				//128 = mid
+				//eerste short [0]
+				
+				//<50 links
+				//>200 rechts
+				//128 mid
+				//tweede short [1]
+				strReceiver = "C_Movement";
+				byte[] value = convertByte(intData);
+//				System.out.println(value[0]);
+//				System.out.println(value[1]);
+				if(value[1] > 3 * (256 / 4)){
+					new ComponentRef(strReceiver).tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"),"Crabwalk");
+				}
+				else if(value[1] < 1 * (256 / 4)) 
+				{
+					new ComponentRef(strReceiver).tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"),"Walkstate");
+				}
+				System.out.format("intData: %d\n", intData);
+//				else if(value[1] < 50)
+//				{
+//					new ComponentRef(strReceiver).tell(messageBus, getSelf(),
+//							new ComponentRef("C_RouterClient"),"Crabwalk");
+//				}
+//				else if(value[1] > 200)
+//				{
+//					new ComponentRef(strReceiver).tell(messageBus, getSelf(),
+//							new ComponentRef("C_RouterClient"),"Crabwalk");
+//				}
+//				else
+//				{
+//					new ComponentRef(strReceiver).tell(messageBus, getSelf(),
+//							new ComponentRef("C_RouterClient"),"Idle");
+//				}
+				return true;
 			case 6:
 				break;
 			case 7:
@@ -79,13 +116,20 @@ public class C_SensorReader extends BaseComponent {
 			}
 		}
 		L_FileActions.write(i);
-		new ComponentRef(strReceiver).tell(messageBus, getSelf(),
-				new ComponentRef("C_RouterClient"),
-				String.format("%s [%s %s]", intType, intId, intData));
+//		new ComponentRef(strReceiver).tell(messageBus, getSelf(),
+//				new ComponentRef("C_RouterClient"),
+//				String.format("%s [%s %s]", intType, intId, intData));
 
 		return true;
 	}
 
+	private byte[] convertByte(int data){
+		byte[] value = new byte[2];
+		value[0] = ((byte) ((data >> 8) & 0xff));
+		value[1] = (byte)((byte)(data) & 0xff);
+		return value;
+	}
+	
 	@Override
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		// TODO Auto-generated method stub

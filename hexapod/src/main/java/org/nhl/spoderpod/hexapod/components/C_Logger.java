@@ -57,6 +57,7 @@ public final class C_Logger extends BaseComponent {
 			Message m = (Message) message;
 			try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("test.txt", true)))) {
 			    out.println(m.getData());
+			    out.close();
 			}catch (IOException e) {
 			    //exception handling left as an exercise for the reader
 			}

@@ -24,7 +24,7 @@ public class C_AIFormat extends BaseComponent {
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		new ComponentRef("C_Logger").tell(messageBus, getSelf(), new ComponentRef("C_RouterClient"), "hi");	
+		new ComponentRef("C_Logger").tell(messageBus, getSelf(), new ComponentRef("C_RouterClient"), "{\"AI Service\": { \"Latest Direction\": \"%s\"}");	
 		return true;
 	}
 

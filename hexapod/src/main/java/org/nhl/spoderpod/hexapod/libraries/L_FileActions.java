@@ -12,15 +12,19 @@ import java.util.List;
 import org.nhl.spoderpod.hexapod.utils.Utils;
 
 public class L_FileActions {
-	static FileInputStream inputstream = Utils.CreateFileInput("ttyAMA0"); /* "/dev/ttyAMA0" */
-	static FileOutputStream outputstream = Utils.CreateFileOutput("ttyAMA01");/* "/dev/ttyAMA1" */
+	static FileInputStream inputstream = Utils.CreateFileInput("/dev/ttyAMA0"); /* "/dev/ttyAMA0" */
+	static FileOutputStream outputstream = Utils
+			.CreateFileOutput("/dev/ttyAMA0");/* "/dev/ttyAMA0" */
+	static List<Byte> awesomeSauce = new ArrayList<Byte>();
 
 	public static List<Byte> read() throws IOException {
 		List<Byte> awesomeSauce = new ArrayList<Byte>();
-		int data;
+		int data = -1;
 		while (((data = inputstream.read()) & 0xFF) != 0) {
+			
 			awesomeSauce.add((byte) data);
 		}
+		
 		return awesomeSauce;
 	}
 
@@ -36,7 +40,6 @@ public class L_FileActions {
 		try {
 			outputstream.write(turnArray(message));
 			outputstream.flush();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

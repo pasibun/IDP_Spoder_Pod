@@ -14,7 +14,7 @@ public final class U_MovementServoMovement implements I_Threaded {
 	public static final int RIGHT_SIDE = -1;
 	private final Thread thread;
 	private final Map<String, U_MovementCsvReader> movements;
-	private final U_MovementCsvReader currentMovement;
+	private U_MovementCsvReader currentMovement;
 
 	public U_MovementServoMovement() {
 
@@ -36,7 +36,11 @@ public final class U_MovementServoMovement implements I_Threaded {
 		this.movements = new HashMap<String, U_MovementCsvReader>();
 		movements.put("Walkstate", new U_MovementCsvReader());
 		movements.put("Crabwalk", new U_MovementCsvReader());
-		this.currentMovement = movements.get("Walkstate");
+		movements.put("Idle", new U_MovementCsvReader());
+		movements.get("Walkstate").read("StraightWalk.csv");
+		movements.get("Crabwalk").read("CrabWalk.csv");
+		movements.get("Idle").read("StraightWalk.csv");
+		this.currentMovement = movements.get("Idle");
 	}
 
 	private static U_MovementServo[] CreateServos(int id, int offset1,
@@ -60,6 +64,10 @@ public final class U_MovementServoMovement implements I_Threaded {
 		L_FileActions.write(L_Encoder.getMsgs());
 	}
 
+	public void setCurrentMovement(String strCSVname){
+		this.currentMovement = movements.get(strCSVname);
+	}
+	
 	@Override
 	public void run() {
 		if (this.thread != Thread.currentThread()) {
@@ -67,12 +75,16 @@ public final class U_MovementServoMovement implements I_Threaded {
 		}
 		for (int time = 0;; time++) {
 			for (int n = 0; n < 6; n++) {
-				L_Vector v = currentMovement.getLeg(n + 1)[time % currentMovement.getLegCount()];
+				L_Vector v = currentMovement.getLeg(n + 1)[time % (currentMovement.getLegCount() - 1)];
 				updateLeg(n, v.x, v.y, v.z);
 			}
 			sendPacket();
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-
 	}
 
 	@Override

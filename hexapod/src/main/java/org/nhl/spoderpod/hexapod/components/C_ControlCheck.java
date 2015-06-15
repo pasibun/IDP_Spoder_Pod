@@ -50,14 +50,31 @@ public class C_ControlCheck extends BaseComponent{
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
-			if ("SetHumanState".equals(m.getData())) {
-				if(state.getState().getType() != U_ControlState.StateType.HumanState)
-					this.state.setState(new U_ControlState.HumanState());
-			} 
-			else if("SetAIState".equals(m.getData())){
-				if(state.getState().getType() != U_ControlState.StateType.AIState)
-					this.state.setState(new U_ControlState.AIState());
+			switch(Integer.parseInt(m.getData())){
+				case 0://AIState
+					new ComponentRef("C_AICalculate").tell(messageBus, getSelf(), new ComponentRef("C_RouterClient"), "AiState");
+					break;
+				case 1://HumanState
+					new ComponentRef("C_AICalculate").tell(messageBus, getSelf(), new ComponentRef("C_RouterClient"), "HumanState");
+					break;
+				case 2://Balloon
+					new ComponentRef("C_AICalculate").tell(messageBus, getSelf(), new ComponentRef("C_RouterClient"), "BalloonState");
+					break;
+				case 3://Pole
+					new ComponentRef("C_AICalculate").tell(messageBus, getSelf(), new ComponentRef("C_RouterClient"), "PoleState");
+					break;
+				case 4://GrindBak
+					new ComponentRef("C_AICalculate").tell(messageBus, getSelf(), new ComponentRef("C_RouterClient"), "GrindState"); //EDIT THIS! 
+					break;
+				case 5: 
+					break;
+				case 6:
+					break;
+				case 7:
+					break;
+					
 			}
+			
 			new ComponentRef("Logger").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), m.getData());	
 			new ComponentRef("Calculate").tell(messageBus, getSelf(), new ComponentRef("RouterClient"), m.getData());	
 		}

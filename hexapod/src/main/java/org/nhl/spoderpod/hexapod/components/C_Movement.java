@@ -39,7 +39,7 @@ public final class C_Movement extends BaseComponent {
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if(message instanceof Message){
 			Message m = (Message) message;
-			System.out.println(m.getData());
+			//System.out.println(m.getData());
 			servoMovement.setCurrentMovement(m.getData());
 		}
 		

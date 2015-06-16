@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.DataPackage;
+import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 import org.nhl.spoderpod.hexapod.libraries.L_Decoder;
@@ -13,6 +14,8 @@ import org.nhl.spoderpod.hexapod.libraries.L_FileActions;
 import org.nhl.spoderpod.hexapod.utils.U_SensorReadWrite;
 
 public class C_SensorReader extends BaseComponent {
+
+	private int mode = 0;
 
 	public C_SensorReader(String name) {
 		super(name);
@@ -28,7 +31,7 @@ public class C_SensorReader extends BaseComponent {
 	 * ComposeMessage for the this object makes sure that incoming datapackages
 	 * are dissected based on the type. And are send to the correct service.
 	 */
-	
+
 	/**
 	 * Method calculates the direction the spider has to walk to when it gets a
 	 * message.
@@ -55,16 +58,8 @@ public class C_SensorReader extends BaseComponent {
 	 * @param message
 	 * @return string based answer of the direction the spider has to walk to.
 	 */
-	
+
 	@Override
-	// 0; Wordt gebruikt voor Debugging
-	// 1; Wordt gebruikt voor Movements
-	// 2; Wordt gebruikt voor Servos
-	// 3; Wordt gebruikt voor Sensors
-	// 4; Wordt gebruikt voor Gyro
-	// 5; Wordt gebruikt voor joystick
-	// 6; Wordt gebruikt voor buttons
-	// 7; Wordt gebruikt voor touchpad
 	protected boolean composeMessage(MessageBus messageBus) {
 		String strReceiver = "C_Logger";
 		int intData = 0;
@@ -83,33 +78,21 @@ public class C_SensorReader extends BaseComponent {
 			intType = dp.get_byteType();
 			intData = dp.get_shortData();
 			intId = dp.get_byteId();
-
 			switch (intType) { // terugkrijgende string wijst naar de service.
-			case 2:
+			case 2: // Servo
 				strReceiver = "C_Logger";
 				break;
-			case 3:
+			case 3: // Sensor moet data naar AICalculate sturen voor informatie. De modus daar bepaalt wat er gebeurt. 
 				new ComponentRef("C_AICalculate").tell(messageBus, getSelf(),
 						new ComponentRef("C_RouterClient"),
 						String.format("%s %s", intId, intData));
 				break;
-			case 4:
+			case 4: // Gyro
 				strReceiver = "C_Logger";
 				break;
 			case 5: // joystick
-				// <50 = achteren
-				// >200 = voorwaarts
-				// 128 = mid
-				// eerste short [0]
-
-				// <50 links
-				// >200 rechts
-				// 128 mid
-				// tweede short [1]
 				strReceiver = "C_Movement";
 				byte[] value = convertByte(intData);
-				// System.out.println(value[0]);
-				// System.out.println(value[1]);
 				if (value[1] > 3 * (256 / 4)) {
 					new ComponentRef(strReceiver).tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"), "Crabwalk");
@@ -127,18 +110,51 @@ public class C_SensorReader extends BaseComponent {
 							new ComponentRef("C_RouterClient"), "Idle");
 				}
 				return true;
-			case 6:
+			case 6: // Buttons
 				break;
-			case 7:
-				new ComponentRef("C_ControlCheck").tell(messageBus, getSelf(),
-						new ComponentRef("C_RouterClient"), String.format("%s", intId));
+			case 7:// Touchpad
+				switch (intId) {
+				case 0:// walking
+					mode = 0;
+					break;
+				case 1:// crabwalk
+					mode = 1;
+					break;
+				case 2:// balloon
+					new ComponentRef("C_ControlCheck").tell(messageBus,
+							getSelf(), new ComponentRef("C_RouterClient"),
+							"0");
+					break;
+				case 3:// spidergap
+					mode = 2;
+					break;
+				case 4:// gravel
+					mode = 3;
+					break;
+				case 5: // stairwalk
+					mode = 4;
+					break;
+				case 6: // speedwalk
+					mode = 5;
+					break;
+				case 7: // dance
+					new ComponentRef("C_ControlCheck").tell(messageBus,
+							getSelf(), new ComponentRef("C_RouterClient"),
+							"1");
+					break;
+				case 8: // polewalk
+					new ComponentRef("C_ControlCheck").tell(messageBus,
+							getSelf(), new ComponentRef("C_RouterClient"),
+							"2");
+					break;
+				}
 				break;
 			default:
 				break;
 			}
 		}
 		L_FileActions.write(i);
-		return false;
+		return true;
 	}
 
 	private byte[] convertByte(int data) {
@@ -150,7 +166,12 @@ public class C_SensorReader extends BaseComponent {
 
 	@Override
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
-		// TODO Auto-generated method stub
+		if (message instanceof Message) {
+			Message m = (Message) message;
+			if (m.getSender().equals("C_ControlCheck")) {
+				mode = Integer.parseInt(m.getData());
+			}
+		}
 
 	}
 }

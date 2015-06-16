@@ -89,8 +89,7 @@ public class C_AICalculate extends BaseComponent {
 				centerDistance = Integer.parseInt(m.getData());
 				break;
 			default:
-				System.out
-						.println("Message Sender is unknown to C_AICalculate::receiveMessage()");
+				System.out.println("Message Sender is unknown to C_AICalculate::receiveMessage()");
 				break;
 			}
 		}
@@ -126,17 +125,17 @@ public class C_AICalculate extends BaseComponent {
 		Random rand = new Random();
 		Double random = rand.nextDouble();
 		if (intSensorData < 20) {
-			return "Back";
+			return "aBack";
 		}
 		
 		if (random < 0.2) {
-			return "Left";
+			return "aLeft";
 		} else if (random < 0.4) {
-			return "Right";
+			return "aRight";
 		} else if (random < 0.9) {
-			return "WalkState";
+			return "aForward";
 		} else {
-			return "Pirouette";
+			return "aBack";
 		}
 	}
 

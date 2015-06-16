@@ -16,20 +16,17 @@ public class C_VisionListener extends BaseComponent {
 
 	@Override
 	public void init(MessageBus messageBus) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void close(MessageBus messageBus) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-
-		return false;
+		return true;
 	}
 
 	@Override

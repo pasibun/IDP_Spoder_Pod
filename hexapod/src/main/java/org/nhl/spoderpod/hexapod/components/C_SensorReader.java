@@ -91,34 +91,18 @@ public class C_SensorReader extends BaseComponent {
 				strReceiver = "C_Logger";
 				break;
 			case 5: // joystick
-				strReceiver = "C_Movement";
-				byte[] value = convertByte(intData);
-				if (value[1] > 3 * (256 / 4)) {
-					new ComponentRef(strReceiver).tell(messageBus, getSelf(),
-							new ComponentRef("C_RouterClient"), "Crabwalk");
-				} else if (value[1] < 1 * (256 / 4)) {
-					new ComponentRef(strReceiver).tell(messageBus, getSelf(),
-							new ComponentRef("C_RouterClient"), "Walkstate");
-				} else if (value[1] < 50) {
-					new ComponentRef(strReceiver).tell(messageBus, getSelf(),
-							new ComponentRef("C_RouterClient"), "Crabwalk");
-				} else if (value[1] > 200) {
-					new ComponentRef(strReceiver).tell(messageBus, getSelf(),
-							new ComponentRef("C_RouterClient"), "Crabwalk");
-				} else {
-					new ComponentRef(strReceiver).tell(messageBus, getSelf(),
-							new ComponentRef("C_RouterClient"), "Idle");
-				}
-				return true;
+				movementSorter(messageBus, intData);
 			case 6: // Buttons
 				break;
 			case 7:// Touchpad
 				switch (intId) {
 				case 0:// walking
-					mode = 0;
+					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"), ""+0);
 					break;
 				case 1:// crabwalk
-					mode = 1;
+					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"), ""+1);
 					break;
 				case 2:// balloon
 					new ComponentRef("C_ControlCheck").tell(messageBus,
@@ -126,16 +110,20 @@ public class C_SensorReader extends BaseComponent {
 							"0");
 					break;
 				case 3:// spidergap
-					mode = 2;
+					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"), ""+2);
 					break;
 				case 4:// gravel
-					mode = 3;
+					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"), ""+3);
 					break;
 				case 5: // stairwalk
-					mode = 4;
+					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"), ""+4);
 					break;
 				case 6: // speedwalk
-					mode = 5;
+					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"), ""+5);
 					break;
 				case 7: // dance
 					new ComponentRef("C_ControlCheck").tell(messageBus,
@@ -157,6 +145,24 @@ public class C_SensorReader extends BaseComponent {
 		return true;
 	}
 
+	private void movementSorter(MessageBus messageBus, int intData){
+		String movement = "Idle";
+		
+		byte[] value = convertByte(intData);
+		if (value[1] > 3 * (256 / 4)) {
+			movement = "Forward";
+		} else if (value[1] < 1 * (256 / 4)) {
+			movement = "Right";
+		} else if (value[0] < 50) {
+			movement = "Left";
+		} else if (value[0] > 200) {
+			movement = "Back";
+		} else {
+			new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+					new ComponentRef("C_RouterClient"), "Idle");
+		}
+	}
+	
 	private byte[] convertByte(int data) {
 		byte[] value = new byte[2];
 		value[0] = ((byte) ((data >> 8) & 0xff));

@@ -69,7 +69,7 @@ public class C_ControlCheck extends BaseComponent{
 			default://nonActive mode.
 				new ComponentRef("C_ControlCheck").tell(messageBus,
 						getSelf(), new ComponentRef("C_RouterClient"),
-						"1");
+						"default");
 				break;
 					
 			}

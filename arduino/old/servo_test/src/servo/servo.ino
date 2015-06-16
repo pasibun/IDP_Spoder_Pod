@@ -13,6 +13,12 @@ extern "C" {
 #include "msg.h"
 }
 
+/* Typedefs */
+typedef struct {
+  unsigned short readCount, writeCount;
+  char data[CIRC_BUFFER_SIZE];
+} CircBuffer;
+
 /*
 Prototypes for custom functions
 */
@@ -37,10 +43,12 @@ enum Destinations {
   Arduino, Raspi, GamePad, PC
 };
 
-HardwareSerial DestinationSerialBinding[] = {Serial, Serial1, Serial2, Serial};
+HardwareSerial DestinationSerialBinding[] = {Serial1, Serial1, Serial2, Serial1};
 
 /* Global variable declarations */
 Buffer serial1RecvBuf;
+CircBuffer serial1RBuf
+
 Buffer serial2RecvBuf;
 Buffer serialSendBuf;
 Packet *packet = (Packet *)malloc(3 + sizeof(Message) * 96);
@@ -51,8 +59,7 @@ Definitions for default arduino functions
 */
 void setup() {
   Dynamixel.begin(1000000, 2);
-  Serial.begin(9600);
-  Serial1.begin(9600);
+  Serial1.begin(115200);
   Serial2.begin(9600);
 }
 
@@ -67,37 +74,37 @@ void serialEvent2() {
   handleSerial(&Serial2, &serial2RecvBuf, printPacket);
 }
 
-/* 
+/*
 Definitions for custom functions
 */
 short DegToBin(short degrees) {
-  return (degrees * DegToBinRatio) + 30 * DegToBinRatio;
+  return (degrees - 30) * DegToBinRatio;
 }
 
 /* Read incomming serial data, parse into packet and execute */
 void handleSerial(HardwareSerial *serial, Buffer *buf, void (*callback) (Packet *p)) {
-  byte c;
-  bool decodedPacket = false;
-  while (!decodedPacket && serial->available()) {
-    c = serial->read();
+while (buf.readCount != buf.writeCount) {
+    byte c = buf.data[buf.readCount];
     if (c == '\0') {
-      if (buf->size > 2) {
-        DecodePacket(buf, packet);
-        if (packet->destination == Arduino) {
-          callback(packet);
+      if (msgBuf.size > (3 + sizeof(Message)) && (msgBuf.size - 3) % sizeof(Message) == 0) {
+        DecodePacket(&msgBuf, packet);
+        msgBuf.size = 0;
+        if (packet->checksum == 0) {
+          printPacket(packet);
         } else {
-          sendPacket(packet);
+          Serial1.println(packet->checksum);
+          Serial1.println("Error");
         }
-        decodedPacket = true;
       }
-      buf->size = 0;
+      msgBuf.size = 0;
     } else {
-      if (buf->size < BUFFER_SIZE) {
-        buf->data[buf->size++] = c;
+      if (msgBuf.size < 250) {
+        msgBuf.data[msgBuf.size++] = c;
       } else {
-        buf->size = 0;
+        msgBuf.size = 0;
       }
     }
+    buf.readCount = nextCount(buf.readCount);
   }
 }
 

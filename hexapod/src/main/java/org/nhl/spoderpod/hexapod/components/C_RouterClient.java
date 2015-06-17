@@ -15,12 +15,16 @@ public final class C_RouterClient extends BaseComponent {
 	private final U_RouterClient routerClient;
 
 	/**
+	 * Name of the component.
+	 * 
+	 * Host name to connect to.
+	 * 
+	 * Port number to connect on.
+	 * 
 	 * @param name
-	 *            Name of the component.
 	 * @param host
-	 *            Hostname to connect to.
 	 * @param port
-	 *            Port number to connect on.
+	 * 
 	 */
 	public C_RouterClient(String name, String host, int port) {
 		super(name);

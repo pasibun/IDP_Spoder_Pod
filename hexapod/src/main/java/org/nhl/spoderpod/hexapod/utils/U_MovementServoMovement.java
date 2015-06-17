@@ -64,10 +64,10 @@ public final class U_MovementServoMovement implements I_Threaded {
 		L_FileActions.write(L_Encoder.getMsgs());
 	}
 
-	public void setCurrentMovement(String strCSVname){
+	public void setCurrentMovement(String strCSVname) {
 		this.currentMovement = movements.get(strCSVname);
 	}
-	
+
 	@Override
 	public void run() {
 		if (this.thread != Thread.currentThread()) {
@@ -75,7 +75,8 @@ public final class U_MovementServoMovement implements I_Threaded {
 		}
 		for (int time = 0;; time++) {
 			for (int n = 0; n < 6; n++) {
-				L_Vector v = currentMovement.getLeg(n + 1)[time % (currentMovement.getLegCount() - 1)];
+				L_Vector v = currentMovement.getLeg(n + 1)[time
+						% (currentMovement.getLegCount() - 1)];
 				updateLeg(n, v.x, v.y, v.z);
 			}
 			sendPacket();

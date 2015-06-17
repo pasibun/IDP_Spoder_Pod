@@ -9,6 +9,7 @@ import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
 
 /**
  * Simple httpserver which sends the same data to all connected clients.
+ * 
  * @author achmed
  *
  */
@@ -19,7 +20,8 @@ public final class U_InputServer implements I_Threaded {
 	private volatile boolean running;
 
 	/**
-	 * @param port Port to listen on.
+	 * @param port
+	 *            Port to listen on.
 	 */
 	public U_InputServer(int port) {
 		this.thread = new Thread(this);
@@ -30,6 +32,7 @@ public final class U_InputServer implements I_Threaded {
 
 	/**
 	 * Check if there are connected clients.
+	 * 
 	 * @return
 	 */
 	public boolean hasConnectedClients() {
@@ -37,15 +40,17 @@ public final class U_InputServer implements I_Threaded {
 	}
 
 	/**
-	 * Send data to all connected clients. the data get's appended with an http-header.
+	 * Send data to all connected clients. the data get's appended with an
+	 * http-header.
+	 * 
 	 * @param msg
 	 */
 	public void send(String msg) {
 		String data = String.format("HTTP/1.1 200 OK\r\n"
 				+ "Content-Type: text/json\r\n"
 				+ "Access-Control-Allow-Origin: *\r\n"
-				+ "Content-Length: %d\r\n\r\n" 
-				+ "%s\r\n", msg.length() + 2, msg);
+				+ "Content-Length: %d\r\n\r\n" + "%s\r\n", msg.length() + 2,
+				msg);
 		while (hasConnectedClients()) {
 			try {
 				Socket client = this.connectedClients.poll();

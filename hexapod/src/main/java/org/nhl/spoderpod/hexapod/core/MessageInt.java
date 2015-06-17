@@ -5,7 +5,7 @@ import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 /**
  * Simple IMessage implementation. This message has a String as data.
  * 
- * @author achmed
+ * @author matthijs_laptop
  *
  */
 public final class MessageInt implements I_Message {
@@ -16,12 +16,15 @@ public final class MessageInt implements I_Message {
 	private final int[] data;
 
 	/**
+	 * Reference to the sender.
+	 * 
+	 * Reference to the recipient.
+	 * 
+	 * The message data.
+	 * 
 	 * @param sender
-	 *            Reference to the sender.
 	 * @param recipient
-	 *            Reference to the recipient.
 	 * @param data
-	 *            The message data.
 	 */
 	public MessageInt(ComponentRef sender, ComponentRef recipient, int[] data) {
 		this.sender = sender;

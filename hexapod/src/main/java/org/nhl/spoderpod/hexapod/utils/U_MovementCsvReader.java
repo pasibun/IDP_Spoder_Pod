@@ -9,6 +9,7 @@ import org.nhl.spoderpod.hexapod.libraries.L_Vector;
 
 /***
  * Reads the CSV
+ * 
  * @author Yannick the yellow submarine
  *
  */
@@ -28,15 +29,15 @@ public class U_MovementCsvReader {
 		}
 		leglist.get(id)[time - 1] = vector;
 	}
-	
+
 	public L_Vector[] getLeg(int id) {
 		if (leglist.containsKey(id)) {
 			return leglist.get(id);
 		}
 		return new L_Vector[0];
 	}
-	
-	public int getLegCount(){
+
+	public int getLegCount() {
 		return legCount;
 	}
 
@@ -51,8 +52,11 @@ public class U_MovementCsvReader {
 			while ((line = br.readLine()) != null) {
 				splittedline = line.split(csvSplitBy);
 
-				add(Integer.parseInt(splittedline[0]), Integer.parseInt(splittedline[1]), new L_Vector(
-						(int) Double.parseDouble(splittedline[2]), (int) Double.parseDouble(splittedline[3]), (int) Double.parseDouble(splittedline[4])));
+				add(Integer.parseInt(splittedline[0]),
+						Integer.parseInt(splittedline[1]), new L_Vector(
+								(int) Double.parseDouble(splittedline[2]),
+								(int) Double.parseDouble(splittedline[3]),
+								(int) Double.parseDouble(splittedline[4])));
 
 			}
 			br.close();
@@ -60,7 +64,7 @@ public class U_MovementCsvReader {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		legCount = -1;
 		for (L_Vector[] leg : this.leglist.values()) {
 			if (legCount < 0 || leg.length < legCount) {

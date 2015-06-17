@@ -57,6 +57,7 @@ void DecodePacket(Buffer *buf, Packet *p) {
 	buf->count = 0;
 	DecodeCOBS(buf);
 	p->checksum = readByte(buf) - checksum(buf->data + 1, buf->size - 1);
+	p->messageCount = 0;
 	if (p->checksum == 0) {
 		p->destination = readByte(buf);
 		p->messageCount = (buf->size - buf->count) / sizeof(Message);

@@ -69,7 +69,7 @@ public class C_AICalculate extends BaseComponent {
 					break;
 				default:
 					System.out
-							.println("Mode has defaulted in C_AICalculate::receiveMessage().C_SensorReader");
+							.println("Mode has defaulted :: C_AICalculate.receiveMessage().C_SensorReader.mode - 68");
 					break;
 				}
 				break;
@@ -94,7 +94,8 @@ public class C_AICalculate extends BaseComponent {
 				break;
 			default:
 				System.out
-						.println("Message Sender is unknown to C_AICalculate::receiveMessage()");
+						.println("Message Sender defaulted :: C_AICalculate.receiveMessage().m.getSender().toString() - 92");
+
 				break;
 			}
 		}
@@ -102,28 +103,28 @@ public class C_AICalculate extends BaseComponent {
 
 	private String mode_balloonWalk(int intSensorData) {
 		if (intSensorData < 10) {
-			return "Prikken";
+			return "bPrikken";
 		}
 		if (centerDistance > 0.75) { // ballon zit rechts van center
-			return "Right";
+			return "aRight";
 		} else if (centerDistance < 0.25) { // ballon zit links van center.
-			return "Left";
+			return "aLeft";
 		} else if (centerDistance > 0.25 && centerDistance < 0.75) {
-			return "WalkState";
+			return "aForward";
 		} else {
 			System.out
-					.println("Something Went Wrong! :: C_AICALCUALTE.mode_balloonWalk.centerDistance");
+					.println("Something Went Wrong! :: C_AICALCUALTE.mode_balloonWalk.centerDistance - 110");
 		}
-		return "Pirouette";
+		return "bPirouette";
 	}
 
 	private String mode_poleWalk(int intSensorData) {
 		if (intSensorData > intPoleDist) {
-			return "Back";
+			return "aBack";
 		} else if (intSensorData < intPoleDist) {
-			return "WalkState";
+			return "aForward";
 		}
-		return "Rondlopen";
+		return "bRondlopen";
 	}
 
 	private String mode_havingFun(int intSensorData) {

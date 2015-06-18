@@ -37,13 +37,10 @@ public final class U_MovementSpoderLeg {
 				+ L_Calculations.MiddleServo(x, y, z) * this.forceMultiplier);
 		servoArray[2].setServo(servoArray[2].getOffset()
 				- L_Calculations.OutsideServo(x, y, z) * this.forceMultiplier);
-		
-		//System.out.format("LegId: %d: %s\n", legId, toString());
 	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return String.format("%s", Arrays.toString(servoArray));
 	}
 

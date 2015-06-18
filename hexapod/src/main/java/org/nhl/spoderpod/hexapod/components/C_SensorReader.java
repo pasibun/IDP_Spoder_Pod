@@ -160,10 +160,9 @@ public class C_SensorReader extends BaseComponent {
 			movement = "aLeft";
 		} else if (value[0] > 200) {
 			movement = "aBack";
-		} else {
-			new ComponentRef("C_Movement").tell(messageBus, getSelf(),
-					new ComponentRef("C_RouterClient"), "Idle");
-		}
+		} 
+		new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+				new ComponentRef("C_RouterClient"), movement);
 	}
 	
 	private byte[] convertByte(int data) {

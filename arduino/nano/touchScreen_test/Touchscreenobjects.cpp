@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 
-Button::Button(int x, int y, int width, int height, int buttonnumber, String buttonMode) {
+Button::Button(int x, int y, int width, int height, int buttonnumber, char *buttonMode) {
   this->x1 = x;
   this->x2 = x + height;
   this->y1 = y;
@@ -11,13 +11,13 @@ Button::Button(int x, int y, int width, int height, int buttonnumber, String but
   this->width = width;
   this->height = height;
   this->buttonnumber = buttonnumber;
-  this->buttonMode = buttonMode;
+  strcpy(this->buttonMode , buttonMode);
 }
 
-void Button::PrintBlue() {
+void Button::PrintRed() {
   Tft.fillRectangle(this->x1, this->y1, this->width, this->height, RED);
 }
-void Button::PrintRed() {
+void Button::PrintGreen() {
   Tft.fillRectangle(this->x1, this->y1, this->width, this->height, GREEN);
 }
 boolean Button::Press(int x, int y) {
@@ -41,14 +41,14 @@ int Button::GetButtonNumber(){
 }
 
 boolean Button::PrintMode() {
-  this->PrintRed();
+  this->PrintGreen();
   Tft.fillRectangle(205, 5, 30, 310, WHITE);
-  String mode = "MODE ";
+  String mode = "MODE : ";
   char const* result;
-  mode += this->buttonnumber;
+  mode += this->buttonMode;
   result = mode.c_str();
   Serial.print(mode);
-  Tft.drawStringhor(result, 75, 225, 2, BLUE);
+  Tft.drawStringhor(result, 10, 225, 2, BLUE);
   return true;
 }
 

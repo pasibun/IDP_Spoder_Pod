@@ -11,22 +11,19 @@ public final class C_Movement extends BaseComponent {
 
 	public C_Movement(String name) {
 		super(name);
-		servoMovement = new U_MovementServoMovement();
-
+		this.servoMovement = new U_MovementServoMovement();
 	}
 
 	public void init(MessageBus messageBus) {
-		servoMovement.start();
+		this.servoMovement.start();
 	}
 
 	public void close(MessageBus messageBus) {
-		servoMovement.stop();
-
+		this.servoMovement.stop();
 	}
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		// fuku
 		return true;
 	}
 
@@ -34,10 +31,13 @@ public final class C_Movement extends BaseComponent {
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
-			// System.out.println(m.getData());
-			servoMovement.setCurrentMovement(m.getData());
+			switch (m.getData().charAt(0)) {
+			case 'b':
+				this.servoMovement.setCurrentMovement(m.getData());
+				break;
+			case 'a':
+				break;
+			}
 		}
-
 	}
-
 }

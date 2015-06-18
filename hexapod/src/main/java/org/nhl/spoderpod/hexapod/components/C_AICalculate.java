@@ -28,6 +28,10 @@ public class C_AICalculate extends BaseComponent {
 		return true;
 	}
 
+	/**
+	 * When receiving a message determine the mode's or meh fuck it Hidde fix
+	 * deze comment.
+	 */
 	@Override
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof Message) {
@@ -80,7 +84,7 @@ public class C_AICalculate extends BaseComponent {
 				case "PoleState": // mode 3
 					mode = 3;
 					break;
-				default: //sets it to NONACTIVE. 
+				default: // sets it to NONACTIVE.
 					mode = 0;
 					break;
 				}
@@ -89,7 +93,9 @@ public class C_AICalculate extends BaseComponent {
 				centerDistance = Integer.parseInt(m.getData());
 				break;
 			default:
-				System.out.println("Message Sender defaulted :: C_AICalculate.receiveMessage().m.getSender().toString() - 92");
+				System.out
+						.println("Message Sender defaulted :: C_AICalculate.receiveMessage().m.getSender().toString() - 92");
+
 				break;
 			}
 		}
@@ -127,7 +133,7 @@ public class C_AICalculate extends BaseComponent {
 		if (intSensorData < 20) {
 			return "aBack";
 		}
-		
+
 		if (random < 0.2) {
 			return "aLeft";
 		} else if (random < 0.4) {

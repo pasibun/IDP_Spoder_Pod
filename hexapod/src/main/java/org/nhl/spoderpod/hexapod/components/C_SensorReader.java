@@ -9,9 +9,7 @@ import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
 import org.nhl.spoderpod.hexapod.libraries.L_Decoder;
-import org.nhl.spoderpod.hexapod.libraries.L_Encoder;
 import org.nhl.spoderpod.hexapod.libraries.L_FileActions;
-import org.nhl.spoderpod.hexapod.utils.U_SensorReadWrite;
 
 public class C_SensorReader extends BaseComponent {
 
@@ -81,27 +79,32 @@ public class C_SensorReader extends BaseComponent {
 			switch (intType) { // terugkrijgende string wijst naar de service.
 			case 2: // Servo
 				new ComponentRef("C_Logger").tell(messageBus, getSelf(),
-						new ComponentRef("C_RouterClient"), String.format("Servo:{ID: %s}{Health: %s}", intId, intData));
+						new ComponentRef("C_RouterClient"), String.format(
+								"Servo:{ID: %s}{Health: %s}", intId, intData));
 				break;
-			case 3: // Sensor moet data naar AICalculate sturen voor informatie. De modus daar bepaalt wat er gebeurt. 
+			case 3: // Sensor moet data naar AICalculate sturen voor informatie.
+					// De modus daar bepaalt wat er gebeurt.
 				new ComponentRef("C_AICalculate").tell(messageBus, getSelf(),
 						new ComponentRef("C_RouterClient"),
 						String.format("%s %s", intId, intData));
 				break;
 			case 4: // Gyro
 				new ComponentRef("C_Logger").tell(messageBus, getSelf(),
-						new ComponentRef("C_RouterClient"), String.format("Gyro:{Helling: %s}", intData));
+						new ComponentRef("C_RouterClient"),
+						String.format("Gyro:{Helling: %s}", intData));
 				break;
 			case 5: // joystick
 				movementSorter(messageBus, intData);
 			case 6: // Buttons
-				System.out.println("No actions! :: C_SensorReader.composeMessage().dp.intTyp(6).intId - 98");
+				System.out
+						.println("No actions! :: C_SensorReader.composeMessage().dp.intTyp(6).intId - 98");
 				break;
 			case 7:// Touchpad
 				switch (intId) {
 				case 0:// walking
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
-							new ComponentRef("C_RouterClient"), "bWalkState");
+
+					new ComponentRef("C_RouterClient"), "" + 0);
 					break;
 				case 1:// crabwalk
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
@@ -109,12 +112,11 @@ public class C_SensorReader extends BaseComponent {
 					break;
 				case 2:// balloon
 					new ComponentRef("C_ControlCheck").tell(messageBus,
-							getSelf(), new ComponentRef("C_RouterClient"),
-							"0");
+							getSelf(), new ComponentRef("C_RouterClient"), "0");
 					break;
 				case 3:// spidergap
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
-							new ComponentRef("C_RouterClient"), "bSpiderGap");
+							new ComponentRef("C_RouterClient"), "" + 2);
 					break;
 				case 4:// gravel
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
@@ -130,27 +132,26 @@ public class C_SensorReader extends BaseComponent {
 					break;
 				case 7: // dance
 					new ComponentRef("C_ControlCheck").tell(messageBus,
-							getSelf(), new ComponentRef("C_RouterClient"),
-							"1");
+							getSelf(), new ComponentRef("C_RouterClient"), "1");
 					break;
 				case 8: // polewalk
 					new ComponentRef("C_ControlCheck").tell(messageBus,
-							getSelf(), new ComponentRef("C_RouterClient"),
-							"2");
+							getSelf(), new ComponentRef("C_RouterClient"), "2");
 					break;
 				}
 				break;
 			default:
-				System.out.println("Unknown type! :: C_SensorReader.composeMessage().dp.intType - 143");
+				System.out
+						.println("Unknown type! :: C_SensorReader.composeMessage().dp.intType - 143");
 				break;
 			}
 		}
 		return true;
 	}
 
-	private void movementSorter(MessageBus messageBus, int intData){
+	private void movementSorter(MessageBus messageBus, int intData) {
 		String movement = "Idle";
-		
+
 		byte[] value = convertByte(intData);
 		if (value[1] > 3 * (256 / 4)) {
 			movement = "aForward";
@@ -160,12 +161,11 @@ public class C_SensorReader extends BaseComponent {
 			movement = "aLeft";
 		} else if (value[0] > 200) {
 			movement = "aBack";
-		} else {
-			new ComponentRef("C_Movement").tell(messageBus, getSelf(),
-					new ComponentRef("C_RouterClient"), "Idle");
-		}
+		} 
+		new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+				new ComponentRef("C_RouterClient"), movement);
 	}
-	
+
 	private byte[] convertByte(int data) {
 		byte[] value = new byte[2];
 		value[0] = ((byte) ((data >> 8) & 0xff));

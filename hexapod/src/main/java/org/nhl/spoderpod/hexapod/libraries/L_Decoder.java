@@ -5,6 +5,13 @@ import java.util.List;
 
 import org.nhl.spoderpod.hexapod.core.DataPackage;
 
+/**
+ * This class is for decoding the incomming message. Checking the checksum,
+ * replacing zero bytes en devide the message.
+ * 
+ * @author matthijs_laptop
+ *
+ */
 public class L_Decoder {
 	private static byte type;
 	private static byte id;
@@ -41,29 +48,32 @@ public class L_Decoder {
 		return true;
 	}
 
-	private void findDestination(List<Byte> msg) {
-		destination = msg.get(1);
-	}
-
+	/**
+	 * Decode the incomming message. Replace the 0 bytes with something..
+	 * 
+	 * @param msg
+	 */
 	private static void decodeCOBS(List<Byte> msg) {
 		int n;
 		int lastZeroByte = msg.size() - 1;
 		while (lastZeroByte > -1) {
 			n = lastZeroByte;
-			if (lastZeroByte < msg.size()){
+			if (lastZeroByte < msg.size()) {
 				lastZeroByte -= msg.get(lastZeroByte);
 				msg.set(n, (byte) 0);
-			}
-			else{
+			} else {
 				System.out.println("Error, breaking");
 				break;
 			}
 		}
-		//System.out.println(msg);
 	}
 
+	/**
+	 * Message subdevide
+	 * 
+	 * @param msg
+	 */
 	private static void readMessage(List<Byte> msg) {
-		//System.out.println(msg);
 		for (int i = 2; i < msg.size(); i += 4) {
 			if (msg.size() - 1 == i) {
 				break;

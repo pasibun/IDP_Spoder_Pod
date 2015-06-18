@@ -12,7 +12,6 @@ public final class C_Movement extends BaseComponent {
 	public C_Movement(String name) {
 		super(name);
 		this.servoMovement = new U_MovementServoMovement();
-
 	}
 
 	public void init(MessageBus messageBus) {

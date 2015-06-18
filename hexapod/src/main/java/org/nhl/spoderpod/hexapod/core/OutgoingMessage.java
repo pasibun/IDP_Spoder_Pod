@@ -17,12 +17,15 @@ public final class OutgoingMessage implements I_Message {
 	private final String data;
 
 	/**
+	 * Reference to the sender.
+	 * 
+	 * Reference to the recipient.
+	 * 
+	 * The message data.
+	 * 
 	 * @param sender
-	 *            Reference to the sender.
 	 * @param recipient
-	 *            Reference to the recipient.
 	 * @param data
-	 *            The message data.
 	 */
 	public OutgoingMessage(ComponentRef sender, ComponentRef recipient,
 			ComponentRef actualrecipient, String data) {
@@ -39,7 +42,7 @@ public final class OutgoingMessage implements I_Message {
 	public ComponentRef getRecipient() {
 		return this.recipient;
 	}
-	
+
 	public ComponentRef getActualrecipient() {
 		return actualrecipient;
 	}

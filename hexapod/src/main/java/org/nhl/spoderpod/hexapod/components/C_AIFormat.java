@@ -1,8 +1,5 @@
 package org.nhl.spoderpod.hexapod.components;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import org.nhl.spoderpod.hexapod.core.ComponentRef;
 import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
@@ -24,7 +21,9 @@ public class C_AIFormat extends BaseComponent {
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
-		new ComponentRef("C_Logger").tell(messageBus, getSelf(), new ComponentRef("C_RouterClient"), "{\"AI Service\": { \"Latest Direction\": \"%s\"}");	
+		new ComponentRef("C_Logger").tell(messageBus, getSelf(),
+				new ComponentRef("C_RouterClient"),
+				"{\"AI Service\": { \"Latest Direction\": \"%s\"}");
 		return true;
 	}
 
@@ -32,14 +31,21 @@ public class C_AIFormat extends BaseComponent {
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
-			new ComponentRef("C_Logger").tell(messageBus, getSelf(), new ComponentRef("C_RouterClient"), strDataFormat(m.getData()));	
+			new ComponentRef("C_Logger").tell(messageBus, getSelf(),
+					new ComponentRef("C_RouterClient"),
+					strDataFormat(m.getData()));
 		}
 	}
 
+	/**
+	 * Data formatter
+	 * 
+	 * @param direction
+	 * @return
+	 */
 	private String strDataFormat(String direction) {
-
 		String returnValue = "Error";
-		if (direction.equals(null)){
+		if (direction.equals(null)) {
 			return returnValue;
 		}
 		returnValue = String.format(

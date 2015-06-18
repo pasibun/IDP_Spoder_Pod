@@ -1,17 +1,11 @@
 package org.nhl.spoderpod.hexapod.utils;
 
 import java.util.Arrays;
-
 /***
  * damn dude
  * @author achmed
  *
  */
-
-
-
-
-
 import org.nhl.spoderpod.hexapod.libraries.L_Calculations;
 import org.nhl.spoderpod.hexapod.libraries.L_Encoder;
 
@@ -20,7 +14,8 @@ public final class U_MovementSpoderLeg {
 	private final U_MovementServo[] servoArray;
 	private final int forceMultiplier;
 
-	public U_MovementSpoderLeg(int id, U_MovementServo[] servoArray, int forceMultiplier) {
+	public U_MovementSpoderLeg(int id, U_MovementServo[] servoArray,
+			int forceMultiplier) {
 		this.legId = id;
 		this.servoArray = servoArray;
 		this.forceMultiplier = forceMultiplier;

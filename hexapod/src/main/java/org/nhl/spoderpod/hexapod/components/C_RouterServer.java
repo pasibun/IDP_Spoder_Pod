@@ -7,7 +7,7 @@ import org.nhl.spoderpod.hexapod.utils.U_RouterServer;
 public final class C_RouterServer extends BaseComponent {
 
 	private final U_RouterServer server;
-	
+
 	public C_RouterServer(String name) {
 		super(name);
 		server = new U_RouterServer(1234);

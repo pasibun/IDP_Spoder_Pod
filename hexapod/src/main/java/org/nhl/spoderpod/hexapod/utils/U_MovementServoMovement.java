@@ -1,5 +1,7 @@
 package org.nhl.spoderpod.hexapod.utils;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,12 +14,14 @@ public final class U_MovementServoMovement implements I_Threaded {
 	private final U_MovementSpoderLeg[] legArray;
 	public static final int LEFT_SIDE = 1;
 	public static final int RIGHT_SIDE = -1;
+
 	private final Thread thread;
 	private final Map<String, U_MovementCsvReader> movements;
 	private U_MovementCsvReader currentMovement;
+	private int direction;
+	private int currentMovementState;
 
 	public U_MovementServoMovement() {
-
 		this.legArray = new U_MovementSpoderLeg[] {
 				new U_MovementSpoderLeg(10, CreateServos(10, 135, 180, 360),
 						LEFT_SIDE),
@@ -33,14 +37,23 @@ public final class U_MovementServoMovement implements I_Threaded {
 						RIGHT_SIDE) };
 
 		this.thread = new Thread(this);
-		this.movements = new HashMap<String, U_MovementCsvReader>();
-		movements.put("Walkstate", new U_MovementCsvReader());
-		movements.put("Crabwalk", new U_MovementCsvReader());
-		movements.put("Idle", new U_MovementCsvReader());
-		movements.get("Walkstate").read("StraightWalk.csv");
-		movements.get("Crabwalk").read("CrabWalk.csv");
-		movements.get("Idle").read("StraightWalk.csv");
-		this.currentMovement = movements.get("Idle");
+		this.direction = 1;
+		this.movements = LoadMovements();
+		this.setCurrentMovement("Idle");
+	}
+
+	private static Map<String, U_MovementCsvReader> LoadMovements() {
+		Map<String, U_MovementCsvReader> movements = new HashMap<String, U_MovementCsvReader>();
+		File[] files = new File("./").listFiles();
+		for (File file : files) {
+			String filename[] = file.getName().split("\\.");
+			if (file.isFile() && filename.length > 1
+					&& "csv".equals(filename[1])) {
+				System.out.println("loading: " + filename[0]);
+				movements.put(filename[0], new U_MovementCsvReader(file));
+			}
+		}
+		return movements;
 	}
 
 	private static U_MovementServo[] CreateServos(int id, int offset1,
@@ -64,8 +77,19 @@ public final class U_MovementServoMovement implements I_Threaded {
 		L_FileActions.write(L_Encoder.getMsgs());
 	}
 
-	public void setCurrentMovement(String strCSVname) {
-		this.currentMovement = movements.get(strCSVname);
+	public void setCurrentMovement(String movement) {
+		if (movements.containsKey(movement)
+				&& movements.get(movement) != this.currentMovement) {
+			this.currentMovement = movements.get(movement);
+			currentMovementState = 0;
+		}
+		if (!movements.containsKey(movement)) {
+			System.out.println(movement + " movement doesn't exist");
+		}
+	}
+
+	public void setDirection(int direction) {
+		this.direction = direction;
 	}
 
 	@Override
@@ -73,17 +97,22 @@ public final class U_MovementServoMovement implements I_Threaded {
 		if (this.thread != Thread.currentThread()) {
 			return;
 		}
-		for (int time = 0;; time++) {
+		for (; this.currentMovement != null;) {
 			for (int n = 0; n < 6; n++) {
-				L_Vector v = currentMovement.getLeg(n + 1)[time
-						% (currentMovement.getLegCount() - 1)];
-				updateLeg(n, v.x, v.y, v.z);
+				L_Vector v = currentMovement.getLeg(n + 1)[currentMovementState
+						% (currentMovement.getLegCount())];
+				if (v != null) {
+					updateLeg(n, v.x, v.y, v.z);
+				}
 			}
 			sendPacket();
 			try {
-				Thread.sleep(50);
+				Thread.sleep(450 / currentMovement.getLegCount());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+			}
+			if ((currentMovementState += this.direction) < 0) {
+				this.currentMovementState = currentMovement.getLegCount() - 1;
 			}
 		}
 	}

@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <DynamixelSerial.h>
+//#include "I2Cdev.h"
+//#include "MPU6050.h"
 
 extern "C" {
 #include "msg.h"
@@ -59,13 +61,18 @@ Packet *packet = (Packet *) malloc(3 + sizeof(Message) * 96);
 Default Arduino functions
 */
 void setup() {
-  Dynamixel.begin(1000000, 2);
   DestinationTranslations[GamePad]->begin(9600);
   DestinationTranslations[Raspi]->begin(115200);
-  
+
+  Dynamixel.begin(1000000, 2);
+//  accelgyro.initialize();
+//  accelgyro.setXGyroOffset(220);
+//  accelgyro.setYGyroOffset(76);
+//  accelgyro.setZGyroOffset(-85);
+
   //pinMode(DISTANCE_SENSOR1_TRIG, OUTPUT);
   //pinMode(DISTANCE_SENSOR1_ECHO, INPUT);
-  
+
   InitCom(&serial1Com);
   InitCom(&serial2Com);
 }
@@ -77,7 +84,6 @@ void loop() {
 }
 
 void serialEvent1 () {
-  Serial2.println("asd");
   handleSerialEvent(&serial1Com);
 }
 
@@ -102,13 +108,14 @@ int CircBuf_nextCount(int count) {
 }
 
 void sendSensordata(Destinations destination) {
-  //Serial2.println(getDistance(), DEC);
-//  Message messages[] = { {3, 0, getDistance()}};
-//  if (sizeof(messages) / sizeof(Message) > 0) {
-//    EncodePacket(&SensorMsgBuffer, destination, messages, sizeof(messages) / sizeof(Message));
-//    SensorMsgBuffer.data[SensorMsgBuffer.size++] = '\0';
-//    DestinationTranslations[destination]->write(SensorMsgBuffer.data, SensorMsgBuffer.size);
-//  }
+  short ax, ay, az, gx, gy, gz;
+  //accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+  Message messages[] = { {3, 0, getDistance()}};
+  if (sizeof(messages) / sizeof(Message) > 0) {
+    EncodePacket(&SensorMsgBuffer, destination, messages, sizeof(messages) / sizeof(Message));
+    SensorMsgBuffer.data[SensorMsgBuffer.size++] = '\0';
+    DestinationTranslations[destination]->write(SensorMsgBuffer.data, SensorMsgBuffer.size);
+  }
 }
 
 short getDistance() {

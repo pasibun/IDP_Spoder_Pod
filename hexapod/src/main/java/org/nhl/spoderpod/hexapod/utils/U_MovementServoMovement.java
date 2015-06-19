@@ -21,6 +21,8 @@ public final class U_MovementServoMovement implements I_Threaded {
 	private int direction;
 	private int currentMovementState;
 
+	public static int SPEED = 50;
+
 	public U_MovementServoMovement() {
 		this.legArray = new U_MovementSpoderLeg[] {
 				new U_MovementSpoderLeg(10, CreateServos(10, 135, 180, 360),
@@ -49,7 +51,6 @@ public final class U_MovementServoMovement implements I_Threaded {
 			String filename[] = file.getName().split("\\.");
 			if (file.isFile() && filename.length > 1
 					&& "csv".equals(filename[1])) {
-				System.out.println("loading: " + filename[0]);
 				movements.put(filename[0], new U_MovementCsvReader(file));
 			}
 		}
@@ -107,7 +108,7 @@ public final class U_MovementServoMovement implements I_Threaded {
 			}
 			sendPacket();
 			try {
-				Thread.sleep(450 / currentMovement.getLegCount());
+				Thread.sleep(SPEED);// 450 / currentMovement.getLegCount());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

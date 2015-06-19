@@ -1,11 +1,15 @@
 #include <stdio.h>
 #include <DynamixelSerial.h>
+//#include "I2Cdev.h"
+//#include "MPU6050.h"
 
 extern "C" {
 #include "msg.h"
 }
 
 #define CIRC_BUFFER_SIZE 128
+#define DISTANCE_SENSOR1_TRIG 7
+#define DISTANCE_SENSOR1_ECHO 8
 
 /*
 Typedef declarations
@@ -31,6 +35,8 @@ Function prototypes
 short DegToBin(short degrees);
 void InitCom(Com *com);
 int CircBuf_nextCount(int count);
+void sendSensordata(Destinations destination);
+short getDistance();
 void handleSerialEvent(Com *com);
 void processRecvBuf(Com *com);
 void handlePacket(Com *com, Packet *packet);
@@ -43,20 +49,30 @@ Constants
 */
 const float DegToBinRatio = 1024.0f / 300.0f;
 
-HardwareSerial *DestinationTranslations[] = { &Serial1, &Serial1, &Serial2, &Serial1 };
+HardwareSerial *DestinationTranslations[] = { &Serial2, &Serial2, &Serial1, &Serial2 };
 void (*Commands[]) (Message *m) = {printMessage, moveServoMessage};
 
-Com serial1Com = { .serial = &Serial1 };
-Com serial2Com = { .serial = &Serial2 };
+Buffer SensorMsgBuffer;
+Com serial1Com = { .serial = DestinationTranslations[GamePad] };
+Com serial2Com = { .serial = DestinationTranslations[Raspi] };
 Packet *packet = (Packet *) malloc(3 + sizeof(Message) * 96);
 
 /*
 Default Arduino functions
 */
 void setup() {
+  DestinationTranslations[GamePad]->begin(9600);
+  DestinationTranslations[Raspi]->begin(115200);
+
   Dynamixel.begin(1000000, 2);
-  Serial1.begin(115200);
-  Serial2.begin(9600);
+//  accelgyro.initialize();
+//  accelgyro.setXGyroOffset(220);
+//  accelgyro.setYGyroOffset(76);
+//  accelgyro.setZGyroOffset(-85);
+
+  //pinMode(DISTANCE_SENSOR1_TRIG, OUTPUT);
+  //pinMode(DISTANCE_SENSOR1_ECHO, INPUT);
+
   InitCom(&serial1Com);
   InitCom(&serial2Com);
 }
@@ -64,6 +80,7 @@ void setup() {
 void loop() {
   processRecvBuf(&serial1Com);
   processRecvBuf(&serial2Com);
+  //sendSensordata(Raspi);
 }
 
 void serialEvent1 () {
@@ -88,6 +105,24 @@ void InitCom(Com *com) {
 
 int CircBuf_nextCount(int count) {
   return (count + 1) % CIRC_BUFFER_SIZE;
+}
+
+void sendSensordata(Destinations destination) {
+  short ax, ay, az, gx, gy, gz;
+  //accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+  Message messages[] = { {3, 0, getDistance()}};
+  if (sizeof(messages) / sizeof(Message) > 0) {
+    EncodePacket(&SensorMsgBuffer, destination, messages, sizeof(messages) / sizeof(Message));
+    SensorMsgBuffer.data[SensorMsgBuffer.size++] = '\0';
+    DestinationTranslations[destination]->write(SensorMsgBuffer.data, SensorMsgBuffer.size);
+  }
+}
+
+short getDistance() {
+  digitalWrite(DISTANCE_SENSOR1_TRIG, HIGH);
+  delay(1);
+  digitalWrite(DISTANCE_SENSOR1_TRIG, LOW);
+  return pulseIn(DISTANCE_SENSOR1_ECHO, HIGH) / 58;
 }
 
 void handleSerialEvent(Com *com) {

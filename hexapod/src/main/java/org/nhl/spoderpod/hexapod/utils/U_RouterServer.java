@@ -1,15 +1,11 @@
 package org.nhl.spoderpod.hexapod.utils;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.nhl.spoderpod.hexapod.core.ComponentRef;
-import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.interfaces.I_Threaded;
 
 /**

@@ -15,6 +15,15 @@ import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 
+/**
+ * This class is for finding the ballon and determine the position of the ballon
+ * on the image.
+ * 
+ * Extra: Calculating distance of the ballon *
+ * 
+ * @author matthijs_laptop
+ *
+ */
 public class U_VisionDetectBalloons {
 	private static final double FOCAL_LENGTH = 3.6;
 	private static final int REAL_OBJECT_HEIGHT = 265;
@@ -84,6 +93,10 @@ public class U_VisionDetectBalloons {
 		calcArea();
 	}
 
+	/**
+	 * Find contours in the binairy images and find the object. After that
+	 * calculate distance of the object
+	 */
 	private void calcArea() {
 		// finds contours in the binairy image
 		Imgproc.findContours(imgThresholded, contours, hierarchy,
@@ -118,6 +131,9 @@ public class U_VisionDetectBalloons {
 		}
 	}
 
+	/**
+	 * Finding the center of the object
+	 */
 	private void findCenter() {
 		// finds edges in an image
 		Imgproc.Canny(imgThresholded, canny_output, 100, 100 * 2);

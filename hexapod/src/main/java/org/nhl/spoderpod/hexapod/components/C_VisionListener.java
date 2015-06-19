@@ -16,12 +16,12 @@ public class C_VisionListener extends BaseComponent {
 
 	@Override
 	public void init(MessageBus messageBus) {
-		
+
 	}
 
 	@Override
 	public void close(MessageBus messageBus) {
-		
+
 	}
 
 	@Override
@@ -37,8 +37,8 @@ public class C_VisionListener extends BaseComponent {
 				U_VisionDetectBalloons vision = new U_VisionDetectBalloons(
 						m.getData());
 				position = vision.getPosition();
-				new ComponentRef("C_VisionFormatter")
-						.tell(messageBus, getSelf(), position);
+				new ComponentRef("C_VisionFormatter").tell(messageBus,
+						getSelf(), position);
 			}
 		}
 	}

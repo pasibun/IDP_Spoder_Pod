@@ -16,12 +16,15 @@ public final class Message implements I_Message {
 	private final String data;
 
 	/**
+	 * Reference to the sender.
+	 * 
+	 * Reference to the recipient.
+	 * 
+	 * The message data.
+	 * 
 	 * @param sender
-	 *            Reference to the sender.
 	 * @param recipient
-	 *            Reference to the recipient.
 	 * @param data
-	 *            The message data.
 	 */
 	public Message(ComponentRef sender, ComponentRef recipient, String data) {
 		this.sender = sender;

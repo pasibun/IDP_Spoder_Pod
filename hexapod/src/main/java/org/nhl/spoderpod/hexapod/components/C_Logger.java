@@ -23,8 +23,9 @@ public final class C_Logger extends BaseComponent {
 	private BufferedWriter bw;
 
 	/**
+	 * Name of the component.
+	 * 
 	 * @param name
-	 *            Name of the component.
 	 */
 	public C_Logger(String name) {
 		super(name);
@@ -55,11 +56,12 @@ public final class C_Logger extends BaseComponent {
 	private void toFile(I_Message message) {
 		if (message instanceof Message) {
 			Message m = (Message) message;
-			try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("test.txt", true)))) {
-			    out.println(m.getData());
-			    out.close();
-			}catch (IOException e) {
-			    //exception handling left as an exercise for the reader
+			try (PrintWriter out = new PrintWriter(new BufferedWriter(
+					new FileWriter("test.dat", true)))) {
+				out.println(m.getData());
+				out.close();
+			} catch (IOException e) {
+				// exception handling left as an exercise for the reader
 			}
 		}
 	}

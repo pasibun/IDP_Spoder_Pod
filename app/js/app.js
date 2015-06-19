@@ -106,7 +106,12 @@ var RenderPrimitives = {
 
 var EntityModels = {
 	servo_health: function (_render, _data) {
-	
+		var logMessages = _data.value.split("\n").reverse();
+				return _render(RenderPrimitives.Translate(300, 40))
+					(RenderPrimitives.SetAttr("textBaseLine", "top"))
+					(RenderPrimitives.FillColor("rgba(0, 200, 200, 0.3)"))
+					(RenderPrimitives.Box(300, 300))
+					(RenderPrimitives.FillColor("#000"));
 	},
 	log : function(_render, _data) {
 		var logMessages = _data.value.split("\n").reverse(), 

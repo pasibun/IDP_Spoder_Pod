@@ -1,5 +1,7 @@
 package org.nhl.spoderpod.hexapod.components;
 
+import java.io.IOException;
+
 import org.nhl.spoderpod.hexapod.core.Message;
 import org.nhl.spoderpod.hexapod.core.MessageBus;
 import org.nhl.spoderpod.hexapod.interfaces.I_Message;
@@ -24,6 +26,56 @@ public final class C_Movement extends BaseComponent {
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
+		try {
+			char data = (char) System.in.read();
+			switch (data) {
+			case 'w':
+				this.servoMovement.setDirection(1);
+				break;
+			case 's':
+				this.servoMovement.setDirection(-1);
+				break;
+			case 'a':
+				this.servoMovement.setCurrentMovement("Pirouette");
+				this.servoMovement.setDirection(-1);
+				break;
+			case 'd':
+				this.servoMovement.setCurrentMovement("Pirouette");
+				this.servoMovement.setDirection(1);
+				break;
+			case ' ':
+				this.servoMovement.setCurrentMovement("Idle");
+				break;
+			case '1':
+				this.servoMovement.setCurrentMovement("StraightWalk");
+				break;
+			case '2':
+				this.servoMovement.setCurrentMovement("Grindbak");
+				break;
+			case '3':
+				this.servoMovement.setCurrentMovement("Rondlopen");
+				break;
+			case '4':
+				this.servoMovement.setCurrentMovement("Spidergap");
+				break;
+			case '5':
+				this.servoMovement.setCurrentMovement("Wedstrijdloop");
+				break;
+			case '6':
+				this.servoMovement.setCurrentMovement("Prikken");
+				break;
+			case '7':
+				this.servoMovement.setCurrentMovement("Crabwalk");
+			case '-':
+				U_MovementServoMovement.SPEED = Math.max(10, U_MovementServoMovement.SPEED - 5);
+				break;
+			case '+':
+				U_MovementServoMovement.SPEED += 5;
+				break;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 

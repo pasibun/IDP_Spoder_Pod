@@ -47,11 +47,12 @@
 <script src="js/jquery.min.js" type="text/javascript"></script>
 <script src="js/app.js" type="text/javascript"></script>
 <script type="text/javascript">
+   var ip = window.prompt("ip");
    window.addEventListener("load",function() {
 	  // Set a timeout...
 	  
 	  // App data
-	  var app = new App("http://10.0.1.12:8080");
+	  var app = new App("http://"+ ip +":8080");
 	  document.getElementById("main-content").appendChild(app.getDomElement());
 	  app.run();
 	  

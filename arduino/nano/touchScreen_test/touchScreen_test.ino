@@ -1,6 +1,4 @@
 #include <TFTv2.h>
-
-#include <TFTv2.h>
 #include <stdint.h>
 #include <SeeedTouchScreen.h>
 #include <SPI.h>
@@ -29,14 +27,14 @@ boolean joystickchanged = true;
 TouchScreen ts = TouchScreen(XP, YP, XM, YM);
 
 // Init Buttons
-Button BT1 = Button(103, 6, 91, 73, 1);
-Button BT2 = Button(103, 85, 91, 73, 2);
-Button BT3 = Button(103, 164, 91, 72, 3);
-Button BT4 = Button(103, 242, 91, 72, 4);
-Button BT5 = Button(6, 6, 91, 73, 5);
-Button BT6 = Button(6, 85, 91, 73, 6);
-Button BT7 = Button(6, 164, 91, 72, 7);
-Button BT8 = Button(6, 242, 91, 72, 8);
+Button BT1 = Button(103, 6, 91, 73, 1, "Walking");
+Button BT2 = Button(103, 85, 91, 73, 2, "Crab Walk");
+Button BT3 = Button(103, 164, 91, 72, 3, "Balloon R/B");
+Button BT4 = Button(103, 242, 91, 72, 4, "Spider Gap");
+Button BT5 = Button(6, 6, 91, 73, 5, "Gravel Walk");
+Button BT6 = Button(6, 85, 91, 73, 6, "Stair Walk");
+Button BT7 = Button(6, 164, 91, 72, 7, "Speed Walk");
+Button BT8 = Button(6, 242, 91, 72, 8, "Dance");
 
 void setup(void) {
   Serial.begin(9600);
@@ -48,17 +46,18 @@ void setup(void) {
   Tft.drawStringhor("Select a mode", 75, 225, 2, BLUE); // draw text
 
   //aanmaken knoppen
-  BT1.PrintBlue();
-  BT2.PrintBlue();
-  BT3.PrintBlue();
-  BT4.PrintBlue();
-  BT5.PrintBlue();
-  BT6.PrintBlue();
-  BT7.PrintBlue();
-  BT8.PrintBlue();
+  BT1.PrintRed();
+  BT2.PrintRed();
+  BT3.PrintRed();
+  BT4.PrintRed();
+  BT5.PrintRed();
+  BT6.PrintRed();
+  BT7.PrintRed();
+  BT8.PrintRed();
 }
 
 int n = 0;
+int currentmode = 0;
 Buffer buff;
 Message m[10];
 
@@ -119,41 +118,41 @@ void loop(void) {
     }
   }
 
-  // if-statement die naloopt of de knoppen losgelaten zijn en dit verwerkt
+  // Check if buttons are released
   if (errorboolean == true) {
     if (buttonchanged == true) {
       if (p.z < 10) {
         switch (buttonnumber) {
           case 1:
-            BT1.PrintBlue();
+            BT1.PrintRed();
             buttonchanged = false;
             break;
           case 2:
-            BT2.PrintBlue();
+            BT2.PrintRed();
             buttonchanged = false;
             break;
           case 3:
-            BT3.PrintBlue();
+            BT3.PrintRed();
             buttonchanged = false;
             break;
           case 4:
-            BT4.PrintBlue();
+            BT4.PrintRed();
             buttonchanged = false;
             break;
           case 5:
-            BT5.PrintBlue();
+            BT5.PrintRed();
             buttonchanged = false;
             break;
           case 6:
-            BT6.PrintBlue();
+            BT6.PrintRed();
             buttonchanged = false;
             break;
           case 7:
-            BT7.PrintBlue();
+            BT7.PrintRed();
             buttonchanged = false;
             break;
           case 8:
-            BT8.PrintBlue();
+            BT8.PrintRed();
             buttonchanged = false;
             break;
         }
@@ -162,20 +161,39 @@ void loop(void) {
   }
   
   // Messages
-  // Joystick
+  int mSize = 2;
+  // Joystick  
   m[0].type = 5;
   m[0].id = 0;
-  m[0].data = ((byte)analogRead(A4) / 4) << 8 + ((1024 - analogRead(A5) / 4));
-  // Buttons
-  m[1].type = 6;
+  m[0].data = ((byte)analogRead(A4) / 4) << 8 | ((1024 - analogRead(A5)) / 4);
+  // Light Sensor
+  m[1].type = 3;
   m[1].id = 0;
-  m[1].data = ((byte)digitalRead(7) << 8 + digitalRead(8));
+  m[1].data = digitalRead(2) * 256;
+  // Button 0
+  if(digitalRead(7) == HIGH){
+    m[2].type = 6;
+    m[2].id = 0;
+    m[2].data = 1;
+    mSize += 1;
+  }
+  // Button 1
+  if(digitalRead(8) == HIGH){
+    m[3].type = 6;
+    m[3].id = 1;
+    m[3].data = 1;
+    mSize += 1;
+  }
   // Mode
-  m[2].type = 7;
-  m[2].id = 0;
-  m[2].data = buttonnumber;
+  if(currentmode != buttonnumber){
+    m[4].type = 7;
+    m[4].id = 0;
+    m[4].data = buttonnumber;
+    currentmode = buttonnumber;
+    mSize += 1;
+  }
 
-  EncodePacket(&buff, 1, m, 3);
+  EncodePacket(&buff, 1, m, mSize);
   Serial.write('\0');
   Serial.write(buff.data, buff.size);
   Serial.write('\0');

@@ -16,9 +16,12 @@ import org.nhl.spoderpod.hexapod.utils.U_SensorReadWrite;
 public class C_SensorReader extends BaseComponent {
 
 	private int mode = 0;
-
+	private int[] gyroVals = new int[3];
 	public C_SensorReader(String name) {
 		super(name);
+		for(int i = 0; i < gyroVals.length; i++){
+			gyroVals[i] = 0;
+		}
 	}
 
 	public void init(MessageBus messageBus) {
@@ -89,8 +92,9 @@ public class C_SensorReader extends BaseComponent {
 						String.format("%s %s", intId, intData));
 				break;
 			case 4: // Gyro
-				new ComponentRef("C_Logger").tell(messageBus, getSelf(),
-						new ComponentRef("C_RouterClient"), String.format("Gyro:{Helling: %s}", intData));
+				gyroVals[intId] = intData;
+				new ComponentRef("C_HTTPAppSocket").tell(messageBus, getSelf(),
+						new ComponentRef("C_RouterClient"), String.format("Gyro:{x: %s y: %s z: %s}", gyroVals[0], gyroVals[1], gyroVals[2]));
 				break;
 			case 5: // joystick
 				movementSorter(messageBus, intData);

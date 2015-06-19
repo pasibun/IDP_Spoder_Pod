@@ -1,5 +1,6 @@
 package org.nhl.spoderpod.hexapod.components;
 
+import java.util.Collection;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -17,6 +18,7 @@ import org.nhl.spoderpod.hexapod.utils.U_HTTPAppServer;
  *
  */
 public class C_HTTPAppSocket extends BaseComponent {
+	private static final int MAX_MESSAGES_SIZE = 10;
 	private final U_HTTPAppServer utilAppServer;
 	private final Queue<I_Message> messages;
 
@@ -56,22 +58,33 @@ public class C_HTTPAppSocket extends BaseComponent {
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
 		if (this.utilAppServer.hasClients()) {
-			I_Message m = null;
-			while (this.messages.size() > 0) {
-				m = this.messages.poll();
-			}
 			this.utilAppServer
 					.send(String
-							.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": [{\"type\": \"log\", \"value\": \"%s\"}]}",
-									m != null ? ((Message) m).getData()
-											.replace("\n", "\\n") : "No log"));
+							.format("{\"server_status\": {\"code\": 0, \"message\": \"Online\"}, \"data\": %s}",
+									generateJSONArray(this.messages)));
 		}
 		return true;
 	}
 
-	@Override
-	protected void receiveMessage(MessageBus messageBus, I_Message message) {
+	private void addMessage(I_Message message) {
+		while (this.messages.size() == MAX_MESSAGES_SIZE) {
+			this.messages.poll();
+		}
 		this.messages.add(message);
 	}
 
+	private static String generateJSONArray(Collection<I_Message> c) {
+		StringBuilder builder = new StringBuilder();
+		builder.append('[');
+		for (I_Message message : c) {
+			builder.append(builder.length() > 1 ? ','
+					: ' ' + ((Message) message).getData());
+		}
+		return builder.append(']').toString();
+	}
+
+	@Override
+	protected void receiveMessage(MessageBus messageBus, I_Message message) {
+		addMessage(message);
+	}
 }

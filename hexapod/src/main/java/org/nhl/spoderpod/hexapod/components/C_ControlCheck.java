@@ -51,20 +51,24 @@ public class C_ControlCheck extends BaseComponent {
 		if (message instanceof Message) {
 			Message m = (Message) message;
 			switch (Integer.parseInt(m.getData())) {
-			case 0:// balloon
-				new ComponentRef("C_ControlCheck").tell(messageBus, getSelf(),
-						new ComponentRef("C_RouterClient"), "BalloonState");
-				break;
 			case 1:// Dance
-				new ComponentRef("C_ControlCheck").tell(messageBus, getSelf(),
+				new ComponentRef("C_AICalculate").tell(messageBus, getSelf(),
 						new ComponentRef("C_RouterClient"), "DanceState");
 				break;
 			case 2:// pole
-				new ComponentRef("C_ControlCheck").tell(messageBus, getSelf(),
+				new ComponentRef("C_AICalculate").tell(messageBus, getSelf(),
 						new ComponentRef("C_RouterClient"), "PoleState");
 				break;
+			case 3://br balloon
+				new ComponentRef("C_AICalculate").tell(messageBus, getSelf(),
+						new ComponentRef("C_RouterClient"), "BalloonState br");
+				break;
+			case 4:// rb balloon
+				new ComponentRef("C_AICalculate").tell(messageBus, getSelf(),
+						new ComponentRef("C_RouterClient"), "BalloonState rb");
+				break;
 			default:// nonActive mode.
-				new ComponentRef("C_ControlCheck").tell(messageBus, getSelf(),
+				new ComponentRef("C_AICalculate").tell(messageBus, getSelf(),
 						new ComponentRef("C_RouterClient"), "default");
 				break;
 

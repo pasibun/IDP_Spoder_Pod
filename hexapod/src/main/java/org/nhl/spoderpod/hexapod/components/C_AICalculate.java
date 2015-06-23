@@ -44,10 +44,10 @@ public class C_AICalculate extends BaseComponent {
 					new ComponentRef("C_Logger").tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"), "INACTIVE.");
 					break;
-				case 1: // balloon
+				case 1: // balloon rb
 					new ComponentRef("C_VisionListener").tell(messageBus,
 							getSelf(), new ComponentRef("C_RouterClient"),
-							"REQUEST");
+							"red");
 
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"),
@@ -60,12 +60,36 @@ public class C_AICalculate extends BaseComponent {
 				case 3: // pole
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"),
-							mode_poleWalk(Integer.parseInt(m.getData())));
-					break;
-				case 4:// having fun
+							"bCrabWalk");
+					
+					String walkState = "aRight";
+					//if distance to pole is bigger than allowed.
+					if (Integer.parseInt(m.getData()) > intPoleDist) {
+						new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+								new ComponentRef("C_RouterClient"),
+								"bPirouette");
+						walkState = "aLeft"; //rotate left
+						
+					} else if (Integer.parseInt(m.getData()) < intPoleDist) {
+						new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+								new ComponentRef("C_RouterClient"),
+								"bCrabWalk");
+						
+					}
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"),
-							mode_havingFun(Integer.parseInt(m.getData())));
+							walkState);
+					
+					break;
+				case 4:// balloon br
+					new ComponentRef("C_VisionListener").tell(messageBus,
+							getSelf(), new ComponentRef("C_RouterClient"),
+							"blue");
+
+					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"),
+							mode_balloonWalk(Integer.parseInt(m.getData())));
+					break;
 					break;
 				default:
 					System.out
@@ -75,8 +99,11 @@ public class C_AICalculate extends BaseComponent {
 				break;
 			case "C_ControlCheck":
 				switch (m.getData()) {
-				case "BaloonState": // mode 1
+				case "BaloonState rb": // mode 1
 					mode = 1;
+					break;
+				case "BaloonState br": // mode 4
+					mode = 4;
 					break;
 				case "DanceState": // mode 2
 					mode = 2;
@@ -116,15 +143,6 @@ public class C_AICalculate extends BaseComponent {
 					.println("Something Went Wrong! :: C_AICALCUALTE.mode_balloonWalk.centerDistance - 110");
 		}
 		return "bPirouette";
-	}
-
-	private String mode_poleWalk(int intSensorData) {
-		if (intSensorData > intPoleDist) {
-			return "aBack";
-		} else if (intSensorData < intPoleDist) {
-			return "aForward";
-		}
-		return "bRondlopen";
 	}
 
 	private String mode_havingFun(int intSensorData) {

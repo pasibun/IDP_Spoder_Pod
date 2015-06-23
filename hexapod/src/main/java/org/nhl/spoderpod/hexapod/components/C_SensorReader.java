@@ -60,9 +60,7 @@ public class C_SensorReader extends BaseComponent {
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
 		String strReceiver = "C_Logger";
-		int intData = 0;
-		int intId = 0;
-		int intType = 0;
+		int intData, intId, intType;
 		List<Byte> i = null;
 		try {
 			i = L_FileActions.read();
@@ -100,31 +98,32 @@ public class C_SensorReader extends BaseComponent {
 						.println("No actions! :: C_SensorReader.composeMessage().dp.intTyp(6).intId - 98");
 				break;
 			case 7:// Touchpad
+				System.out.println(intId);
 				switch (intId) {
 				case 0:// walking
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
-
-					new ComponentRef("C_RouterClient"), "" + 0);
+							new ComponentRef("C_RouterClient"), "bStraightWalk");
 					break;
 				case 1:// crabwalk
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"), "bCrabWalk");
 					break;
-				case 2:// balloon
+				case 2:// balloon red/blue
 					new ComponentRef("C_ControlCheck").tell(messageBus,
-							getSelf(), new ComponentRef("C_RouterClient"), "0");
+							getSelf(), new ComponentRef("C_RouterClient"), "4");
 					break;
-				case 3:// spidergap
-					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
-							new ComponentRef("C_RouterClient"), "" + 2);
+				case 3:// balloon blue/red
+					new ComponentRef("C_ControlCheck").tell(messageBus,
+							getSelf(), new ComponentRef("C_RouterClient"), "3");
 					break;
-				case 4:// gravel
-					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
-							new ComponentRef("C_RouterClient"), "bGravel");
-					break;
-				case 5: // stairwalk
+				case 4:// stairwalk
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"), "bStairWalk");
+
+					break;
+				case 5: // SpiderGap
+					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"), "bSpidergap");
 					break;
 				case 6: // speedwalk
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
@@ -134,15 +133,11 @@ public class C_SensorReader extends BaseComponent {
 					new ComponentRef("C_ControlCheck").tell(messageBus,
 							getSelf(), new ComponentRef("C_RouterClient"), "1");
 					break;
-				case 8: // polewalk
-					new ComponentRef("C_ControlCheck").tell(messageBus,
-							getSelf(), new ComponentRef("C_RouterClient"), "2");
-					break;
 				}
 				break;
 			default:
 				System.out
-						.println("Unknown type! :: C_SensorReader.composeMessage().dp.intType - 143");
+						.format("Unknown type! :: C_SensorReader.composeMessage().dp.intType - %s\n", dp);
 				break;
 			}
 		}

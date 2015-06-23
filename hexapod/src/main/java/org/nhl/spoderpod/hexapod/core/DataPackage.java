@@ -2,9 +2,9 @@ package org.nhl.spoderpod.hexapod.core;
 
 public class DataPackage {
 
-	private byte type;
-	private byte id;
-	private short data;
+	private final byte type;
+	private final byte id;
+	private final short data;
 
 	public DataPackage(byte type, byte id, short data){
 		this.type = type;
@@ -30,7 +30,7 @@ public class DataPackage {
 
 	@Override
 	public String toString() {
-		return String.format("%s %s %s",
+		return String.format("type: %s, Id: %s, Data: %s",
 				this.type, this.id, this.data);
 	}
 }

@@ -12,6 +12,7 @@ public class C_AICalculate extends BaseComponent {
 	private final int intPoleDist = 70;
 	private double centerDistance = 0;
 	private int mode = 0;
+	private String color;
 
 	public C_AICalculate(String strName) {
 		super(strName);
@@ -48,10 +49,11 @@ public class C_AICalculate extends BaseComponent {
 					new ComponentRef("C_VisionListener").tell(messageBus,
 							getSelf(), new ComponentRef("C_RouterClient"),
 							"red");
+					color = "red";
 
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"),
-							mode_balloonWalk(Integer.parseInt(m.getData())));
+							mode_balloonWalk(Integer.parseInt(m.getData()), messageBus));
 					break;
 				case 2: // dance
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
@@ -85,12 +87,13 @@ public class C_AICalculate extends BaseComponent {
 					new ComponentRef("C_VisionListener").tell(messageBus,
 							getSelf(), new ComponentRef("C_RouterClient"),
 							"blue");
-
+					
+					color = "blue";
+					
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"),
-							mode_balloonWalk(Integer.parseInt(m.getData())));
-					break;
-					break;
+							mode_balloonWalk(Integer.parseInt(m.getData()), messageBus));
+					break;					
 				default:
 					System.out
 							.println("Mode has defaulted :: C_AICalculate.receiveMessage().C_SensorReader.mode - 68");
@@ -128,8 +131,26 @@ public class C_AICalculate extends BaseComponent {
 		}
 	}
 
-	private String mode_balloonWalk(int intSensorData) {
+	private String mode_balloonWalk(int intSensorData, MessageBus messageBus) {			
 		if (intSensorData < 10) {
+			switch(color){		
+			
+			case "red":
+				new ComponentRef("C_VisionListener").tell(messageBus,
+						getSelf(), new ComponentRef("C_RouterClient"),
+						"blue");
+				break;
+				
+			case "blue":
+				new ComponentRef("C_VisionListener").tell(messageBus,
+						getSelf(), new ComponentRef("C_RouterClient"),
+						"red");
+				break;
+				
+			default :
+				System.out.println("Error");
+				break;
+			}
 			return "bPrikken";
 		}
 		if (centerDistance > 0.75) { // ballon zit rechts van center

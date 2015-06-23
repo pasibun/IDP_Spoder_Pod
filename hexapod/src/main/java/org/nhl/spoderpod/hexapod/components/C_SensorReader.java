@@ -130,15 +130,14 @@ public class C_SensorReader extends BaseComponent {
 				case 4:// stairwalk
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"), "bStairWalk");
-
 					break;
 				case 5: // SpiderGap
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"), "bSpidergap");
 					break;
-				case 6: // speedwalk
-					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
-							new ComponentRef("C_RouterClient"), "bSpeedWalk");
+				case 6: // polewalk
+					new ComponentRef("C_ControlCheck").tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"), "2");
 					break;
 				case 7: // dance
 					new ComponentRef("C_Movement").tell(messageBus,

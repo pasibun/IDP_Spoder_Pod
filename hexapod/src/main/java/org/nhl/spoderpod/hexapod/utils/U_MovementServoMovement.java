@@ -83,6 +83,7 @@ public final class U_MovementServoMovement implements I_Threaded {
 				&& movements.get(movement) != this.currentMovement) {
 			this.currentMovement = movements.get(movement);
 			currentMovementState = 0;
+			System.out.println("doing " + movement);
 		}
 		if (!movements.containsKey(movement)) {
 			System.out.println(movement + " movement doesn't exist");
@@ -126,6 +127,10 @@ public final class U_MovementServoMovement implements I_Threaded {
 	@Override
 	public void stop() {
 		this.thread.interrupt();
-
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("state %d, direction %d\n", currentMovementState, direction);
 	}
 }

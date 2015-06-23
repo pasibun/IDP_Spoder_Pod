@@ -48,8 +48,9 @@ void moveServoMessage(Message *m);
 Constants
 */
 const float DegToBinRatio = 1024.0f / 300.0f;
+unsigned long lastTime = 0;
 
-HardwareSerial *DestinationTranslations[] = { &Serial2, &Serial2, &Serial1, &Serial2 };
+HardwareSerial *DestinationTranslations[] = { &Serial2, &Serial2, &Serial3, &Serial2 };
 void (*Commands[]) (Message *m) = {printMessage, moveServoMessage};
 
 Buffer SensorMsgBuffer;
@@ -70,8 +71,8 @@ void setup() {
 //  accelgyro.setYGyroOffset(76);
 //  accelgyro.setZGyroOffset(-85);
 
-  //pinMode(DISTANCE_SENSOR1_TRIG, OUTPUT);
-  //pinMode(DISTANCE_SENSOR1_ECHO, INPUT);
+//  pinMode(DISTANCE_SENSOR1_TRIG, OUTPUT);
+//  pinMode(DISTANCE_SENSOR1_ECHO, INPUT);
 
   InitCom(&serial1Com);
   InitCom(&serial2Com);
@@ -80,10 +81,13 @@ void setup() {
 void loop() {
   processRecvBuf(&serial1Com);
   processRecvBuf(&serial2Com);
-  //sendSensordata(Raspi);
+//  if (millis() > lastTime) {
+//    sendSensordata(Raspi);
+//    lastTime = millis() + 10000;
+//  }
 }
 
-void serialEvent1 () {
+void serialEvent3 () {
   handleSerialEvent(&serial1Com);
 }
 
@@ -108,7 +112,7 @@ int CircBuf_nextCount(int count) {
 }
 
 void sendSensordata(Destinations destination) {
-  short ax, ay, az, gx, gy, gz;
+  //short ax, ay, az, gx, gy, gz;
   //accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
   Message messages[] = { {3, 0, getDistance()}};
   if (sizeof(messages) / sizeof(Message) > 0) {

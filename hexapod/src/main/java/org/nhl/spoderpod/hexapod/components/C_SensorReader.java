@@ -14,12 +14,9 @@ import org.nhl.spoderpod.hexapod.libraries.L_FileActions;
 public class C_SensorReader extends BaseComponent {
 
 	private int mode = 0;
-	private int[] gyroVals = new int[3];
+
 	public C_SensorReader(String name) {
 		super(name);
-		for(int i = 0; i < gyroVals.length; i++){
-			gyroVals[i] = 0;
-		}
 	}
 
 	public void init(MessageBus messageBus) {
@@ -63,9 +60,7 @@ public class C_SensorReader extends BaseComponent {
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
 		String strReceiver = "C_Logger";
-		int intData = 0;
-		int intId = 0;
-		int intType = 0;
+		int intData, intId, intType;
 		List<Byte> i = null;
 		try {
 			i = L_FileActions.read();
@@ -92,81 +87,94 @@ public class C_SensorReader extends BaseComponent {
 						String.format("%s %s", intId, intData));
 				break;
 			case 4: // Gyro
-				gyroVals[intId] = intData;
-				new ComponentRef("C_HTTPAppSocket").tell(messageBus, getSelf(),
-						new ComponentRef("C_RouterClient"), String.format("Gyro:{x: %s y: %s z: %s}", gyroVals[0], gyroVals[1], gyroVals[2]));
+				new ComponentRef("C_Logger").tell(messageBus, getSelf(),
+						new ComponentRef("C_RouterClient"),
+						String.format("Gyro:{Helling: %s}", intData));
 				break;
 			case 5: // joystick
-				movementSorter(messageBus, intData);
+				movementSorter(messageBus, intId, intData);
+				break;
 			case 6: // Buttons
-				System.out
-						.println("No actions! :: C_SensorReader.composeMessage().dp.intTyp(6).intId - 98");
+				if (intId == 0) {
+				new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+						new ComponentRef("C_RouterClient"), "cFaster");
+				}else if (intId == 1){
+					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"), "cSlower");
+				}
+//				}else if (intId == 2 && intData >= 1) {
+//					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+//							new ComponentRef("C_RouterClient"), "bIdle");
+//				}
 				break;
 			case 7:// Touchpad
-				switch (intId) {
+				intData--;
+				switch (intData) {
 				case 0:// walking
-					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
-
-					new ComponentRef("C_RouterClient"), "" + 0);
+					new ComponentRef("C_Movement")
+							.tell(messageBus, getSelf(), new ComponentRef(
+									"C_RouterClient"), "bStraightWalk");
 					break;
 				case 1:// crabwalk
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"), "bCrabWalk");
 					break;
-				case 2:// balloon
+				case 2:// balloon red/blue
 					new ComponentRef("C_ControlCheck").tell(messageBus,
-							getSelf(), new ComponentRef("C_RouterClient"), "0");
+							getSelf(), new ComponentRef("C_RouterClient"), "4");
 					break;
-				case 3:// spidergap
-					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
-							new ComponentRef("C_RouterClient"), "" + 2);
+				case 3:// balloon blue/red
+					new ComponentRef("C_ControlCheck").tell(messageBus,
+							getSelf(), new ComponentRef("C_RouterClient"), "3");
 					break;
-				case 4:// gravel
-					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
-							new ComponentRef("C_RouterClient"), "bGravel");
-					break;
-				case 5: // stairwalk
+				case 4:// stairwalk
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"), "bStairWalk");
+
+					break;
+				case 5: // SpiderGap
+					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"), "bSpidergap");
 					break;
 				case 6: // speedwalk
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"), "bSpeedWalk");
 					break;
 				case 7: // dance
-					new ComponentRef("C_ControlCheck").tell(messageBus,
-							getSelf(), new ComponentRef("C_RouterClient"), "1");
-					break;
-				case 8: // polewalk
-					new ComponentRef("C_ControlCheck").tell(messageBus,
-							getSelf(), new ComponentRef("C_RouterClient"), "2");
+					new ComponentRef("C_Movement").tell(messageBus,
+							getSelf(), new ComponentRef("C_RouterClient"), "bDance");
 					break;
 				}
 				break;
 			default:
 				System.out
-						.println("Unknown type! :: C_SensorReader.composeMessage().dp.intType - 143");
+						.format("Unknown type! :: C_SensorReader.composeMessage().dp.intType - %s\n",
+								dp);
 				break;
 			}
 		}
 		return true;
 	}
 
-	private void movementSorter(MessageBus messageBus, int intData) {
-		String movement = "Idle";
-
-		byte[] value = convertByte(intData);
-		if (value[1] > 3 * (256 / 4)) {
-			movement = "aForward";
-		} else if (value[1] < 1 * (256 / 4)) {
-			movement = "aRight";
-		} else if (value[0] < 50) {
-			movement = "aLeft";
-		} else if (value[0] > 200) {
-			movement = "aBack";
-		} 
-		new ComponentRef("C_Movement").tell(messageBus, getSelf(),
-				new ComponentRef("C_RouterClient"), movement);
+	private void movementSorter(MessageBus messageBus, int id, int intData) {
+		String movement = "aIdle";
+		if (id == 1) {
+			if (intData > 3 * (1024 / 4)) {
+				movement = "aRight";
+			} else if (intData < 1 * (1024 / 4)) {
+				movement = "aLeft";
+			}
+			new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+					new ComponentRef("C_RouterClient"), movement);
+		} else if (id == 0) {
+			if (intData > 3 * (1024 / 4)) {
+				movement = "aForward";
+			} else if (intData < 1 * (1024 / 4)) {
+				movement = "aBack";
+			}
+			new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+					new ComponentRef("C_RouterClient"), movement);
+		}
 	}
 
 	private byte[] convertByte(int data) {

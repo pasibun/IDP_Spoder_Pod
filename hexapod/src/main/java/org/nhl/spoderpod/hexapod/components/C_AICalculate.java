@@ -26,6 +26,12 @@ public class C_AICalculate extends BaseComponent {
 
 	@Override
 	protected boolean composeMessage(MessageBus messageBus) {
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return true;
 	}
 
@@ -133,7 +139,7 @@ public class C_AICalculate extends BaseComponent {
 		}
 	}
 
-	private String mode_balloonWalk(int intSensorData, MessageBus messageBus) {			
+	private String mode_balloonWalk(int intSensorData, MessageBus messageBus) {
 		if (intSensorData < 10) {
 			switch(color){		
 			

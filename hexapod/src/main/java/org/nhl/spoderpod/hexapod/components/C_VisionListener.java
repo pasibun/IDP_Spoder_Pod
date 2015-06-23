@@ -38,7 +38,7 @@ public class C_VisionListener extends BaseComponent {
 						m.getData());
 				position = vision.getPosition();
 				new ComponentRef("C_VisionFormatter").tell(messageBus,
-						getSelf(), position);
+						getSelf(), position);				
 			}
 		}
 	}

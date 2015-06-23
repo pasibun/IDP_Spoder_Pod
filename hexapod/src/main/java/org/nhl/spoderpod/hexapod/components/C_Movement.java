@@ -88,7 +88,7 @@ public final class C_Movement extends BaseComponent {
 				this.servoMovement.setCurrentMovement(m.getData());
 				break;
 			case 'a':
-				break;
+				break;	
 			}
 		}
 	}

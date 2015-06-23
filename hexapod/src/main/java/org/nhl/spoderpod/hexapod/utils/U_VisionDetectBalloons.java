@@ -62,6 +62,14 @@ public class U_VisionDetectBalloons {
 	}
 
 	private void detectBalloon() {
+	    try {
+	        Process p = Runtime.getRuntime().exec("camera.sh");
+	        p.waitFor();
+	        Thread.sleep(2000);
+	      }
+	      catch (Exception err) {
+	        err.printStackTrace();
+	      }
 		image = Highgui.imread(location);
 
 		// returns structuring element of the specified shape and size for

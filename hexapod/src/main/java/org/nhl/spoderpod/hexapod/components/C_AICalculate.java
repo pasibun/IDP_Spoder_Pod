@@ -60,7 +60,28 @@ public class C_AICalculate extends BaseComponent {
 				case 3: // pole
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
 							new ComponentRef("C_RouterClient"),
-							mode_poleWalk(Integer.parseInt(m.getData())));
+							"bCrabWalk");
+					
+					String walkState = "aRight";
+					//if distance to pole is bigger then allowed.
+					if (Integer.parseInt(m.getData()) > intPoleDist) {
+						
+						new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+								new ComponentRef("C_RouterClient"),
+								"bPirouette");
+						walkState = "aLeft";
+						
+					} else if (Integer.parseInt(m.getData()) < intPoleDist) {
+						
+						new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+								new ComponentRef("C_RouterClient"),
+								"bCrabWalk");
+						
+					}
+					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"),
+							walkState);
+					
 					break;
 				case 4:// having fun
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
@@ -116,15 +137,6 @@ public class C_AICalculate extends BaseComponent {
 					.println("Something Went Wrong! :: C_AICALCUALTE.mode_balloonWalk.centerDistance - 110");
 		}
 		return "bPirouette";
-	}
-
-	private String mode_poleWalk(int intSensorData) {
-		if (intSensorData > intPoleDist) {
-			return "aBack";
-		} else if (intSensorData < intPoleDist) {
-			return "aForward";
-		}
-		return "bRondlopen";
 	}
 
 	private String mode_havingFun(int intSensorData) {

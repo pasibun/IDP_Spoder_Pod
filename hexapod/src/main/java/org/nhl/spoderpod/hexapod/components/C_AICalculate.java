@@ -90,7 +90,6 @@ public class C_AICalculate extends BaseComponent {
 							new ComponentRef("C_RouterClient"),
 							mode_balloonWalk(Integer.parseInt(m.getData())));
 					break;
-					break;
 				default:
 					System.out
 							.println("Mode has defaulted :: C_AICalculate.receiveMessage().C_SensorReader.mode - 68");

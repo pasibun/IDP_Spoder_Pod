@@ -120,12 +120,13 @@ public class C_SensorReader extends BaseComponent {
 							new ComponentRef("C_RouterClient"), "bCrabWalk");
 					break;
 				case 2:// balloon red/blue
-					new ComponentRef("C_ControlCheck").tell(messageBus,
-							getSelf(), new ComponentRef("C_RouterClient"), "4");
+					new ComponentRef("C_Movement").tell(messageBus,
+							getSelf(), new ComponentRef("C_RouterClient"), "bPrikken");
 					break;
 				case 3:// balloon blue/red
-					new ComponentRef("C_ControlCheck").tell(messageBus,
-							getSelf(), new ComponentRef("C_RouterClient"), "3");
+					new ComponentRef("C_Movement").tell(messageBus,
+							getSelf(), new ComponentRef("C_RouterClient"), "bIdle");
+					System.out.println("jawel lukas");
 					break;
 				case 4:// stairwalk
 					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
@@ -136,8 +137,8 @@ public class C_SensorReader extends BaseComponent {
 							new ComponentRef("C_RouterClient"), "bSpidergap");
 					break;
 				case 6: // polewalk
-					new ComponentRef("C_ControlCheck").tell(messageBus, getSelf(),
-							new ComponentRef("C_RouterClient"), "2");
+					new ComponentRef("C_Movement").tell(messageBus, getSelf(),
+							new ComponentRef("C_RouterClient"), "bPoleWalk");
 					break;
 				case 7: // dance
 					new ComponentRef("C_Movement").tell(messageBus,

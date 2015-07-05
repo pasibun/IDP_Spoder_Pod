@@ -82,7 +82,7 @@ public final class C_Movement extends BaseComponent {
 		}
 		return true;
 	}
-	
+	//remove comment for controller
 	@Override
 	protected void receiveMessage(MessageBus messageBus, I_Message message) {
 //		if (message instanceof Message) {
